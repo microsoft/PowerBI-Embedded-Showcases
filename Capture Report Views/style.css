@@ -1,0 +1,406 @@
+body {
+    height: 100%;
+    overflow: hidden;
+}
+
+#wrapper {
+    margin: 0 auto;
+    width: 100%;
+}
+
+#contoso-header {
+    background: #1461F8;
+    color: #FFF8DC;
+    padding: 2px 0;
+    text-align: left;
+}
+
+#contoso {
+    margin-left: 24px;
+    padding: 5px 0;
+}
+
+#main-div {
+    background: #FFF;
+    color: #FFF8DC;
+    display: none;
+    margin: 0 auto;
+    text-align: left;
+    width: 100%;
+}
+
+.interactive-buttons {
+    display: flex;
+}
+
+.btn-action {
+    align-items: flex-end;
+    background: transparent;
+    border: 1px solid #1461F8;
+    border-radius: 4px;
+    color: #1461F8;
+    font: normal 600 14px/20px "Segoe UI";
+    outline: none;
+    text-align: center;
+}
+
+.btn-action:hover {
+    background: rgba(20, 97, 248, 0.25);
+}
+
+.btn[aria-expanded="true"] {
+    background: rgba(20, 97, 248, .15);
+    color: #1461F8;
+}
+
+.btn-img {
+    margin: -2px 8px 0 0;
+}
+
+#display-btn {
+    margin: 16px;
+}
+
+#capture-btn {
+    margin: 16px 16px 16px 0;
+}
+
+#report-container {
+    margin: 16px 16px 0 16px;
+    width: 98%;
+    height: calc(100vh - 100px);
+}
+
+#report-container>iframe {
+    border: none;
+    height: 100%;
+}
+
+.line {
+    border: .5px solid rgba(0, 0, 0, .2);
+    clear: both;
+    margin: 0 16px;
+    opacity: .7;
+    width: 98%;
+}
+
+.showcase-radio-container {
+    cursor: pointer;
+    display: block;
+    font-weight: normal;
+    height: auto;
+    margin: 0 24px;
+    padding: 8px 0;
+    position: relative;
+}
+
+.showcase-radio-container:nth-child(1) {
+    height: 24px;
+    margin: 0 24px;
+}
+
+.showcase-radio-container input {
+    cursor: pointer;
+    opacity: 0;
+    position: absolute;
+}
+
+.showcase-radio-checkmark {
+    visibility: hidden;
+}
+
+.showcase-radio-container input:checked~.showcase-radio-checkmark {
+    border-color: #3E65FF;
+}
+
+.showcase-radio-checkmark:after {
+    content: "";
+    display: none;
+    position: absolute;
+}
+
+.showcase-radio-container input:checked~.showcase-radio-checkmark:after {
+    display: block;
+}
+
+.showcase-radio-container .showcase-radio-checkmark:after {
+    background: #3E65FF;
+    border-radius: 50%;
+    height: 8px;
+    left: 3px;
+    top: 3px;
+    width: 8px;
+}
+
+.radio-title {
+    font: normal normal 14px/20px "Segoe UI";
+}
+
+#close-btn {
+    background: transparent;
+    border: 0;
+    float: right;
+    margin-right: -25px;
+    outline: none;
+}
+
+#close-list-btn {
+    margin: -9px -5px 0 0;
+    padding: 10px;
+}
+
+#bookmarks-list {
+    background: #FFF;
+    box-shadow: 0 1.2px 3.6px rgba(0, 0, 0, .108), 0 6.4px 14.4px rgba(90, 61, 61, .132);
+    display: none;
+    height: calc(100vh - 100px);
+    margin: 0 0 0 5px;
+    opacity: .95;
+    position: fixed;
+    width: 15%;
+}
+
+.vertical-alignment-helper {
+    display: table;
+    height: 100%;
+    pointer-events: none;
+    width: 100%;
+}
+
+#tick-icon {
+    display: none;
+    margin: 0 auto;
+}
+
+.vertical-align-center {
+    display: table-cell;
+    pointer-events: none;
+    vertical-align: middle;
+}
+
+.modal-content {
+    border-radius: 0;
+    height: 308px;
+    margin: 0 auto;
+    max-width: inherit;
+    pointer-events: all;
+    width: inherit;
+}
+
+.modal-body {
+    display: flex;
+    padding: 0;
+    position: relative;
+}
+
+.btn-modal {
+    background: transparent;
+    border: none;
+    border-bottom: .5px solid rgba(0, 0, 0, .2);
+    font: normal 14px "Segoe UI";
+    outline: none;
+    text-align: center;
+    width: 49%;
+}
+
+.btn.active.focus,
+.btn.active:focus,
+.btn.focus,
+.btn.focus:active,
+.btn:active:focus,
+.btn:focus,
+.btn:hover {
+    box-shadow: none;
+    color: #1461F8;
+    outline: 0;
+    outline-offset: -2px;
+    text-decoration: none;
+}
+
+.btn-active {
+    border-bottom: 1px solid #1461F8;
+    font-weight: 600;
+}
+
+.modal-title {
+    font: normal 600 16px "Segoe UI";
+}
+
+#close-modal-btn {
+    border: none;
+    opacity: 1;
+    outline: none;
+}
+
+#btn-cross {
+    margin: 8px 8px 0 0;
+}
+
+#content-div {
+    color: #201F1E;
+    font: normal normal 14px "Segoe UI";
+    margin: 30px 0 40px 24px;
+}
+
+#capture-view-div {
+    display: none;
+}
+
+.btn-links {
+    width: 50%;
+    padding: 0 0 8px 0;
+}
+
+#save-btn-div {
+    margin-top: 25px;
+    text-align: center;
+}
+
+.capture-btn-div {
+    text-align: center;
+}
+
+#save-bookmark-btn {
+    background: transparent;
+    border-radius: 4px;
+    border: 1px solid #1461F8;
+    color: #1461F8;
+    font-weight: 600;
+    margin: 5px 20px 0 5px;
+    outline: none;
+    padding: 6px 16px;
+}
+
+#save-bookmark-btn:hover {
+    background: #1461F8;
+    color: #FFF;
+}
+
+#copy-btn {
+    outline: none;
+    margin: 5px 20px 0 5px;
+}
+
+#copy-link-text {
+    border: .5px solid rgba(0, 0, 0, .2);
+}
+
+#hidden-success {
+    color: #1461F8;
+    font: normal 600 12px "Segoe UI";
+    margin-top: 10px;
+}
+
+.visible {
+    visibility: visible;
+}
+
+.div-hidden {
+    visibility: hidden;
+}
+
+input[type="text"] {
+    background: transparent;
+    height: 32px;
+    margin-top: 15px;
+    outline: 0;
+    width: 95%;
+}
+
+input[type="text"]:invalid {
+    box-shadow: none;
+}
+
+.alert-input {
+    border: .5px solid #FF0000;
+}
+
+.valid-input {
+    border: 0;
+    border-bottom: .5px solid rgba(0, 0, 0, .2);
+}
+
+.copy-bookmark {
+    background: transparent;
+    border-radius: 4px;
+    border: 1px solid #1461F8;
+    color: #1461F8;
+    font-weight: 600;
+    margin: 0 20px;
+    padding: 6px 16px;
+}
+
+.copy-bookmark:hover {
+    background: #1461F8;
+    color: #FFF;
+}
+
+.modal-header {
+    border: none;
+    font: normal 600 16px "Segoe UI";
+    margin: 30px 0 30px 25px;
+    padding: 0;
+}
+
+.rotate {
+    animation: rotation 1s infinite linear;
+}
+
+@keyframes rotation {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(359deg);
+    }
+}
+
+#container {
+    width: 100%;
+    height: calc(100vh - 130px);
+}
+
+#overlay {
+    position: absolute;
+    width: inherit;
+    height: inherit;
+}
+
+#overlay #spinner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+}
+
+.black-color-class {
+    color: #323130;
+}
+
+.blue-color-class {
+    color: #1461F8;
+}
+
+.blue-background {
+    background: rgba(20, 97, 248, .15);
+    border-radius: 4px;
+    border: 1px solid rgba(20, 96, 247, .5);
+    font-weight: 600;
+    margin: 0 20px;
+    outline: none;
+    padding: 6px 16px;
+}
+
+#bookmark-container {
+    height: 100%;
+    width: 100%;
+}
+
+#bookmark-container>iframe {
+    border: none;
+}
+
+#share-bookmark {
+    display: none;
+    width: 100%;
+    height: calc(100vh - 50px);
+}

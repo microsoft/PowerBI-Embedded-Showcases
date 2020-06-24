@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <link rel="shortcut icon" href="#" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.css" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css">
+
+    <title>Capture Report Views</title>
+</head>
+
+<body>
+    <!-- Modal -->
+    <div class="modal fade" id="modal-action" tabindex="-1" role="dialog" aria-labelledby="capture-btn" aria-hidden="true">
+        <div class="vertical-alignment-helper">
+            <div class="modal-dialog vertical-align-center">
+                <div class="modal-content">
+                    <button type="button" id="close-modal-btn" class="close" data-dismiss="modal">
+                        <img id="btn-cross" src="img/cross.svg" alt="close">    
+                    </button>
+                    <div class="modal-header">
+                        <h4 class="modal-title modal-subject" id="my-modal-label">What would you like to do with this view?</h4>
+                    </div>
+                    <div class="modal-body">
+                        <button id="save-view-btn" class="btn-modal btn-links btn-active">Save to 'My Views'</button>
+                        <button id="copy-link-btn" class="btn-modal btn-links">Copy Link</button>
+                    </div>
+                    <div id="content-div">
+                        <div id="save-view-div">
+                            <form>
+                                Enter a name for this view:<input type="text" id="viewname" placeholder="Example: Bookmark December 2019 Sales-profit" class="valid-input" required />
+                                <div id="save-btn-div">
+                                    <button id="save-bookmark-btn" type="button">Save</button>
+                                </div>
+                            </form>
+                        </div>
+                        <div id="capture-view-div">
+                            Use this link to share the view with colleagues<input type="text" id="copy-link-text" readonly>
+                            <div id="hidden-success">Copied successfully!</div>
+                            <div class="capture-btn-div">
+                                <button class="copy-bookmark" id="copy-btn">
+                                        <img id="tick-icon" src="img/tickicon.svg" alt="tickmark" />
+                                        <span id="tick-btn">Copy</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Page content -->
+    <div id="wrapper">
+        <div id="contoso-header">
+            <img src="img/contoso.svg" id="contoso" alt="contoso">
+        </div>
+        <div id="container">
+            <div id="overlay">
+                <img src="img/spinner.svg" id="spinner" class="rotate" alt="loader">
+            </div>
+            <div id="main-div">
+                <div class="interactive-buttons">
+                    <button class="btn btn-action" type="button" id="display-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <img class="btn-img" src="img/allviews.svg" alt="My views">Saved views
+                    </button>
+                    <button class="btn btn-action" type="button" id="capture-btn" data-toggle="modal" data-target="#modal-action" aria-haspopup="true" aria-expanded="false">
+                        <img class="btn-img" src="img/captureview.svg" alt="Capture View">Capture view
+                    </button>
+                </div>
+                <div class="line"></div>
+                <div id="bookmarks-list" aria-labelledby="display-btn">
+                    <label class="showcase-radio-container">
+                        <button id="close-btn">
+                            <img id="close-list-btn" src="img/closeicon.svg" alt="Close">
+                        </button>
+                    </label>
+                </div>
+                <div id="report-container"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- External JS to make Promise work in IE 11 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bluebird/3.3.4/bluebird.min.js"></script>
+
+    <!-- External JS to make .append() work in IE 11 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-polyfills/0.1.42/polyfill.js" integrity="sha256-bXiN+GW47t3Gf2R1yZ6ldDMv8bbAmmnyhxmaTKfZDfU=" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/powerbi-client@2.11.0/dist/powerbi.min.js"></script>
+    <script src="globals.js"></script>
+    <script src="session_utils.js"></script>
+    <script src="index.js"></script>
+
+</body>
+
+</html>
