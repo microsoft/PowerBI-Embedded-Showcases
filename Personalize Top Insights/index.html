@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <link rel="shortcut icon" href="#" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.css" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css">
+
+    <title>Personalize Top Insights</title>
+</head>
+
+<body>
+    <div id="wrapper">
+        <div id="contoso-header">
+            <img src="img/contoso.svg" id="contoso" alt="contoso" />
+        </div>
+        <div id="container">
+            <div id="overlay">
+                <img src="img/spinner.svg" id="spinner" class="rotate" alt="loader" />
+            </div>
+            <div id="main-div">
+                <div class="dropdown">
+                    <button class="btn btn-action" type="button" id="visuals-click-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Choose visuals
+                        <img src="img/caret.svg" alt="dropdown" id="caret-img" />
+                    </button>
+                    <ul class="dropdown-menu checkbox-menu allow-focus" id="visuals-list"></ul>
+                </div>
+                <div class="layouts">
+                    <button class="btn btn-action" type="button" id="visuals-layout-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Choose Layout
+                    </button>
+                    <div class="layout" id="layouts-div" aria-labelledby="visuals-layout-btn">
+                        <ul id="layouts-list">
+                            <li>
+                                <button class="btn-white btn-layout" id="btn-one-col">               
+                                    <img class="svg layout-img" src="img/column1.svg" alt="1 Column"/>
+                                </button>
+                            </li>
+                            <li>
+                                <button class="btn-white btn-layout" id="btn-two-col-colspan">
+                                    <img class="svg layout-img" src="img/rowspan.svg" alt="Rowspan" />
+                                </button>
+                            </li>
+                            <li>
+                                <button class="btn-white btn-layout" id="btn-two-col-rowspan">
+                                    <img class="svg layout-img" src="img/colspan.svg" alt="Colspan" /> 
+                                </button>
+                            </li>
+                            <li>
+                                <button class="btn-white active-columns-btn" id="btn-two-cols">
+                                    <img class="svg layout-img" src="img/column2.svg" alt="2 Column"/>
+                                </button>
+                            </li>
+                            <li>
+                                <button class="btn-white btn-layout" id="btn-three-cols">
+                                    <img class="svg layout-img" src="img/column3.svg" alt="1 Column"/>
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="line"></div>
+                <div id="report-container"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- External CSS to make Promise work in IE 11 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bluebird/3.3.4/bluebird.min.js"></script>
+
+    <!-- External CSS to make .append() work in IE 11 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-polyfills/0.1.42/polyfill.js" integrity="sha256-bXiN+GW47t3Gf2R1yZ6ldDMv8bbAmmnyhxmaTKfZDfU=" crossorigin="anonymous"></script>
+
+    <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.4.1.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/powerbi-client@2.11.0/dist/powerbi.min.js"></script>
+    <script src="globals.js"></script>
+    <script src="session_utils.js"></script>
+    <script src="index.js"></script>
+</body>
+
+</html>

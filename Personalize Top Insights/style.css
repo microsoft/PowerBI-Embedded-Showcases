@@ -1,0 +1,252 @@
+body {
+    overflow: hidden;
+}
+
+#wrapper {
+    margin: 0 auto;
+    width: 100%;
+}
+
+#contoso-header {
+    background: #4946C6;
+    color: #FFF8DC;
+    padding: 2px 0;
+    text-align: left;
+}
+
+#contoso {
+    margin-left: 24px;
+    padding: 5px 0;
+}
+
+#main-div {
+    background: #F6F6FA;
+    color: #FFF8DC;
+    margin: 0 auto;
+    text-align: left;
+    width: 100%;
+}
+
+#main-div>* {
+    display: none;
+}
+
+.dropdown {
+    float: left;
+}
+
+.btn-action[aria-expanded="true"] {
+    background: rgba(73, 70, 198, 0.15);
+    color: #4946C6;
+}
+
+.btn-action {
+    background: #F6F6FA;
+    border: 1px solid #4946C6;
+    color: #4946C6;
+    font: normal 600 14px "Segoe UI";
+    margin: 16px;
+}
+
+.btn-action:hover {
+    background: rgba(73, 70, 198, 0.25);
+    color: #4946C6;
+}
+
+.btn.active.focus,
+.btn.active:focus,
+.btn.focus,
+.btn.focus:active,
+.btn:active:focus,
+.btn:focus {
+    box-shadow: none;
+    outline: 0;
+    outline-offset: -2px;
+    text-decoration: none;
+}
+
+#visuals-layout-btn {
+    margin-left: 0
+}
+
+#caret-img {
+    margin: 0 8px;
+}
+
+#visuals-list {
+    border-radius: 0;
+    margin: -8px 0 0 16px;
+    padding: 8px;
+    width: 300px;
+}
+
+.checkbox-container {
+    cursor: pointer;
+    display: block;
+    font-size: 16px;
+    height: 40px;
+    padding: 8px 8px 8px 35px;
+    position: relative;
+}
+
+.checkbox-container input {
+    cursor: pointer;
+    opacity: 0;
+    position: absolute;
+}
+
+.checkbox-checkmark {
+    background: #FFF;
+    border: 1px solid #C8C8EE;
+    border-radius: 2px;
+    height: 20px;
+    left: 8px;
+    position: absolute;
+    top: 11px;
+    transition: background-color 100ms ease;
+    width: 20px;
+}
+
+.checkbox-container input:checked~.checkbox-checkmark {
+    background: rgba(73, 70, 198, 0.3);
+}
+
+.checkbox-container input:checked {
+    background: #808080;
+}
+
+.checkbox-checkmark:after {
+    content: "";
+    display: none;
+    position: absolute;
+}
+
+.checkbox-container input:checked~.checkbox-checkmark:after {
+    display: block;
+}
+
+.checkbox-title {
+    color: #323130;
+    display: block;
+    font: normal normal 14px "Segoe UI";
+    margin-top: 3px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.checkbox-container .checkbox-checkmark:after {
+    border: 1px solid #4946C6;
+    border-width: 0 1px 1px 0;
+    height: 12px;
+    left: 6px;
+    padding: 2px;
+    top: 1px;
+    transform: rotate(45deg);
+    width: 6px;
+}
+
+.checkbox-menu label {
+    clear: both;
+    color: #333;
+    font-weight: 100;
+    margin: 0;
+    white-space: nowrap;
+}
+
+#layouts-div {
+    background: #FFF;
+    border: 1px solid #FFF;
+    box-sizing: border-box;
+    box-shadow: 0 0.3px 0.9px rgba(0, 0, 0, 0.11), 0 1.6px 3.6px rgba(0, 0, 0, 0.13);
+    border-radius: 4px;
+    display: flex;
+    position: absolute;
+    margin: -8px 0 0 150px;
+    z-index: 1;
+}
+
+.btn-white:hover {
+    background: rgba(73, 70, 198, 0.8);
+}
+
+#layouts-list {
+    display: flex;
+    margin: 0;
+    padding-left: 0;
+}
+
+li {
+    display: inline;
+}
+
+.btn-white {
+    border: none;
+    outline: none;
+    padding: 0;
+}
+
+.btn-layout {
+    background: #FFF;
+}
+
+.svg:hover {
+    filter: brightness(0) invert(1);
+}
+
+.layout-img {
+    padding: 10px
+}
+
+.active-columns-btn {
+    background: rgba(73, 70, 198, 0.3);
+}
+
+.line {
+    border: 0.5px solid rgba(0, 0, 0, 0.2);
+    clear: both;
+    margin: 0 16px 0 16px;
+    opacity: 0.7;
+    width: 98%;
+    position: relative;
+}
+
+#report-container {
+    display: none;
+    height: calc(100vh - 120px);
+    width: 100%;
+}
+
+#report-container>iframe {
+    border: none;
+    overflow: hidden;
+}
+
+.rotate {
+    animation: rotation 1s infinite linear;
+}
+
+@keyframes rotation {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(359deg);
+    }
+}
+
+#container {
+    width: 100%;
+    height: calc(100vh - 130px);
+}
+
+#overlay {
+    position: absolute;
+    width: inherit;
+    height: inherit;
+}
+
+#overlay #spinner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+}
