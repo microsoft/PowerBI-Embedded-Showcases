@@ -1,5 +1,5 @@
 // API Endpoint to get the JSON response of Embed Url, Embed token and reportId
-const reportUrl = "https://powerbiplaygroundbe.azurewebsites.net/api/Reports/SampleReport";
+const reportUrl = "https://aka.ms/sampleReportEmbedConfig";
 
 // Set the report refresh token timer
 let reportRefreshTokenTimer = 0;
@@ -11,7 +11,7 @@ function populateEmbedConfigIntoCurrentSession(url, updateCurrentToken) {
     return $.getJSON(url, function(embedConfig) {
 
         // Set the embedToken, embedUrl, reportId
-        setConfig(embedConfig.embedToken.token, embedConfig.embedUrl, embedConfig.id);
+        setConfig(embedConfig.EmbedToken.Token, embedConfig.EmbedUrl, embedConfig.Id);
         if (updateCurrentToken) {
 
             // Get the reference to the embedded element
@@ -19,10 +19,10 @@ function populateEmbedConfigIntoCurrentSession(url, updateCurrentToken) {
             let embedContainer = powerbi.get(reportContainer);
 
             if (embedContainer) {
-                embedContainer.setAccessToken(embedConfig.embedToken.token);
+                embedContainer.setAccessToken(embedConfig.EmbedToken.Token);
             }
         }
-        tokenExpirationRefreshListener(embedConfig.minutesToExpiration, url, "Report");
+        tokenExpirationRefreshListener(embedConfig.MinutesToExpiration, url, "Report");
     });
 }
 

@@ -14,8 +14,14 @@ function setEmbedConfig() {
     embedConfig.reportId = reportConfig.reportId;
 }
 
+// Set props for accessibility insights
+function setReportAccessibilityProps(report) {
+    report.setComponentTitle("Playground showcase sample report");
+    report.setComponentTabIndex(0);
+}
+
 // Make sure Document object is ready
-$(document).ready(function() {
+$(document).ready(function () {
 
     // Initalize and cache global DOM object
     hiddenSuccess = $("#hidden-success");
@@ -37,46 +43,47 @@ $(document).ready(function() {
     hiddenSuccess.addClass(hiddenClass);
     bookmarksList.hide();
 
-    $("#display-btn").click(function() {
+    $("#display-btn").click(function () {
         bookmarksList.toggle("slide");
     });
 
-    $("#close-btn").click(function() {
+    $("#close-list-btn").click(function () {
         bookmarksList.hide("slide");
     });
 
-    copyLinkBtn.click(function() {
+    copyLinkBtn.click(function () {
         modalButtonClicked(this);
         createLink();
     });
 
-    copyBtn.click(function() {
+    copyBtn.click(function () {
         copyLink(this);
     });
 
-    saveViewBtn.click(function() {
+    saveViewBtn.click(function () {
         modalButtonClicked(this);
     });
 
-    $("#save-bookmark-btn").click(function() {
+    viewName.on("focus", function () {
+        viewName.removeClass(invalidField);
+    });
+
+    $("#save-bookmark-btn").click(function () {
         onBookmarkCaptureClicked();
     });
 
-    $("#modal-action").on("hidden.bs.modal", function() {
+    $("#modal-action").on("hidden.bs.modal", function () {
 
         // Events executed on BootStrap Modal close event
         $(this).find("input").val("").end();
-        hiddenSuccess.removeClass(visibleClass);
-        hiddenSuccess.addClass(hiddenClass);
+        hiddenSuccess.removeClass(visibleClass).addClass(hiddenClass);
         copyLinkBtn.removeClass(activeButtonClass);
         saveViewBtn.addClass(activeButtonClass);
-        copyBtn.removeClass(blueBackgroundClass);
-        copyBtn.addClass(copyBookmarkClass);
+        copyBtn.removeClass(blueBackgroundClass).addClass(copyBookmarkClass);
         captureViewDiv.hide();
         tickIcon.hide();
         tickBtn.show();
-        viewName.removeClass(alertClass);
-        viewName.addClass(validClass);
+        viewName.removeClass(invalidField);
         saveViewDiv.show();
     });
 });
@@ -85,7 +92,7 @@ $(document).ready(function() {
 function embedBookmarksReport() {
 
     // Load sample report properties into session
-    return loadSampleReportIntoSession().then(function() {
+    return loadSampleReportIntoSession().then(function () {
 
         // Get models. models contains enums that can be used
         const models = window["powerbi-client"].models;
@@ -130,11 +137,14 @@ function embedBookmarksReport() {
         // Embed the report and display it within the div container
         bookmarkShowcaseState.report = powerbi.embed(embedContainer, config);
 
+        // For accessibility insights
+        setReportAccessibilityProps(bookmarkShowcaseState.report);
+
         // Report.on will add an event handler for report loaded event.
-        bookmarkShowcaseState.report.on("loaded", function() {
+        bookmarkShowcaseState.report.on("loaded", function () {
 
             // Get report"s existing bookmarks
-            bookmarkShowcaseState.report.bookmarksManager.getBookmarks().then(function(bookmarks) {
+            bookmarkShowcaseState.report.bookmarksManager.getBookmarks().then(function (bookmarks) {
 
                 // Create bookmarks list from the existing report bookmarks
                 createBookmarksList(bookmarks);
@@ -153,7 +163,7 @@ function embedBookmarksReport() {
 function embedSharedBookmark() {
 
     // Load sample report properties into session
-    loadSampleReportIntoSession().then(function() {
+    loadSampleReportIntoSession().then(function () {
 
         // Get models. models contains enums that can be used
         const models = window["powerbi-client"].models;
@@ -208,7 +218,10 @@ function embedSharedBookmark() {
         // Embed the report and display it within the div container
         bookmarkShowcaseState.report = powerbi.embed(embedContainer, config);
 
-        bookmarkShowcaseState.report.on("loaded", function() {
+        // For accessibility insights
+        setReportAccessibilityProps(bookmarkShowcaseState.report);
+
+        bookmarkShowcaseState.report.on("loaded", function () {
 
             // Hide the loader and display the report
             overlay.hide();
@@ -228,7 +241,7 @@ function createBookmarksList(bookmarks) {
     bookmarkShowcaseState.bookmarks = bookmarks;
 
     // Build the bookmarks list HTML code
-    bookmarkShowcaseState.bookmarks.forEach(function(element) {
+    bookmarkShowcaseState.bookmarks.forEach(function (element) {
         bookmarksList.append(buildBookmarkElement(element));
     });
 
@@ -297,70 +310,54 @@ function applyColor(elementId) {
     let radioSelected = "input[type=radio]";
 
     // Looping through the radio buttons of the div
-    bookmarksList.find(radioSelected).each(function() {
+    bookmarksList.find(radioSelected).each(function () {
         if (this.id === elementId) {
-            $(this.parentNode).removeClass(blackColorClass);
-            $(this.parentNode).addClass(blueColorClass);
+            $(this.parentNode).removeClass(inactiveBookmark).addClass(activeBookmark);
         } else {
-            $(this.parentNode).removeClass(blueColorClass);
-            $(this.parentNode).addClass(blackColorClass);
+            $(this.parentNode).removeClass(activeBookmark).addClass(inactiveBookmark);
         }
     });
 }
 
 // Get the bookmark with bookmarkId name
 function getBookmarkByID(bookmarkId) {
-    return jQuery.grep(bookmarkShowcaseState.bookmarks, function(bookmark) { return bookmark.name === bookmarkId })[0];
+    return jQuery.grep(bookmarkShowcaseState.bookmarks, function (bookmark) { return bookmark.name === bookmarkId })[0];
 }
 
 // Capture new bookmark of the current state and update the bookmarks list
 function onBookmarkCaptureClicked() {
 
-    let capturedViewname = viewName.val();
-
-    // Regex to identify any tags in the name
-    let scriptRegex = new RegExp(/<(|\/|[^\/>][^>]+|\/[^>][^>]+)>/g);
-
-    // Regex to identify any special characters except -
-    let specialRegex = new RegExp(/[`!@#$%^&*()_+=\[\]{};':\"\\|,.<>\/?~]/);
-
-    // Regex to check to always start with 'Bookmark'
-    let bookmarkRegex = new RegExp(/^[B|b]ookmark/);
-
-    if (scriptRegex.test(capturedViewname) || specialRegex.test(capturedViewname)) {
-        viewName.removeClass(validClass);
-        viewName.addClass(alertClass);
+    let capturedViewname = viewName.val().trim();
+    if (!capturedViewname) {
+        viewName.addClass(invalidField);
     } else {
-        if (bookmarkRegex.test(capturedViewname)) {
-            // Capture the report"s current state
-            bookmarkShowcaseState.report.bookmarksManager.capture().then(function(capturedBookmark) {
+        viewName.removeClass(invalidField);
 
-                // Build bookmark element
-                let bookmark = {
-                    name: "bookmark_" + bookmarkShowcaseState.bookmarkCounter,
-                    displayName: capturedViewname,
-                    state: capturedBookmark.state
-                }
+        // Capture the report"s current state
+        bookmarkShowcaseState.report.bookmarksManager.capture().then(function (capturedBookmark) {
 
-                // Add the new bookmark to the HTML list
-                bookmarksList.append(buildBookmarkElement(bookmark));
-                bookmarksList.show();
+            // Build bookmark element
+            let bookmark = {
+                name: "bookmark_" + bookmarkShowcaseState.bookmarkCounter,
+                displayName: capturedViewname,
+                state: capturedBookmark.state
+            }
 
-                // Set the captured bookmark as active
-                setBookmarkActive($("#bookmark_" + bookmarkShowcaseState.bookmarkCounter));
+            // Add the new bookmark to the HTML list
+            bookmarksList.append(buildBookmarkElement(bookmark));
+            bookmarksList.show();
 
-                // Apply the color when the new bookmark is created
-                applyColor("bookmark_" + bookmarkShowcaseState.bookmarkCounter);
+            // Set the captured bookmark as active
+            setBookmarkActive($("#bookmark_" + bookmarkShowcaseState.bookmarkCounter));
 
-                // Add the bookmark to the bookmarks array and increase the bookmarks number counter
-                bookmarkShowcaseState.bookmarks.push(bookmark);
-                bookmarkShowcaseState.bookmarkCounter++;
-                $("#modal-action").modal("hide");
-            });
-        } else {
-            viewName.removeClass(validClass);
-            viewName.addClass(alertClass);
-        }
+            // Apply the color when the new bookmark is created
+            applyColor("bookmark_" + bookmarkShowcaseState.bookmarkCounter);
+
+            // Add the bookmark to the bookmarks array and increase the bookmarks number counter
+            bookmarkShowcaseState.bookmarks.push(bookmark);
+            bookmarkShowcaseState.bookmarkCounter++;
+            $("#modal-action").modal("hide");
+        });
     }
 }
 
@@ -375,15 +372,12 @@ function modalButtonClicked(element) {
 
     if (element.id === "save-view-btn") {
         saveViewBtn.addClass(activeButtonClass);
-        hiddenSuccess.removeClass(visibleClass);
-        hiddenSuccess.addClass(hiddenClass);
+        hiddenSuccess.removeClass(visibleClass).addClass(hiddenClass);
         tickIcon.hide();
         tickBtn.show();
         captureViewDiv.hide();
-        copyBtn.removeClass(blueBackgroundClass);
-        copyBtn.addClass(copyBookmarkClass);
-        viewName.removeClass(alertClass);
-        viewName.addClass(validClass);
+        copyBtn.removeClass(blueBackgroundClass).addClass(copyBookmarkClass);
+        viewName.removeClass(invalidField);
         saveViewDiv.show();
     } else if (element.id === "copy-link-btn") {
         copyLinkBtn.addClass(activeButtonClass);
@@ -400,7 +394,7 @@ function createLink() {
         document.location.href;
 
     // Capture the report"s current state
-    bookmarkShowcaseState.report.bookmarksManager.capture().then(function(capturedBookmark) {
+    bookmarkShowcaseState.report.bookmarksManager.capture().then(function (capturedBookmark) {
 
         // Build bookmark element
         let bookmark = {
@@ -446,8 +440,7 @@ function copyLink(element) {
     if (window.getSelection) { // All browsers, except IE <= 8
         window.getSelection().removeAllRanges();
     }
-    hiddenSuccess.removeClass(hiddenClass);
-    hiddenSuccess.addClass(visibleClass);
+    hiddenSuccess.removeClass(hiddenClass).addClass(visibleClass);
 }
 
 // Get the bookmark name from url "id" argument

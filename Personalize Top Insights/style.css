@@ -15,8 +15,10 @@ body {
 }
 
 #contoso {
+    height: 41px;
     margin-left: 24px;
     padding: 5px 0;
+    width: 74px;
 }
 
 #main-div {
@@ -48,18 +50,18 @@ body {
     margin: 16px;
 }
 
-.btn-action:hover {
+.btn-action:hover, .btn-action:focus {
     background: rgba(73, 70, 198, 0.25);
     color: #4946C6;
 }
 
 .btn.active.focus,
 .btn.active:focus,
-.btn.focus,
 .btn.focus:active,
 .btn:active:focus,
 .btn:focus {
     box-shadow: none;
+    color: #4946C6;
     outline: 0;
     outline-offset: -2px;
     text-decoration: none;
@@ -70,21 +72,23 @@ body {
 }
 
 #caret-img {
-    margin: 0 8px;
+    margin: 0 0 0 4px;
 }
 
 #visuals-list {
-    border-radius: 0;
+    border-radius: 2px;
+    box-shadow: 0 0.6px 1.8px rgba(0, 0, 0, 0.108), 0 3.2px 7.2px rgba(0, 0, 0, 0.132);
     margin: -8px 0 0 16px;
-    padding: 8px;
-    width: 300px;
+    padding: 0;
+    width: 246px;
+    padding: 8px 0;
 }
 
 .checkbox-container {
     cursor: pointer;
     display: block;
     font-size: 16px;
-    height: 40px;
+    height: 36px;
     padding: 8px 8px 8px 35px;
     position: relative;
 }
@@ -102,7 +106,7 @@ body {
     height: 20px;
     left: 8px;
     position: absolute;
-    top: 11px;
+    top: 8px;
     transition: background-color 100ms ease;
     width: 20px;
 }
@@ -129,7 +133,7 @@ body {
     color: #323130;
     display: block;
     font: normal normal 14px "Segoe UI";
-    margin-top: 3px;
+    margin-top: -1px;
     overflow: hidden;
     text-overflow: ellipsis;
 }
@@ -155,13 +159,12 @@ body {
 
 #layouts-div {
     background: #FFF;
-    border: 1px solid #FFF;
+    border-radius: 4px;
     box-sizing: border-box;
     box-shadow: 0 0.3px 0.9px rgba(0, 0, 0, 0.11), 0 1.6px 3.6px rgba(0, 0, 0, 0.13);
-    border-radius: 4px;
     display: flex;
-    position: absolute;
     margin: -8px 0 0 150px;
+    position: absolute;
     z-index: 1;
 }
 
@@ -194,7 +197,8 @@ li {
 }
 
 .layout-img {
-    padding: 10px
+    height: 36px;
+    padding: 10px;
 }
 
 .active-columns-btn {
@@ -202,12 +206,12 @@ li {
 }
 
 .line {
-    border: 0.5px solid rgba(0, 0, 0, 0.2);
+    border-top: 0.5px solid rgba(0, 0, 0, 0.2);
     clear: both;
     margin: 0 16px 0 16px;
     opacity: 0.7;
-    width: 98%;
     position: relative;
+    width: 98%;
 }
 
 #report-container {
@@ -235,14 +239,14 @@ li {
 }
 
 #container {
-    width: 100%;
     height: calc(100vh - 130px);
+    width: 100%;
 }
 
 #overlay {
+    height: inherit;
     position: absolute;
     width: inherit;
-    height: inherit;
 }
 
 #overlay #spinner {

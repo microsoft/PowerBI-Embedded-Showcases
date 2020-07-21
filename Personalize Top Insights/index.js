@@ -16,6 +16,10 @@ $(document).ready(function() {
         layoutsDiv.toggle();
     });
 
+    $("#visuals-click-btn").click(function() {
+        layoutsDiv.hide();
+    });
+
     $(document).click(function() {
         layoutsDiv.hide();
     })
@@ -95,6 +99,10 @@ function embedCustomLayoutReport() {
 
         // Embed Power BI report when Access token and Embed URL are available
         layoutShowcaseState.layoutReport = powerbi.load(reportContainer, config);
+
+        // For accessibility insights
+        layoutShowcaseState.layoutReport.setComponentTitle('Playground showcase custom layouts report');
+        layoutShowcaseState.layoutReport.setComponentTabIndex(0);
 
         // Clear any other loaded handler events
         layoutShowcaseState.layoutReport.off("loaded");
@@ -357,6 +365,9 @@ function renderVisuals() {
 
     // Building settings object
     let settings = {
+    
+        // Change page background to transparent
+        background: models.BackgroundType.Transparent,
         layoutType: models.LayoutType.Custom,
         customLayout: {
             pageSize: {
@@ -373,9 +384,6 @@ function renderVisuals() {
     if (reportWidth !== reportContainer.width() || reportHeight !== reportContainer.height()) {
         settings.customLayout.displayOption = models.DisplayOption.ActualSize;
     }
-
-    // Change page background to transparent on Two / Three columns configuration
-    settings.background = (layoutShowcaseState.columns === ColumnsNumber.One) ? models.BackgroundType.Default : models.BackgroundType.Transparent;
 
     // Call updateSettings with the new settings object
     layoutShowcaseState.layoutReport.updateSettings(settings);

@@ -16,8 +16,10 @@ body {
 }
 
 #contoso {
+    height: 41px;
     margin-left: 24px;
     padding: 5px 0;
+    width: 74px;
 }
 
 #main-div {
@@ -54,7 +56,7 @@ body {
 }
 
 .btn-img {
-    margin: -2px 8px 0 0;
+    margin: -3.5px 8px 0 0;
 }
 
 #display-btn {
@@ -72,12 +74,11 @@ body {
 }
 
 #report-container>iframe {
-    border: none;
-    height: 100%;
+    border: 1px solid #C4C4C4;
 }
 
 .line {
-    border: .5px solid rgba(0, 0, 0, .2);
+    border-top: 0.5px solid rgba(0, 0, 0, .2);
     clear: both;
     margin: 0 16px;
     opacity: .7;
@@ -89,13 +90,14 @@ body {
     display: block;
     font-weight: normal;
     height: auto;
-    margin: 0 24px;
-    padding: 8px 0;
+    margin: 0;
+    padding-bottom: 16px;
     position: relative;
 }
 
 .showcase-radio-container:nth-child(1) {
-    height: 24px;
+    cursor: default;
+    height: 30px;
     margin: 0 24px;
 }
 
@@ -133,7 +135,11 @@ body {
 }
 
 .radio-title {
-    font: normal normal 14px/20px "Segoe UI";
+    display: block;
+    margin: 0 24px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 #close-btn {
@@ -145,8 +151,8 @@ body {
 }
 
 #close-list-btn {
-    margin: -9px -5px 0 0;
-    padding: 10px;
+    margin: -2px -5px 0 0;
+    padding: 15px;
 }
 
 #bookmarks-list {
@@ -155,9 +161,9 @@ body {
     display: none;
     height: calc(100vh - 100px);
     margin: 0 0 0 5px;
-    opacity: .95;
+    opacity: .98;
     position: fixed;
-    width: 15%;
+    width: 228px;
 }
 
 .vertical-alignment-helper {
@@ -169,7 +175,7 @@ body {
 
 #tick-icon {
     display: none;
-    margin: 0 auto;
+    margin-top: -4px;
 }
 
 .vertical-align-center {
@@ -179,8 +185,9 @@ body {
 }
 
 .modal-content {
-    border-radius: 0;
-    height: 308px;
+    box-shadow: 0 4.8px 14.4px rgba(0, 0, 0, 0.18), 0 25.6px 57.6px rgba(0, 0, 0, 0.22);
+    border-radius: 2px;
+    height: 303px;
     margin: 0 auto;
     max-width: inherit;
     pointer-events: all;
@@ -197,10 +204,11 @@ body {
     background: transparent;
     border: none;
     border-bottom: .5px solid rgba(0, 0, 0, .2);
+    color: #8A8886;
     font: normal 14px "Segoe UI";
     outline: none;
     text-align: center;
-    width: 49%;
+    width: 50%;
 }
 
 .btn.active.focus,
@@ -217,8 +225,13 @@ body {
     text-decoration: none;
 }
 
+.btn:focus{
+    background: rgba(20, 97, 248, 0.25);
+}
+
 .btn-active {
-    border-bottom: 1px solid #1461F8;
+    border-bottom: 2px solid #1461F8;
+    color: #1A1A1A;
     font-weight: 600;
 }
 
@@ -233,7 +246,7 @@ body {
 }
 
 #btn-cross {
-    margin: 8px 8px 0 0;
+    margin: 15px;
 }
 
 #content-div {
@@ -247,12 +260,15 @@ body {
 }
 
 .btn-links {
-    width: 50%;
     padding: 0 0 8px 0;
 }
 
+.btn-links:focus {
+    outline: none;
+}
+
 #save-btn-div {
-    margin-top: 25px;
+    margin-top: 28px;
     text-align: center;
 }
 
@@ -288,7 +304,7 @@ body {
 #hidden-success {
     color: #1461F8;
     font: normal 600 12px "Segoe UI";
-    margin-top: 10px;
+    margin-top: 11px;
 }
 
 .visible {
@@ -311,13 +327,11 @@ input[type="text"]:invalid {
     box-shadow: none;
 }
 
-.alert-input {
-    border: .5px solid #FF0000;
-}
-
-.valid-input {
+.form-control {
     border: 0;
     border-bottom: .5px solid rgba(0, 0, 0, .2);
+    border-radius: 0;
+    padding: 0;
 }
 
 .copy-bookmark {
@@ -338,8 +352,14 @@ input[type="text"]:invalid {
 .modal-header {
     border: none;
     font: normal 600 16px "Segoe UI";
-    margin: 30px 0 30px 25px;
+    margin: -15px 0 30px 25px;
     padding: 0;
+    width: 80%;
+}
+
+.invalid-feedback{
+    margin-bottom: -21px;
+    margin-top: 5px;
 }
 
 .rotate {
@@ -372,12 +392,14 @@ input[type="text"]:invalid {
     left: 50%;
 }
 
-.black-color-class {
+.inactive-bookmark {
     color: #323130;
+    font: normal 14px/20px "Segoe UI";
 }
 
-.blue-color-class {
+.active-bookmark {
     color: #1461F8;
+    font: 600 14px/20px "Segoe UI";
 }
 
 .blue-background {
