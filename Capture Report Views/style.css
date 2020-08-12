@@ -1,3 +1,15 @@
+/* TODO: Change font URL in the final environment */
+
+@font-face {
+    font-family: "segoe_ui_regular";
+    src: url("https://content.powerapps.com/resource/powerbiwfe/fonts/SegoeUI-Regular-final.8956d1f5b4190f537497.woff") format("woff");
+}
+
+@font-face {
+    font-family: "segoe_ui_semibold";
+    src: url("https://content.powerapps.com/resource/powerbiwfe/fonts/SegoeUI-SemiBold-final.83b7261d0e6f3994ed6d.woff") format("woff");
+}
+
 body {
     height: 100%;
     overflow: hidden;
@@ -41,7 +53,7 @@ body {
     border: 1px solid #1461F8;
     border-radius: 4px;
     color: #1461F8;
-    font: normal 600 14px/20px "Segoe UI";
+    font: 14px/20px "Segoe UI SemiBold", segoe_ui_semibold, Tahoma, Arial;
     outline: none;
     text-align: center;
 }
@@ -205,7 +217,7 @@ body {
     border: none;
     border-bottom: .5px solid rgba(0, 0, 0, .2);
     color: #8A8886;
-    font: normal 14px "Segoe UI";
+    font: 400 14px "Segoe UI", segoe_ui_regular, Tahoma, Arial;
     outline: none;
     text-align: center;
     width: 50%;
@@ -236,7 +248,7 @@ body {
 }
 
 .modal-title {
-    font: normal 600 16px "Segoe UI";
+    font: 16px "Segoe UI SemiBold", segoe_ui_semibold, Tahoma, Arial;
 }
 
 #close-modal-btn {
@@ -251,7 +263,7 @@ body {
 
 #content-div {
     color: #201F1E;
-    font: normal normal 14px "Segoe UI";
+    font: 400 14px "Segoe UI", segoe_ui_regular, Tahoma, Arial;
     margin: 30px 0 40px 24px;
 }
 
@@ -303,7 +315,7 @@ body {
 
 #hidden-success {
     color: #1461F8;
-    font: normal 600 12px "Segoe UI";
+    font: 12px "Segoe UI SemiBold", segoe_ui_semibold, Tahoma, Arial;
     margin-top: 11px;
 }
 
@@ -351,7 +363,7 @@ input[type="text"]:invalid {
 
 .modal-header {
     border: none;
-    font: normal 600 16px "Segoe UI";
+    font: 16px "Segoe UI SemiBold", segoe_ui_semibold, Tahoma, Arial;
     margin: -15px 0 30px 25px;
     padding: 0;
     width: 80%;
@@ -394,12 +406,12 @@ input[type="text"]:invalid {
 
 .inactive-bookmark {
     color: #323130;
-    font: normal 14px/20px "Segoe UI";
+    font: 400 14px/20px "Segoe UI", segoe_ui_regular, Tahoma, Arial;
 }
 
 .active-bookmark {
     color: #1461F8;
-    font: 600 14px/20px "Segoe UI";
+    font: 14px/20px "Segoe UI SemiBold", segoe_ui_semibold, Tahoma, Arial;
 }
 
 .blue-background {

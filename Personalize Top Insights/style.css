@@ -1,3 +1,15 @@
+/* TODO: Change font URL in the final environment */
+
+@font-face {
+    font-family: "segoe_ui_regular";
+    src: url("https://content.powerapps.com/resource/powerbiwfe/fonts/SegoeUI-Regular-final.8956d1f5b4190f537497.woff") format("woff");
+}
+
+@font-face {
+    font-family: "segoe_ui_semibold";
+    src: url("https://content.powerapps.com/resource/powerbiwfe/fonts/SegoeUI-SemiBold-final.83b7261d0e6f3994ed6d.woff") format("woff");
+}
+
 body {
     overflow: hidden;
 }
@@ -46,7 +58,7 @@ body {
     background: #F6F6FA;
     border: 1px solid #4946C6;
     color: #4946C6;
-    font: normal 600 14px "Segoe UI";
+    font: 14px "Segoe UI SemiBold", segoe_ui_semibold, Tahoma, Arial;
     margin: 16px;
 }
 
@@ -132,7 +144,7 @@ body {
 .checkbox-title {
     color: #323130;
     display: block;
-    font: normal normal 14px "Segoe UI";
+    font: 400 14px "Segoe UI", segoe_ui_regular, Tahoma, Arial;
     margin-top: -1px;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -152,7 +164,7 @@ body {
 .checkbox-menu label {
     clear: both;
     color: #333;
-    font-weight: 100;
+    font-weight: 400;
     margin: 0;
     white-space: nowrap;
 }
