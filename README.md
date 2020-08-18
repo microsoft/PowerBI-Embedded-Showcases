@@ -1,20 +1,13 @@
 # Introduction 
-TODO: Give a short introduction of your project. Let this section explain the objectives or the motivation behind this project. 
+Showcases for Power BI Embedded playground
 
-# Getting Started
-TODO: Guide users through getting your code up and running on their own system. In this section you can talk about:
-1.	Installation process
-2.	Software dependencies
-3.	Latest releases
-4.	API references
+# Contents
+Playground Showcases available in this package currently:
+1.	Personalize Top Insights
+2.	Capture Report Views
 
-# Build and Test
-TODO: Describe and show how to build your code and run the tests. 
-
-# Contribute
-TODO: Explain how other users and developers can contribute to make your code better. 
-
-If you want to learn more about creating good readme files then refer the following [guidelines](https://docs.microsoft.com/en-us/azure/devops/repos/git/create-a-readme?view=azure-devops). You can also seek inspiration from the below readme files:
-- [ASP.NET Core](https://github.com/aspnet/Home)
-- [Visual Studio Code](https://github.com/Microsoft/vscode)
-- [Chakra Core](https://github.com/Microsoft/ChakraCore)
+# How to use
+1. Use the [.tgz file](playground-showcases-1.0.0.tgz) from this repository
+2. Run __npm install *location_of_tgz_file*__ to install the package in your Node solution
+3. Folders for respective showcases will now be available in the node_modules/playground-showcases
+4. To embed a showcase, point the iframe to the index.html file in respective showcase folder
