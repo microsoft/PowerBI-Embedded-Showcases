@@ -1,5 +1,5 @@
 {
-	"name": "playground-showcases",
+	"name": "@powerbi/playground-showcases",
 	"version": "1.0.0",
 	"description": "Showcases for the Power BI Embedded playground",
 	"repository": {
