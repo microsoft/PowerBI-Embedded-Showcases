@@ -210,6 +210,12 @@ function buildVisualElement(visual) {
     return labelElement;
 }
 
+// Returns true if current browser is Firefox
+function isBrowserFirefox() {
+    // Refer https://developer.mozilla.org/en-US/docs/Web/HTTP/Browser_detection_using_the_user_agent#Browser_Name
+    return navigator.userAgent.includes('Firefox');
+}
+
 // Render all visuals with current configuration
 function renderVisuals() {
 
@@ -226,6 +232,12 @@ function renderVisuals() {
 
     let reportWidth = reportContainer.width();
     let reportHeight = reportContainer.height();
+
+    // Adjust the report width in Firefox to circumvent the horizontal scrollbar issue
+    if (isBrowserFirefox()) {
+        // Adjust custom layout width for scrollbar
+        reportWidth -= 8;
+    }
 
     // Filter the visuals list to display only the checked visuals
     let checkedVisuals = layoutShowcaseState.layoutVisuals.filter(function(visual) { return visual.checked; });
