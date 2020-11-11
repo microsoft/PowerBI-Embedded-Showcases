@@ -1,19 +1,3 @@
-// Local report config object
-let embedConfig = {
-    accessToken: "",
-    embedUrl: "",
-    reportId: ""
-};
-
-// Set the report embed configurations from global object
-function setEmbedConfig() {
-
-    // Set the config - accessToken, embedUrl, reportId
-    embedConfig.accessToken = reportConfig.accessToken;
-    embedConfig.embedUrl = reportConfig.embedUrl;
-    embedConfig.reportId = reportConfig.reportId;
-}
-
 // Set props for accessibility insights
 function setReportAccessibilityProps(report) {
     report.setComponentTitle("Playground showcase sample report");
@@ -22,6 +6,9 @@ function setReportAccessibilityProps(report) {
 
 // Make sure Document object is ready
 $(document).ready(function () {
+
+    // Bootstrap the report-container
+    powerbi.bootstrap(reportContainer, reportConfig);
 
     // Initalize and cache global DOM object
     hiddenSuccess = $("#hidden-success");
@@ -97,9 +84,6 @@ function embedBookmarksReport() {
         // Get models. models contains enums that can be used
         const models = window["powerbi-client"].models;
 
-        // Set the report config from the globals
-        setEmbedConfig();
-
         // Use View permissions
         let permissions = models.Permissions.View;
 
@@ -110,9 +94,9 @@ function embedBookmarksReport() {
         let config = {
             type: "report",
             tokenType: models.TokenType.Embed,
-            accessToken: embedConfig.accessToken,
-            embedUrl: embedConfig.embedUrl,
-            id: embedConfig.reportId,
+            accessToken: reportConfig.accessToken,
+            embedUrl: reportConfig.embedUrl,
+            id: reportConfig.reportId,
             permissions: permissions,
             settings: {
                 panes: {
@@ -131,11 +115,9 @@ function embedBookmarksReport() {
             }
         };
 
-        // Get a reference to the embedded report HTML element
-        let embedContainer = $("#report-container")[0];
 
         // Embed the report and display it within the div container
-        bookmarkShowcaseState.report = powerbi.embed(embedContainer, config);
+        bookmarkShowcaseState.report = powerbi.embed(reportContainer, config);
 
         // For accessibility insights
         setReportAccessibilityProps(bookmarkShowcaseState.report);
@@ -155,78 +137,6 @@ function embedBookmarksReport() {
 
             // Show the container
             $("#main-div").show();
-        });
-    });
-}
-
-// Embed shared report with bookmark on load
-function embedSharedBookmark() {
-
-    // Load sample report properties into session
-    loadSampleReportIntoSession().then(function () {
-
-        // Get models. models contains enums that can be used
-        const models = window["powerbi-client"].models;
-
-        // Set the report config from the globals
-        setEmbedConfig();
-
-        // Use View permissions
-        let permissions = models.Permissions.View;
-
-        // Get the bookmark name from url param
-        let bookmarkName = GetBookmarkNameFromURL();
-
-        // Get the bookmark state from local storage
-        // any type of database can be used
-        let bookmarkState = localStorage.getItem(bookmarkName);
-
-        // Embed configuration used to describe the what and how to embed
-        // This object is used when calling powerbi.embed
-        // This also includes settings and options such as filters
-        // You can find more information at https://github.com/Microsoft/PowerBI-JavaScript/wiki/Embed-Configuration-Details
-        let config = {
-            type: "report",
-            tokenType: models.TokenType.Embed,
-            accessToken: embedConfig.accessToken,
-            embedUrl: embedConfig.embedUrl,
-            id: embedConfig.reportId,
-            permissions: permissions,
-            settings: {
-                panes: {
-                    filters: {
-                        visible: false
-                    },
-                    pageNavigation: {
-                        visible: false
-                    }
-                }
-            },
-            layoutType: models.LayoutType.Custom,
-            customLayout: {
-                displayOption: models.DisplayOption.FitToWidth
-            },
-            // Adding bookmark attribute will apply the bookmark on load
-            bookmark: {
-                state: bookmarkState
-            }
-        };
-
-        // Get a reference to the embedded report HTML element
-        let embedContainer = $("#bookmark-container")[0];
-
-        // Embed the report and display it within the div container
-        bookmarkShowcaseState.report = powerbi.embed(embedContainer, config);
-
-        // For accessibility insights
-        setReportAccessibilityProps(bookmarkShowcaseState.report);
-
-        bookmarkShowcaseState.report.on("loaded", function () {
-
-            // Hide the loader and display the report
-            overlay.hide();
-            $("#share-bookmark").show();
-            bookmarkShowcaseState.report.off("loaded");
         });
     });
 }
@@ -388,7 +298,7 @@ function modalButtonClicked(element) {
 
 function createLink() {
 
-    // To get the URL of the parent page 
+    // To get the URL of the parent page
     let url = (window.location != window.parent.location) ?
         document.referrer :
         document.location.href;
@@ -403,7 +313,7 @@ function createLink() {
         }
 
         // Build the share bookmark URL
-        let shareUrl = url.substring(0, url.lastIndexOf("/")) + "/shareBookmark.html" + "?id=" + bookmark.name;
+        let shareUrl = url.substring(0, url.lastIndexOf("/")) + "/share-bookmark.html" + "?id=" + bookmark.name;
 
         // Store bookmark state with name as a key on the local storage
         // any type of database can be used
@@ -441,25 +351,4 @@ function copyLink(element) {
         window.getSelection().removeAllRanges();
     }
     hiddenSuccess.removeClass(hiddenClass).addClass(visibleClass);
-}
-
-// Get the bookmark name from url "id" argument
-function GetBookmarkNameFromURL() {
-    let url = (window.location != window.parent.location) ?
-        document.referrer :
-        document.location.href;
-
-    // Using Regex to get the id parameter from the URL
-    let regex = new RegExp("[?&]id(=([^&#]*)|&|#|$)"),
-        results = regex.exec(url);
-
-    // It can take id parameter from the URL using ? or &
-    // If ? or & is not in the URL, returns NULL
-    if (!results) { return null };
-
-    // Returns Empty String if id parameter's value is not specified
-    if (!results[2]) { return "" };
-
-    // Returns the ID of the Bookmark
-    return decodeURIComponent(results[2]);
 }

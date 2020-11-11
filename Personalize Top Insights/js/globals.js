@@ -33,3 +33,6 @@ let layoutShowcaseState = {
     layoutReport: null,
     layoutPageName: null
 };
+
+// Cache the report containers
+const reportContainer = $("#report-container").get(0);

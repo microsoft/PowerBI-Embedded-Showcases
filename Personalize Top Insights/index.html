@@ -7,8 +7,8 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
     <link rel="shortcut icon" href="#" />
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.css" rel="stylesheet" />
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
 
     <!-- TODO: Change font URL in the final environment -->
     <link rel="preload" as="font" href="https://content.powerapps.com/resource/powerbiwfe/fonts/SegoeUI-Regular-final.8956d1f5b4190f537497.woff" type="font/woff" crossorigin="anonymous">
@@ -41,7 +41,7 @@
                     <div class="layout" id="layouts-div" aria-labelledby="visuals-layout-btn">
                         <ul id="layouts-list">
                             <li>
-                                <button class="btn-white btn-layout" id="btn-one-col">               
+                                <button class="btn-white btn-layout" id="btn-one-col">
                                     <img class="svg layout-img" src="img/column1.svg" alt="1 Column"/>
                                 </button>
                             </li>
@@ -52,7 +52,7 @@
                             </li>
                             <li>
                                 <button class="btn-white btn-layout" id="btn-two-col-rowspan">
-                                    <img class="svg layout-img" src="img/colspan.svg" alt="Colspan" /> 
+                                    <img class="svg layout-img" src="img/colspan.svg" alt="Colspan" />
                                 </button>
                             </li>
                             <li>
@@ -74,18 +74,13 @@
         </div>
     </div>
 
-    <!-- External CSS to make Promise work in IE 11 -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bluebird/3.3.4/bluebird.min.js"></script>
-
-    <!-- External CSS to make .append() work in IE 11 -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-polyfills/0.1.42/polyfill.js" integrity="sha256-bXiN+GW47t3Gf2R1yZ6ldDMv8bbAmmnyhxmaTKfZDfU=" crossorigin="anonymous"></script>
-
-    <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.4.1.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/powerbi-client@2.11.0/dist/powerbi.min.js"></script>
-    <script src="globals.js?v=15072020"></script>
-    <script src="session_utils.js?v=15072020"></script>
-    <script src="index.js?v=15072020"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/powerbi-client@2.14.1/dist/powerbi.min.js"></script>
+    <script src="js/globals.js?v=10112020"></script>
+    <script src="js/session_utils.js?v=10112020"></script>
+    <script src="js/index.js?v=11112020"></script>
 </body>
 
 </html>

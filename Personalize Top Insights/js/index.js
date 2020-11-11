@@ -6,6 +6,9 @@ $(document).on("click", ".allow-focus", function(element) {
 // On page resize, visuals should get rearranged according to the page
 $(document).ready(function() {
 
+    // Bootstrap the bookmark embed container
+    powerbi.bootstrap(reportContainer, { type: "report" });
+
     // Embed the report by calling Endpoint
     embedCustomLayoutReport();
 
@@ -54,19 +57,19 @@ function embedCustomLayoutReport() {
     layoutShowcaseState.columns = ColumnsNumber.Two;
     LayoutShowcaseConsts.span = SpanType.None;
 
-    // Load custom layout report properties into session    
+    // Load custom layout report properties into session
     loadLayoutShowcaseReportIntoSession().then(function() {
 
         // Get models. models contains enums that can be used
         const models = window["powerbi-client"].models;
 
-        // Get embed application token from globals 
+        // Get embed application token from globals
         let accessToken = reportConfig.accessToken;
 
         // Get embed URL from globals
         let embedUrl = reportConfig.embedUrl;
 
-        // Get report Id from globals 
+        // Get report Id from globals
         let embedReportId = reportConfig.reportId;
 
         // Use View permissions
@@ -94,8 +97,6 @@ function embedCustomLayoutReport() {
                 }
             }
         };
-
-        let reportContainer = $("#report-container").get(0);
 
         // Embed Power BI report when Access token and Embed URL are available
         layoutShowcaseState.layoutReport = powerbi.load(reportContainer, config);
@@ -377,7 +378,7 @@ function renderVisuals() {
 
     // Building settings object
     let settings = {
-    
+
         // Change page background to transparent
         background: models.BackgroundType.Transparent,
         layoutType: models.LayoutType.Custom,

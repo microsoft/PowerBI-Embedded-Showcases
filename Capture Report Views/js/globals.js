@@ -1,8 +1,9 @@
 // To cache report config
 let reportConfig = {
-    accessToken: null,
-    embedUrl: null,
-    reportId: null
+    accessToken: undefined,
+    embedUrl: undefined,
+    reportId: undefined,
+    type: "report"
 }
 
 // To cache bookmark state
@@ -28,6 +29,10 @@ let saveViewDiv = undefined;
 let copyLinkText = undefined;
 let overlay = undefined;
 
+// Cache the report containers
+const bookmarkContainer = $("#bookmark-container").get(0);
+const reportContainer = $("#report-container").get(0);
+
 // Cache CSS classes
 const blueBackgroundClass = "blue-background";
 const copyBookmarkClass = "copy-bookmark";
@@ -37,3 +42,6 @@ const hiddenClass = "div-hidden";
 const inactiveBookmark = "inactive-bookmark";
 const activeBookmark = "active-bookmark";
 const invalidField = "is-invalid";
+
+// Using Regex to get the id parameter from the URL
+const regex = new RegExp("[?&]id(=([^&#]*)|&|#|$)");

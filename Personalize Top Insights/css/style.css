@@ -90,7 +90,7 @@ body {
 #visuals-list {
     border-radius: 2px;
     box-shadow: 0 0.6px 1.8px rgba(0, 0, 0, 0.108), 0 3.2px 7.2px rgba(0, 0, 0, 0.132);
-    margin: -8px 0 0 16px;
+    margin: 8px 0 0 0;
     padding: 0;
     width: 246px;
     padding: 8px 0;
@@ -175,7 +175,7 @@ body {
     box-sizing: border-box;
     box-shadow: 0 0.3px 0.9px rgba(0, 0, 0, 0.11), 0 1.6px 3.6px rgba(0, 0, 0, 0.13);
     display: flex;
-    margin: -8px 0 0 150px;
+    margin: -8px 0 0 140px;
     position: absolute;
     z-index: 1;
 }

@@ -8,7 +8,7 @@
 
     <link rel="shortcut icon" href="#" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/style.css">
 
     <!-- TODO: Change font URL in the final environment -->
     <link rel="preload" as="font" href="https://content.powerapps.com/resource/powerbiwfe/fonts/SegoeUI-Regular-final.8956d1f5b4190f537497.woff" type="font/woff" crossorigin="anonymous">
@@ -25,7 +25,7 @@
                 <div class="modal-content">
                     <div class="d-flex flex-row-reverse">
                     <button type="button" id="close-modal-btn" class="close" data-dismiss="modal">
-                        <img id="btn-cross" src="img/cross.svg" alt="close">    
+                        <img id="btn-cross" src="img/cross.svg" alt="close">
                     </button>
                     </div>
                     <div class="modal-header">
@@ -75,7 +75,7 @@
             </div>
             <div id="main-div">
                 <div class="interactive-buttons">
-                    <button class="btn btn-action" type="button" id="display-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <button class="btn btn-action" type="button" id="display-btn" aria-haspopup="true" aria-expanded="false">
                         <img class="btn-img" src="img/allviews.svg" alt="My views">Saved views
                     </button>
                     <button class="btn btn-action" type="button" id="capture-btn" data-toggle="modal" data-target="#modal-action" aria-haspopup="true" aria-expanded="false">
@@ -95,17 +95,13 @@
         </div>
     </div>
 
-    <!-- External JS to make Promise work in IE 11 -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bluebird/3.3.4/bluebird.min.js"></script>
-
-    <!-- External JS to make .append() work in IE 11 -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-polyfills/0.1.42/polyfill.js" integrity="sha256-bXiN+GW47t3Gf2R1yZ6ldDMv8bbAmmnyhxmaTKfZDfU=" crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/powerbi-client@2.11.0/dist/powerbi.min.js"></script>
-    <script src="globals.js?v=10072020"></script>
-    <script src="session_utils.js?v=10072020"></script>
-    <script src="index.js?v=10072020"></script>
+    <script src="https://cdn.jsdelivr.net/npm/powerbi-client@2.14.1/dist/powerbi.min.js"></script>
+    <script src="js/globals.js?v=10112020"></script>
+    <script src="js/session_utils.js?v=10112020"></script>
+    <script src="js/index.js?v=10112020"></script>
 
 </body>
 
