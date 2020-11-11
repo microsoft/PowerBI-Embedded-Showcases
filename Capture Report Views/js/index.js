@@ -313,7 +313,7 @@ function createLink() {
         }
 
         // Build the share bookmark URL
-        let shareUrl = url.substring(0, url.lastIndexOf("/")) + "/share-bookmark.html" + "?id=" + bookmark.name;
+        let shareUrl = url.substring(0, url.lastIndexOf("/")) + "/share_bookmark.html" + "?id=" + bookmark.name;
 
         // Store bookmark state with name as a key on the local storage
         // any type of database can be used

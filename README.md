@@ -1,11 +1,12 @@
-# Introduction 
+# Introduction
 Showcases for Power BI Embedded playground
 
 # Contents
 Playground Showcases available in this package currently:
 1.	Personalize Top Insights
 2.	Capture Report Views
-3.  Insight to action
+3.  Customize Report colors and Theme
+4.  Insight to action
 
 # How to use
 1. Use the [.tgz file](playground-showcases-2.0.0.tgz) from this repository

@@ -8,8 +8,9 @@
 	},
 	"author": "Microsoft",
 	"files": [
+		"Personalize Top Insights",
 		"Capture Report Views",
-		"Personalize Top Insights"
+		"Customize Report colors and Theme",
 		"Insight to action"
 	]
 }
