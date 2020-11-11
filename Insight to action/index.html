@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <link rel="shortcut icon" href="#" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.css" rel="stylesheet" />
+    <link href="css/header_style.css" rel="stylesheet">
+    <link href="css/embed_area_style.css" rel="stylesheet">
+    <link href="css/dialog_send_coupon.css" rel="stylesheet">
+    <link href="css/dialog_success.css" rel="stylesheet">
+    <link href="css/dialog_campaign_list.css" rel="stylesheet">
+
+    <!-- TODO: Change font URL in the final environment -->
+    <link rel="preload" as="font" href="https://content.powerapps.com/resource/powerbiwfe/fonts/SegoeUI-Regular-final.8956d1f5b4190f537497.woff" type="font/woff" crossorigin="anonymous">
+    <link rel="preload" as="font" href="https://content.powerapps.com/resource/powerbiwfe/fonts/SegoeUI-SemiBold-final.83b7261d0e6f3994ed6d.woff" type="font/woff" crossorigin="anonymous">
+
+    <title>Insights to action</title>
+</head>
+
+<body>
+    <!-- Page content -->
+    <div id="wrapper">
+        <div id="contoso-header">
+            <img src="img/contoso.svg" id="contoso" alt="contoso">
+        </div>
+        <div id="insight-to-action-embed-area">
+            <div id="overlay">
+                <img src="img/spinner.svg" id="spinner" class="rotate" alt="loader">
+            </div>
+            <div id="main-div">
+                <div id="report-container"></div>
+                <div id="dialog-mask">
+                    <div id="distribution-dialog" class="dialog-insight-to-action">
+                        <h2 class="dialog-header">
+                            <span class="text-dialog-header">Campaign distribution list</span>
+                            <img class="btn-close-distribution-dialog" src="img/cross.svg" />
+                        </h2>
+                        <div class="dialog-body">
+                            <div id="dialog-table"></div>
+                        </div>
+                        <footer class="dialog-footer">
+                            <div id="send-coupon" class="btn-dialog-insight-to-action">Send coupon</div>
+                            <div id="send-discount" class="btn-dialog-insight-to-action">Send discount</div>
+                        </footer>
+                    </div>
+                    <div id="send-dialog" class="dialog-insight-to-action-small">
+                        <h2 class="dialog-header">
+                            <span class="text-dialog-header"></span>
+                            <img class="btn-close-distribution-dialog" src="img/cross.svg" />
+                        </h2>
+                        <div class="dialog-body">
+                            <div class="send-dialog-row">
+                                <div class="send-dialog-field">Title</div>
+                                <input type="text" class="title" name="title" />
+                            </div>
+                            <div class="send-dialog-row">
+                                <div class="send-dialog-field">Body</div>
+                                <textarea class="send-dialog-input" name="messageBody"></textarea>
+                            </div>
+                        </div>
+                        <footer class="dialog-footer">
+                            <div id="send-message" class="btn-insight-to-action-send">Send</div>
+                        </footer>
+                    </div>
+                    <div id="success-dialog" class="dialog-insight-to-action-small">
+                        <div class="dialog-header">
+                            <img id="success-cross" class="btn-close-distribution-dialog" src="img/cross.svg" />
+                        </div>
+                        <div id="success-content">
+                            <img id="image-success" src="img/success.svg" />
+                            <div class="text-success">Sent successfully!</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- External JS to make Promise work in IE 11 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bluebird/3.3.4/bluebird.min.js"></script>
+
+    <!-- External JS to make .append() work in IE 11 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-polyfills/0.1.42/polyfill.js" integrity="sha256-bXiN+GW47t3Gf2R1yZ6ldDMv8bbAmmnyhxmaTKfZDfU=" crossorigin="anonymous"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/powerbi-client@2.14.1/dist/powerbi.min.js"></script>
+    <script src="js/globals.js?v=10112020"></script>
+    <script src="js/session_utils.js?v=02112020"></script>
+    <script src="js/index.js?v=10112020"></script>
+
+</body>
+
+</html>

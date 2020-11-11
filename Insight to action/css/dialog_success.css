@@ -1,0 +1,26 @@
+#image-success {
+    height: 36px;
+    margin: 73px 0 0 204px;
+    width: 36px;
+}
+
+.text-success {
+    color: #323130;
+    font: 18px "Segoe UI SemiBold", "segoe_ui_semibold", Tahoma, Arial, Helvetica;
+    margin-top: 5px;
+}
+
+#success-dialog {
+    text-align: center;
+}
+
+#success-dialog .dialog-header{
+    display: flex;
+    justify-content: flex-end;
+}
+
+#success-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}

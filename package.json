@@ -1,6 +1,6 @@
 {
 	"name": "@powerbi/playground-showcases",
-	"version": "1.0.0",
+	"version": "2.0.0",
 	"description": "Showcases for the Power BI Embedded playground",
 	"repository": {
 		"type": "git",
@@ -8,7 +8,8 @@
 	},
 	"author": "Microsoft",
 	"files": [
-		"Capture Report Views", 
-		"Personalize Top Insights"
+		"Capture Report Views",
+		"Personalize Top Insights",
+		"Insight to action"
 	]
 }
