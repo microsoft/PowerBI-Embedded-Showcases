@@ -7,6 +7,7 @@ Playground Showcases available in this package currently:
 2.	Capture Report Views
 3.  Customize Report colors and Theme
 4.  Insight to action
+5.  Quick visual creator
 
 # How to use
 1. Use the [.tgz file](playground-showcases-2.0.0.tgz) from this repository
