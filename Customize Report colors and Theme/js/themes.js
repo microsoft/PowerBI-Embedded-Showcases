@@ -53,6 +53,12 @@ const themes = [{
     "background": "#323130",
     "foreground": "#FFFFFF",
     "tableAccent": "#FFFFFF",
+    "textClasses": {
+		"title": {
+			"color": "#FFF",
+			"fontFace": "Segoe UI Bold"
+        },
+	},
     "visualStyles": {
         "*": {
             "*": {
