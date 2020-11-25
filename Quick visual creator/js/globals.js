@@ -6,12 +6,8 @@ const visualCreatorShowcaseState = {
     dataRoles: {
         Legend: null,
         Values: null,
-        Value: null,
         Axis: null,
         Tooltips: null,
-        "Y Axis": null,
-        Category: null,
-        Breakdown: null,
     },
     dataFieldsCount: 0,
     properties: {
@@ -25,7 +21,7 @@ const visualCreatorShowcaseState = {
 }
 
 const selectedVisual = {
-    visual: null
+    visual: null,
 }
 
 const baseReportState = {
@@ -47,9 +43,32 @@ const reportConfig = {
     reportId: null,
 }
 
+// Visual overlapping
+const mainVisualGuid = "a6d74a71de4135e00a59";
+
+const imageVisual = {
+    name: "2270e4eea9242400a0cd",
+    ratio: {
+        widthRatioWithMainVisual: 36 / 426,
+        heightRatioWithMainVisual: 36 / 252,
+        xPositionRatioWithMainVisual: 195 / 426,
+        yPositionRatioWithMainVisual: 90 / 252
+    }
+}
+
+const actionButtonVisual = {
+    name: "946862f32d49b6573406",
+    height: 32,
+    ratio: {
+        widthRatioWithMainVisual: 151 / 426,
+        heightRatioWithMainVisual: 32 / 252,
+        xPositionRatioWithMainVisual: 135 / 426,
+        yPositionRatioWithMainVisual: 144 / 252
+    }
+}
+
 // Cache DOM Elements
 const overlay = $("#overlay");
-const reportContainer = $(".report-container").get(0);
 const visualDisplayArea = $("#visual-authoring-container").get(0);
 const editArea = $("#edit-area");
 const visualAuthoringArea = $("#visual-authoring-container");
@@ -57,23 +76,23 @@ const createVisualButton = $("#create-visual-btn");
 const generatorType = $("#generator-type");
 const generatorFields = $("#generator-fields");
 const generatorProperties = $("#generator-properties");
-const customTitleWrapper = $(".custom-title-wrapper");
 const disabledEraseTool = $("#erase-tool-disabled");
 const enabledEraseTool = $("#erase-tool-enabled");
 const disabledAligns = $("#aligns-disabled");
 const enabledAligns = $("#aligns-enabled");
 const visualCreatorModal = $("#visual-creator");
 const visualTitleText = $("#visual-title");
-const alignmentBlocks = $(".alignment-block");
-const visualPropertiesCheckboxes = $(".property-checkbox");
-const toggleWrappers = $(".toggle-wrapper");
 const legendToggle = $("#legend-toggle");
 const xAxisToggle = $("#xAxis-toggle");
 const yAxisToggle = $("#yAxis-toggle");
 const titleToggle = $("#title-toggle");
 const closeModalButton = $("#close-modal");
 const alignLeft = $("#align-left");
-const contosoLogo = $("#image-btn");
+const reportContainer = $(".report-container").get(0);
+const customTitleWrapper = $(".custom-title-wrapper");
+const alignmentBlocks = $(".alignment-block");
+const visualPropertiesCheckboxes = $(".property-checkbox");
+const toggleWrappers = $(".toggle-wrapper");
 
 // Get models. models contain enums that can be used
 const models = window["powerbi-client"].models;
@@ -87,6 +106,13 @@ const generatorPropertiesDisabledClass = "generator-properties-disabled";
 const selectedClass = "selected";
 const sameAsSelectedClass = "same-as-selected";
 const toggleWrappersDisabledClass = "disabled";
+const disabledSliders = "disabled-sliders";
+
+// Store the position of the main visual [basicShape]
+let mainVisualState;
 
 // Custom title for the visual
 let customVisualTitle = "";
+
+// To store the state of the visual creation
+let visualCreationInProgress = false;

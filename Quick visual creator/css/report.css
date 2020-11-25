@@ -1,7 +1,8 @@
 .report-container {
+    background: #F7F8F6;
     height: calc((9/16) * 98vw + 20px); /* Remove the top empty space of the report and maintain 16:9 aspect ratio */
     margin: 16px;
-    width: 98%; /* To avoid the horizontal scrollbar */
+    width: calc(100% - 33px); /* Position the report-container in center in all resolutions */
 }
 
 .report-container > iframe {

@@ -20,7 +20,6 @@
 /* Override Bootstrap modal's padding-right property which is applied, when the modal is opened */
 body.modal-open {
     padding-right: 0 !important;
-    overflow-y: scroll;
 }
 
 .modal.show {
@@ -58,7 +57,7 @@ body.modal-open {
     box-sizing: border-box;
     margin-top: -9px;
     padding-right: 23px;
-    width: 271px;
+    width: 279px;
 }
 
 #visual-preview {
@@ -142,7 +141,7 @@ body.modal-open {
 
 .modal-footer {
     border: 0;
-    padding: 8px 24px 24px 12px;
+    padding: 8px 19px 24px 12px;
 }
 
 .modal-title {
@@ -212,7 +211,7 @@ body.modal-open {
     box-sizing: border-box;
     cursor: pointer;
     margin-left: 8px;
-    width: 181px;
+    width: 199px;
     -webkit-appearance: none;
     -moz-appearance: none;
 }
@@ -243,9 +242,11 @@ body.modal-open {
 
 /* The slider */
 .slider {
+    border: 1px solid #54ADF4;
     background-color: #EDEFF0;
     bottom: 0;
     cursor: pointer;
+    height: 20px;
     left: 0;
     position: absolute;
     right: 0;
@@ -255,26 +256,45 @@ body.modal-open {
 }
 
 .slider:before {
-    background-color: #BAC3C8;
-    bottom: 4px;
+    background-color: #54ADF4;
+    bottom: 3px;
     content: "";
     height: 12px;
-    left: 6px;
+    left: 3px;
     position: absolute;
+    top: 19%;
     transition: .4s;
     width: 12px;
     -webkit-transition: .4s;
 }
 
+.slider.disabled-sliders:before {
+    background: #BAC3C8;
+    border: 0;
+    top: 20%;
+}
+
+input:checked+.slider.disabled-sliders {
+    background: #EDEFF0;
+    border: 0;
+}
+
+input+.slider.disabled-sliders {
+    background: #EDEFF0;
+    border: 0;
+}
+
 input:checked + .slider {
-    background-color: #54ADF4;
+    background-color: #2196F3;
+    border: 0;
 }
 
 input:checked + .slider:before {
     background-color: #FFF;
-    transform: translateX(18px);
-    -webkit-transform: translateX(18px);
-    -ms-transform: translateX(18px);
+    top: 20%;
+    transform: translateX(22px);
+    -webkit-transform: translateX(22px);
+    -ms-transform: translateX(22px);
 }
 
 /* Rounded sliders */
@@ -289,6 +309,10 @@ input:checked + .slider:before {
 #alignment-blocks-wrapper {
     height: 32px;
     margin-top: 4px;
+}
+
+#alignment-blocks-wrapper img {
+    margin: auto;
 }
 
 .alignment-block {
@@ -328,7 +352,7 @@ input:checked + .slider:before {
 }
 
 #erase-tool-div {
-    margin-left: 8px;
+    margin-left: 18px;
     cursor: pointer;
 }
 
@@ -383,7 +407,7 @@ input:checked + .slider:before {
 }
 
 .select-items div:hover, .same-as-selected {
-    background-color: #FBFDFF;
+    background-color: #E3E8EE;
 }
 
 .same-as-selected {

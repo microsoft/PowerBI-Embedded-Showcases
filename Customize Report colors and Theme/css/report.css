@@ -1,7 +1,7 @@
 .report-container {
     height: calc((9/16) * 88vw + 20px);
     margin: 16px;
-    width: 98%; /* To avoid the horizontal scrollbar */
+    width: auto;
 }
 
 .report-container > iframe {

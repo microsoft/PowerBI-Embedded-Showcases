@@ -50,7 +50,7 @@ const themes = [{
     "background": "#FFFFFF",
 },
 {
-    "background": "#323130",
+    "background": "#252423",
     "foreground": "#FFFFFF",
     "tableAccent": "#FFFFFF",
     "textClasses": {
@@ -64,8 +64,9 @@ const themes = [{
             "*": {
                 "*": [{
                     "fontFamily": "Segoe UI",
-                    "color": { "solid": { "color": "#323130" } },
+                    "color": { "solid": { "color": "#252423" } },
                     "labelColor": { "solid": { "color": "#FFFFFF" } },
+                    "secLabelColor": { "solid": { "color": "#FFFFFF" } },
                     "titleColor": { "solid": { "color": "#FFFFFF" } },
                 }],
                 "labels": [{

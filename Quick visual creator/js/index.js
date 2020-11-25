@@ -31,6 +31,8 @@ $(document).ready(async function () {
     // Initialize the custom dropdowns
     initializeDropdowns();
 
+    $(".slider").addClass(disabledSliders);
+
     // When the close button is clicked
     closeModalButton.click(function () {
 
@@ -81,6 +83,15 @@ $(document).ready(async function () {
         }
     });
 
+    // Close all the open select dropdowns if clicked inside the modal
+    visualCreatorModal.click(function () {
+        const selectItems = $(".select-items");
+
+        selectItems.each(function () {
+            $(this).addClass(selectHideClass);
+        })
+    });
+
     // Disable the Create button on first load
     createVisualButton.prop("disabled", true);
 
@@ -123,6 +134,8 @@ function resetModal() {
 
     // Enable all the toggle wrappers
     toggleWrappers.removeClass(toggleWrappersDisabledClass);
+
+    $(".slider").addClass(disabledSliders);
 
     // Enable the toggle sliders for properties
     legendToggle.prop("disabled", false);
@@ -175,6 +188,7 @@ async function embedBaseReport() {
                 }
             ]
         },
+        theme: { themeJson: theme }
     };
 
     // Embed Power BI report when Access token and Embed URL are available
@@ -230,7 +244,12 @@ async function embedBaseReport() {
 
         // Open the modal and set the fields, properties and title for the visual
         openModal(event.detail);
-    })
+    });
+
+    baseReportState.report.on("buttonClicked", function () {
+        // Show the modal
+        openModal();
+    });
 
     // Clear any other error handler events
     baseReportState.report.off("error");
@@ -252,15 +271,6 @@ async function embedVisualAuthoringReport() {
         // Use the view permissions
         permissions: models.Permissions.View,
         settings: {
-            panes: {
-                filters: {
-                    visible: false
-                },
-                pageNavigation: {
-                    visible: false
-                }
-            },
-            // TODO: Hiding the visual headers for embedding inside the modal NOT Working [Below code]
             visualSettings: {
                 visualHeaders: [
                     {
@@ -269,6 +279,14 @@ async function embedVisualAuthoringReport() {
                         }
                     }
                 ]
+            },
+            panes: {
+                filters: {
+                    visible: false
+                },
+                pageNavigation: {
+                    visible: false
+                }
             },
             background: models.BackgroundType.Transparent
         }
@@ -285,10 +303,9 @@ async function embedVisualAuthoringReport() {
 
         const pages = await visualCreatorShowcaseState.report.getPages();
 
-        // TODO: Update when the report is available
-        // pages[5] is an empty page, on which the visual would be created
-        pages[5].setActive().catch(error => console.log(error));
-        visualCreatorShowcaseState.page = pages[5];
+        // pages[1] is an empty page, on which the visual would be created
+        pages[1].setActive().catch(error => console.log(error));
+        visualCreatorShowcaseState.page = pages[1];
     });
 
     // Clear any other rendered handler events
@@ -345,29 +362,95 @@ function rearrangeInCustomLayout() {
     // Calculate the number of rows
     let rows = 0;
 
-    rows = Math.ceil(visuals.length / visualCreatorShowcaseConstants.columns);
+    // Do not count the overlapping visuals in generating the rows and final report height
+    rows = Math.ceil((visuals.length - 2) / visualCreatorShowcaseConstants.columns);
     reportHeight = Math.max(reportHeight, (rows * visualHeight) + (rows + 1) * visualCreatorShowcaseConstants.margin);
 
-    visuals.forEach(function (element) {
-        visualsLayout[element.name] = {
-            x: x,
-            y: y,
-            width: visualWidth,
-            height: visualHeight,
-            displayState: {
-
-                // Change the selected visuals display mode to visible
-                mode: models.VisualContainerDisplayMode.Visible
+    visuals.forEach((visual) => {
+        // Hide the main and overlapping visuals, if new visual is being created
+        if (visualCreationInProgress) {
+            // Hide the visual
+            if (visual.name === mainVisualGuid || visual.name === imageVisual.name || visual.name === actionButtonVisual.name) {
+                visualsLayout[visual.name] = {
+                    displayState: {
+                        mode: models.VisualContainerDisplayMode.Hidden
+                    }
+                }
+                return;
             }
-        };
+        }
+        if (visual.name === mainVisualGuid) {
+            // Store the position of the mainVisual
+            mainVisualState = {
+                x: x,
+                y: y,
+                width: visualWidth,
+                height: visualHeight,
+                displayState: {
 
-        // Calculating (x,y) position for the next visual
-        x += visualWidth + visualCreatorShowcaseConstants.margin;
+                    // Change the selected visuals display mode to visible
+                    mode: models.VisualContainerDisplayMode.Visible
+                }
+            }
+        }
 
-        // Reset x
-        if (x + visualWidth > reportWidth) {
-            x = visualCreatorShowcaseConstants.margin;
-            y += visualHeight + visualCreatorShowcaseConstants.margin;
+        // If the visual is image, which is to be overlapped in the main visual, position it accordingly
+        if (visual.name === imageVisual.name && mainVisualState.x) {
+            visualsLayout[imageVisual.name] = {
+                x: mainVisualState.x + mainVisualState.width * imageVisual.ratio.xPositionRatioWithMainVisual,
+                y: mainVisualState.y + mainVisualState.height * imageVisual.ratio.yPositionRatioWithMainVisual,
+                // Set minimum width and height for image visual in smaller screens
+                width: Math.max(mainVisualState.width * imageVisual.ratio.widthRatioWithMainVisual - 4.5, 24),
+                height: Math.max(mainVisualState.height * imageVisual.ratio.heightRatioWithMainVisual - 4.5, 24),
+                displayState: {
+
+                    // Change the selected visuals display mode to visible
+                    mode: models.VisualContainerDisplayMode.Visible
+                }
+            };
+        }
+
+        // If the visual to be placed is the action button, which is to be overlapped in the main visual, position it accordingly
+        else if (visual.name === actionButtonVisual.name && mainVisualState.x) {
+            visualsLayout[actionButtonVisual.name] = {
+                x: mainVisualState.x + mainVisualState.width * actionButtonVisual.ratio.xPositionRatioWithMainVisual,
+                y: mainVisualState.y + mainVisualState.height * actionButtonVisual.ratio.yPositionRatioWithMainVisual,
+                width: mainVisualState.width * actionButtonVisual.ratio.widthRatioWithMainVisual - 4.5,
+                // Set minimum height for action button visual in smaller screens
+                height: Math.max(mainVisualState.height * actionButtonVisual.ratio.heightRatioWithMainVisual - 4.5, actionButtonVisual.height),
+                displayState: {
+
+                    // Change the selected visuals display mode to visible
+                    mode: models.VisualContainerDisplayMode.Visible
+                }
+            };
+        }
+
+        // For remaining visuals, position them and update the x and y coordinates
+        else {
+            if (visual.name === mainVisualGuid) {
+                visualWidth += 4.5;
+                visualHeight += 4.5;
+            }
+            visualsLayout[visual.name] = {
+                x: x,
+                y: y,
+                width: visualWidth,
+                height: visualHeight,
+                displayState: {
+
+                    // Change the selected visuals display mode to visible
+                    mode: models.VisualContainerDisplayMode.Visible
+                }
+            };
+            // Calculating (x,y) position for the next visual
+            x += visualWidth + visualCreatorShowcaseConstants.margin;
+
+            // Reset x
+            if (x + visualWidth > reportWidth) {
+                x = visualCreatorShowcaseConstants.margin;
+                y += visualHeight + visualCreatorShowcaseConstants.margin;
+            }
         }
     });
 
@@ -395,8 +478,8 @@ function rearrangeInCustomLayout() {
         customLayout: {
             pageSize: {
                 type: models.PageSizeType.Custom,
-                width: reportWidth - 10,
-                height: reportHeight - 20
+                width: reportWidth,
+                height: reportHeight
             },
             displayOption: models.DisplayOption.FitToWidth,
             pagesLayout: pagesLayout
@@ -521,8 +604,8 @@ function initializeDropdowns() {
 function closeAllSelect(element) {
 
     const arrNo = [];
-    const selectItems = document.getElementsByClassName("select-items");
-    const selected = document.getElementsByClassName("select-selected");
+    const selected = $(".select-selected");
+    const selectItems = $(".select-items");
     for (let i = 0; i < selected.length; i++) {
         if (element === selected[i]) {
             arrNo.push(i);
@@ -541,14 +624,9 @@ function closeAllSelect(element) {
 // Changing the visual type
 async function changeVisualType(visualTypeDisplayName) {
 
-    // Remove all data-fields from the visual if visual is being edited
+    // Remove all data-fields from the state if visual is being edited
     if (selectedVisual.visual) {
-        const editvisualType = selectedVisual.visual.type;
-        const visualDataRole = visualTypeToDataRoles.filter((function (e) { return e.name === editvisualType }))[0];
-
-        visualDataRole.dataRoleNames.forEach(async function (dataRole) {
-            await visualCreatorShowcaseState.newVisual.removeDataField(dataRole, 0);
-        });
+        resetGeneratorDataRoles();
     }
 
     // Get the visual type from the display name
@@ -571,6 +649,8 @@ async function changeVisualType(visualTypeDisplayName) {
 
     // Disable the properties section
     generatorProperties.addClass(disabledClass);
+
+    $(".slider").addClass(disabledSliders);
 
     // Disable the Create button
     createVisualButton.prop("disabled", true);
@@ -698,15 +778,17 @@ async function updateDataRoleField(dataRole, field) {
         const dataFieldKey = field.replace(/\s+/g, "");
 
         // Check if the data role already has a field
-        if (visualCreatorShowcaseState.dataRoles[dataRole]) {
+        if (visualCreatorShowcaseState.dataRoles[dataRoleName]) {
 
             // If the data role has a field, remove it
             await visualCreatorShowcaseState.newVisual.removeDataField(dataRoleName, 0);
+            visualCreatorShowcaseState.dataFieldsCount--;
 
             // If there are no more data fields, recreating the visual before adding the data field
             if (visualCreatorShowcaseState.dataFieldsCount === 0) {
                 await visualCreatorShowcaseState.page.createVisual(visualCreatorShowcaseState.visualType, getVisualLayout());
 
+                const visuals = await visualCreatorShowcaseState.page.getVisuals();
                 visualCreatorShowcaseState.newVisual = visuals[0];
                 visualCreatorShowcaseState.dataFieldsCount++;
                 visualCreatorShowcaseState.dataRoles[dataRoleName] = dataFieldKey;
@@ -734,8 +816,11 @@ async function updateDataRoleField(dataRole, field) {
                 customTitleWrapper.removeClass(toggleWrappersDisabledClass);
                 createVisualButton.prop("disabled", false);
                 visualPropertiesCheckboxes.prop("checked", true);
+                visualPropertiesCheckboxes.prop("disabled", false);
                 updateAvailableProperties(visualCreatorShowcaseState.visualType);
 
+                // Make title property active
+                makeTitlePropActive();
                 // Show the enabled items to change, align or clear the title
                 disabledEraseTool.hide();
                 enabledEraseTool.show();
@@ -746,11 +831,26 @@ async function updateDataRoleField(dataRole, field) {
     }
 }
 
+function makeTitlePropActive() {
+    const titleProp = $("#" + "title" + "-toggle").prop("checked", true);
+    const relatedToggle = titleProp.next();
+    relatedToggle.removeClass(disabledSliders);
+}
+
 // Update available properties as per visual type
 function updateAvailableProperties(visualType) {
     for (let i = 0; i < showcaseProperties.length; i++) {
         if (visualTypeProperties[visualType].indexOf(showcaseProperties[i]) < 0) {
             $("#" + showcaseProperties[i] + "-toggle").prop("checked", false);
+            const property = $("#" + showcaseProperties[i] + "-toggle");
+            const relatedToggle = property.next();
+            relatedToggle.addClass(disabledSliders);
+        }
+        else {
+            $("#" + showcaseProperties[i] + "-toggle").prop("checked", true);
+            const property = $("#" + showcaseProperties[i] + "-toggle");
+            const relatedToggle = property.next();
+            relatedToggle.removeClass(disabledSliders);
         }
     }
 }
@@ -879,12 +979,8 @@ function resetGeneratorDataRoles() {
     visualCreatorShowcaseState.dataRoles = {
         Legend: null,
         Values: null,
-        Value: null,
         Axis: null,
         Tooltips: null,
-        "Y Axis": null,
-        Category: null,
-        Breakdown: null,
     };
 
     visualCreatorShowcaseState.dataFieldsCount = 0;
@@ -965,6 +1061,7 @@ function validateDataRoles(capabilities, dataRolesDisplayNames) {
 
 function handleInvalidDataRoles() {
     // Display error message that particular data-role can not be attached
+    console.error("Applied data-roles cannot be assigned to the created visual.");
 }
 
 // Show the disabled items on modal close
@@ -985,12 +1082,19 @@ async function appendVisualToReport() {
     }
 
     if (!selectedVisual.visual) {
-        console.log("Creating the visual");
-        const visualResponse = await baseReportState.page.createVisual(visualCreatorShowcaseState.visualType);
+
+        // Visual creation is started
+        visualCreationInProgress = true;
+
+        // Hide the main and overlapped visuals
+        rearrangeInCustomLayout();
+
+        // mainVisualState is the position of the current custom visual, where the new visual would be created
+        const visualResponse = await baseReportState.page.createVisual(visualCreatorShowcaseState.visualType, mainVisualState);
         const visual = visualResponse.visual;
 
         // Formatting the title to be more accessible
-        visual.setProperty(propertyToSelector("titleSize"), { schema: schemas.property, value: 12 });
+        visual.setProperty(propertyToSelector("titleSize"), { schema: schemas.property, value: 13 });
         visual.setProperty(propertyToSelector("titleColor"), { schema: schemas.property, value: "#000" });
 
         // Enabling the legend property for Pie chart
@@ -1007,6 +1111,12 @@ async function appendVisualToReport() {
                     // Apply the custom title if available
                     propertyValue = customVisualTitle;
                 }
+            }
+            if (visualCreatorShowcaseState.visualType === "pieChart" && (propertyName === "xAxis" || propertyName === "yAxis")) {
+                return;
+            }
+            if ((visualCreatorShowcaseState.visualType === "columnChart" || visualCreatorShowcaseState.visualType === "barChart") && (propertyName === "legend")) {
+                return;
             }
             visual.setProperty(propertyToSelector(propertyName), { schema: schemas.property, value: propertyValue });
         });
@@ -1029,11 +1139,37 @@ async function appendVisualToReport() {
 
         // Append the created visual to the visuals state of the report
         baseReportState.visuals.push(visual);
+
+        // Shift baseShape, Image, actionButton to the end
+        const mainVisualIndex = baseReportState.visuals.findIndex(
+            (visual) => visual.type === "basicShape"
+        );
+
+        if (mainVisualIndex !== -1) {
+            baseReportState.visuals.push(baseReportState.visuals.splice(mainVisualIndex, 1)[0]);
+        }
+
+        const imageVisualIndex = baseReportState.visuals.findIndex(
+            (visual) => visual.type === "image"
+        );
+
+        if (imageVisualIndex !== -1) {
+            baseReportState.visuals.push(baseReportState.visuals.splice(imageVisualIndex, 1)[0]);
+        }
+
+        const actionButtonVisualIndex = baseReportState.visuals.findIndex(
+            (visual) => visual.type === "actionButton"
+        );
+
+        if (actionButtonVisualIndex !== -1) {
+            baseReportState.visuals.push(baseReportState.visuals.splice(actionButtonVisualIndex, 1)[0]);
+        }
+
+        // Visual creation is completed
+        visualCreationInProgress = false;
         rearrangeInCustomLayout();
     }
     else {
-        console.log("Editing the visual");
-
         if (visualTitleText.val() !== "") {
             customVisualTitle = visualTitleText.val();
         }
@@ -1045,7 +1181,7 @@ async function appendVisualToReport() {
         }
 
         // Formatting the title to be more accessible
-        oldVisual.setProperty(propertyToSelector("titleSize"), { schema: schemas.property, value: 12 });
+        oldVisual.setProperty(propertyToSelector("titleSize"), { schema: schemas.property, value: 13 });
         oldVisual.setProperty(propertyToSelector("titleColor"), { schema: schemas.property, value: "#000" });
 
         // Enabling the legend property for Pie chart
@@ -1066,6 +1202,12 @@ async function appendVisualToReport() {
                 oldVisual.resetProperty(propertyToSelector("titleText"));
             }
             else {
+                if (visualCreatorShowcaseState.visualType === "pieChart" && (propertyName === "xAxis" || propertyName === "yAxis")) {
+                    return;
+                }
+                if ((visualCreatorShowcaseState.visualType === "columnChart" || visualCreatorShowcaseState.visualType === "barChart") && (propertyName === "legend")) {
+                    return;
+                }
                 oldVisual.setProperty(propertyToSelector(propertyName), { schema: schemas.property, value: propertyValue });
             }
         });
@@ -1084,23 +1226,12 @@ async function appendVisualToReport() {
 
             // Get data-fields from the data-role
             const dataFieldProp = await oldVisual.getDataFields(dataRole);
-            let columnValue = "";
-            if (dataFieldProp[0] !== undefined) {
-                if (dataFieldProp[0].hasOwnProperty("column")) {
-                    columnValue = dataFieldProp[0].column;
-                }
-                else if (dataFieldProp[0].hasOwnProperty("measure")) {
-                    columnValue = dataFieldProp[0].measure;
-                }
+
+            if (dataFieldProp.length === 0) {
+                oldVisual.addDataField(dataRole, dataFieldsTargets[field]);
             }
-
-            // Get Key from Value
-            const dataFieldKey = Object.keys(dataFieldsMappings).find(key => {
-                return dataFieldsMappings[key] === columnValue
-            });
-
-            if (dataFieldKey !== field) {
-                // TODO: Need to check for repetitive data-fields for other visual-types
+            else {
+                await oldVisual.removeDataField(dataRole, 0);
                 oldVisual.addDataField(dataRole, dataFieldsTargets[field]);
             }
         });
@@ -1115,6 +1246,12 @@ async function appendVisualToReport() {
 
 // This function opens the modal and fill the dropdowns with the data-roles, properties and title of the visual
 async function openModal(visualData) {
+
+    if (!visualData) {
+        // If visualData is not preset, just show the modal
+        visualCreatorModal.modal("show");
+        return;
+    }
 
     // Pass the visual to get the IVisual response
     const visualResponse = await getIVisualResponse(visualData.visual);
@@ -1146,6 +1283,7 @@ async function openModal(visualData) {
 
             // Set the data-roles in the state
             visualCreatorShowcaseState.dataRoles[dataRole] = dataFieldKey;
+            visualCreatorShowcaseState.dataFieldsCount++;
         }
     });
 
@@ -1183,6 +1321,12 @@ async function openModal(visualData) {
                 propertyValue = customVisualTitle;
             }
         }
+        if (visualCreatorShowcaseState.visualType === "pieChart" && (propertyName === "xAxis" || propertyName === "yAxis")) {
+            return;
+        }
+        if ((visualCreatorShowcaseState.visualType === "columnChart" || visualCreatorShowcaseState.visualType === "barChart") && (propertyName === "legend")) {
+            return;
+        }
         visual.setProperty(propertyToSelector(propertyName), { schema: schemas.property, value: propertyValue });
     });
 
@@ -1202,6 +1346,9 @@ async function openModal(visualData) {
 
     // Update data-roles for the given visual type in the UI
     updateAvailableDataRoles(visualDataRole.dataRoles);
+
+    // Make the title property active
+    makeTitlePropActive();
 
     // Populate properties as per state inside the modal
     populateProperties(visualCreatorShowcaseState);
@@ -1262,6 +1409,16 @@ function populateProperties(visualCreatorShowcaseState) {
 
             // Disable the pointer events for the properties
             $("#" + showcaseProperties[i] + ".toggle-wrapper").addClass(toggleWrappersDisabledClass);
+            const property = $("#" + showcaseProperties[i] + "-toggle");
+            const relatedToggle = property.next();
+            relatedToggle.addClass(disabledSliders);
+
+        }
+        else {
+            $("#" + showcaseProperties[i] + "-toggle").prop("checked", true);
+            const property = $("#" + showcaseProperties[i] + "-toggle");
+            const relatedToggle = property.next();
+            relatedToggle.removeClass(disabledSliders);
         }
     }
 

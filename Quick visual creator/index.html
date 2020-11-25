@@ -23,7 +23,7 @@
 <body>
     <div class="wrapper">
         <div class="header">
-            <img src="img/contoso.svg" class="contoso" alt="Contoso" data-toggle="modal" data-target="#visual-creator" id="image-btn" />
+            <img src="img/contoso.svg" class="contoso" alt="Contoso" id="image-btn" />
         </div>
         <div class="showcase-container">
             <div id="overlay">
@@ -61,6 +61,7 @@
                                         <option value="2">Option 2</option>
                                         <option value="3">Option 3</option>
                                         <option value="4">Option 4</option>
+                                        <option value="5">Option 5</option>
                                     </select>
                                 </div>
                             </div>
@@ -172,14 +173,14 @@
                                         </div>
 
                                         <div id="aligns-enabled">
-                                            <div id="align-left" class="alignment-block selected">
-                                                <img src="img/enabled-images/left-align.svg" onclick="onAlignClicked('left');" alt="left-align" />
+                                            <div id="align-left" class="alignment-block selected" onclick="onAlignClicked('left');" >
+                                                <img src="img/enabled-images/left-align.svg" alt="left-align" />
                                             </div>
-                                            <div id="align-center" class="alignment-block">
-                                                <img src="img/enabled-images/center-align.svg" onclick="onAlignClicked('center');" alt="center-align" />
+                                            <div id="align-center" class="alignment-block" onclick="onAlignClicked('center');" >
+                                                <img src="img/enabled-images/center-align.svg" alt="center-align" />
                                             </div>
-                                            <div id="align-right" class="alignment-block">
-                                                <img src="img/enabled-images/right-align.svg" onclick="onAlignClicked('right');" alt="right-align" />
+                                            <div id="align-right" class="alignment-block" onclick="onAlignClicked('right');" >
+                                                <img src="img/enabled-images/right-align.svg" alt="right-align" />
                                             </div>
                                         </div>
                                     </div>
@@ -209,10 +210,11 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/powerbi-client/2.14.1/powerbi.min.js" integrity="sha512-lxju/OSeZ2uKCRnnuhAzdd08ZZa9kp2JhWx1iVnaj7Sj8OVhspaSve9xTzW+jw+M4ii+GxjzNXQzIYcqiCBt2g==" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/powerbi-report-authoring@1.1.0/dist/powerbi-report-authoring.min.js"></script>
 
-    <script src="js/globals.js?v=09112020"></script>
-    <script src="js/session_utils.js?v=02112020"></script>
-    <script src="js/visuals.js?v=02112020"></script>
-    <script src="js/index.js?v=11112020"></script>
+    <script src="js/globals.js?v=25112020"></script>
+    <script src="js/session_utils.js?v=25112020"></script>
+    <script src="js/visuals.js?v=18112020"></script>
+    <script src="js/themes.js?v=20112020"></script>
+    <script src="js/index.js?v=25112020"></script>
 </body>
 
 </html>

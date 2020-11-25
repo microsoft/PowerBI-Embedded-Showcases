@@ -1,4 +1,3 @@
-// TODO: Replace the url with aka.ms link
 // API Endpoint to get the JSON response of Embed Url, Embed token and reportId
 const insightToActionReportUrl = "https://playgroundbe-bck-1.azurewebsites.net/Reports/InsightToActionV2Report";
 

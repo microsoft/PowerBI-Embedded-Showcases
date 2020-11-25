@@ -1,4 +1,5 @@
 body {
+    background: #F7F8F6;
     height: 100%;
     scrollbar-color: #D2D0CE transparent;
     scrollbar-width: thin;
@@ -23,6 +24,7 @@ body::-webkit-scrollbar-thumb {
 }
 
 .wrapper {
+    background: #F7F8F6;
     margin: 0 auto;
     width: 100%;
 }
