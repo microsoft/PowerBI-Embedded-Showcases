@@ -9,9 +9,9 @@ const visualTypeToDataRoles = [
 
 // Define the available fields for each data role
 const dataRolesToFields = [
-    { dataRole: "Axis", Fields: ["Industry", "Salesperson", "Lead Rating"] },
+    { dataRole: "Axis", Fields: ["Industry", "Oppportunity Status", "Lead Rating"] },
     { dataRole: "Values", Fields: ["Actual Revenue", "Estimated Revenue", "Number of Opportunities"] },
-    { dataRole: "Legend", Fields: ["Industry", "Salesperson", "Oppportunity Status"] },
+    { dataRole: "Legend", Fields: ["Industry", "Lead Rating", "Oppportunity Status"] },
     { dataRole: "Tooltips", Fields: ["Actual Close Date", "Estimated Revenue", "Actual Revenue"] },
 ];
 

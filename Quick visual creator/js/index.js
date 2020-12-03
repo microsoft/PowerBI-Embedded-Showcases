@@ -271,15 +271,6 @@ async function embedVisualAuthoringReport() {
         // Use the view permissions
         permissions: models.Permissions.View,
         settings: {
-            visualSettings: {
-                visualHeaders: [
-                    {
-                        settings: {
-                            visible: false
-                        }
-                    }
-                ]
-            },
             panes: {
                 filters: {
                     visible: false
@@ -397,24 +388,26 @@ function rearrangeInCustomLayout() {
         // If the visual is image, which is to be overlapped in the main visual, position it accordingly
         if (visual.name === imageVisual.name && mainVisualState.x) {
             visualsLayout[imageVisual.name] = {
-                x: mainVisualState.x + mainVisualState.width * imageVisual.ratio.xPositionRatioWithMainVisual,
+                x: mainVisualState.x + mainVisualState.width * imageVisual.ratio.xPositionRatioWithMainVisual - 6,
                 y: mainVisualState.y + mainVisualState.height * imageVisual.ratio.yPositionRatioWithMainVisual,
                 // Set minimum width and height for image visual in smaller screens
-                width: Math.max(mainVisualState.width * imageVisual.ratio.widthRatioWithMainVisual - 4.5, 24),
-                height: Math.max(mainVisualState.height * imageVisual.ratio.heightRatioWithMainVisual - 4.5, 24),
+                width: Math.max(mainVisualState.width * imageVisual.ratio.widthRatioWithMainVisual - 4.5, 36),
+                height: Math.max(mainVisualState.height * imageVisual.ratio.heightRatioWithMainVisual - 4.5, 36),
                 displayState: {
 
                     // Change the selected visuals display mode to visible
                     mode: models.VisualContainerDisplayMode.Visible
                 }
             };
+            imageVisual.yPos = visualsLayout[imageVisual.name].y;
+            imageVisual.height = visualsLayout[imageVisual.name].height;
         }
 
         // If the visual to be placed is the action button, which is to be overlapped in the main visual, position it accordingly
         else if (visual.name === actionButtonVisual.name && mainVisualState.x) {
             visualsLayout[actionButtonVisual.name] = {
                 x: mainVisualState.x + mainVisualState.width * actionButtonVisual.ratio.xPositionRatioWithMainVisual,
-                y: mainVisualState.y + mainVisualState.height * actionButtonVisual.ratio.yPositionRatioWithMainVisual,
+                y: imageVisual.height + imageVisual.yPos + 18,
                 width: mainVisualState.width * actionButtonVisual.ratio.widthRatioWithMainVisual - 4.5,
                 // Set minimum height for action button visual in smaller screens
                 height: Math.max(mainVisualState.height * actionButtonVisual.ratio.heightRatioWithMainVisual - 4.5, actionButtonVisual.height),
@@ -675,6 +668,7 @@ async function changeVisualType(visualTypeDisplayName) {
 
 // Update showcase after visual type change
 function updateVisualType(visualTypeName, dataRoles) {
+    visualCreatorShowcaseState.report.updateSettings(visualHeaderReportSetting);
     updateCurrentVisualState(visualTypeName);
     resetGeneratorDataRoles();
     updateAvailableDataRoles(dataRoles);
@@ -1370,6 +1364,7 @@ async function openModal(visualData) {
 
     editArea.hide();
     visualAuthoringArea.show();
+    visualCreatorShowcaseState.report.updateSettings(visualHeaderReportSetting);
 
     // Show the modal
     visualCreatorModal.modal("show");

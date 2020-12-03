@@ -161,10 +161,6 @@ body.modal-open {
     pointer-events: none;
 }
 
-.toggle-wrapper.disabled span {
-    color: #BEBBB8;
-}
-
 .custom-title-wrapper {
     align-items: center;
     display: flex;
@@ -326,7 +322,7 @@ input:checked + .slider:before {
 }
 
 .alignment-block.selected {
-    background: #F2F5F8;
+    background: #BAC3C8;
 }
 
 .title-alignment-wrapper {

@@ -173,12 +173,11 @@ html {
 }
 
 .table-checkbox>input:checked~.checkbox-circle {
-    background: #B8E2B3;
+    background: #669B61;
     border: none;
 }
 
 .table-checkbox>input:checked~.checkbox-checkmark {
-    background: #B8E2B3;
     border: 0 solid #FFF;
     border-width: 0 2.5px 2.5px 0;
     height: 11px;

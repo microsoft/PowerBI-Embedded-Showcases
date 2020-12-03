@@ -48,6 +48,8 @@ const mainVisualGuid = "a6d74a71de4135e00a59";
 
 const imageVisual = {
     name: "2270e4eea9242400a0cd",
+    yPos: undefined,
+    height: undefined,
     ratio: {
         widthRatioWithMainVisual: 36 / 426,
         heightRatioWithMainVisual: 36 / 252,
@@ -116,3 +118,16 @@ let customVisualTitle = "";
 
 // To store the state of the visual creation
 let visualCreationInProgress = false;
+
+// To apply setting to the new visual created in the Modal
+const visualHeaderReportSetting = {
+    visualSettings: {
+        visualHeaders: [
+            {
+                settings: {
+                    visible: false
+                }
+            }
+        ]
+    }
+}
