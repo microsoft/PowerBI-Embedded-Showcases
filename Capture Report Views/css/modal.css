@@ -1,48 +1,3 @@
-/* TODO: Change font URL in the final environment */
-
-@font-face {
-    font-family: "segoe_ui_regular";
-    src: url("https://content.powerapps.com/resource/powerbiwfe/fonts/SegoeUI-Regular-final.8956d1f5b4190f537497.woff") format("woff");
-}
-
-@font-face {
-    font-family: "segoe_ui_semibold";
-    src: url("https://content.powerapps.com/resource/powerbiwfe/fonts/SegoeUI-SemiBold-final.83b7261d0e6f3994ed6d.woff") format("woff");
-}
-
-body {
-    height: 100%;
-    overflow: hidden;
-}
-
-#wrapper {
-    margin: 0 auto;
-    width: 100%;
-}
-
-#contoso-header {
-    background: #1461F8;
-    color: #FFF8DC;
-    padding: 2px 0;
-    text-align: left;
-}
-
-#contoso {
-    height: 41px;
-    margin-left: 24px;
-    padding: 5px 0;
-    width: 74px;
-}
-
-#main-div {
-    background: #FFF;
-    color: #FFF8DC;
-    display: none;
-    margin: 0 auto;
-    text-align: left;
-    width: 100%;
-}
-
 .interactive-buttons {
     display: flex;
 }
@@ -77,24 +32,6 @@ body {
 
 #capture-btn {
     margin: 16px 16px 16px 0;
-}
-
-#report-container {
-    margin: 16px 16px 0 16px;
-    width: 98%;
-    height: calc(100vh - 100px);
-}
-
-#report-container>iframe {
-    border: 1px solid #C4C4C4;
-}
-
-.line {
-    border-top: 0.5px solid rgba(0, 0, 0, .2);
-    clear: both;
-    margin: 0 16px;
-    opacity: .7;
-    width: 98%;
 }
 
 .showcase-radio-container {
@@ -261,12 +198,6 @@ body {
     margin: 15px;
 }
 
-#content-div {
-    color: #201F1E;
-    font: 400 14px "Segoe UI", segoe_ui_regular, Tahoma, Arial;
-    margin: 30px 0 40px 24px;
-}
-
 #capture-view-div {
     display: none;
 }
@@ -374,39 +305,15 @@ input[type="text"]:invalid {
     margin-top: 5px;
 }
 
-.rotate {
-    animation: rotation 1s infinite linear;
-}
-
-@keyframes rotation {
-    from {
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(359deg);
-    }
-}
-
-#container {
-    width: 100%;
-    height: calc(100vh - 130px);
-}
-
-#overlay {
-    position: absolute;
-    width: inherit;
-    height: inherit;
-}
-
-#overlay #spinner {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-}
-
 .inactive-bookmark {
     color: #323130;
     font: 400 14px/20px "Segoe UI", segoe_ui_regular, Tahoma, Arial;
+}
+
+#content-div {
+    color: #201F1E;
+    font: 400 14px "Segoe UI", segoe_ui_regular, Tahoma, Arial;
+    margin: 30px 0 40px 24px;
 }
 
 .active-bookmark {
@@ -422,19 +329,4 @@ input[type="text"]:invalid {
     margin: 0 20px;
     outline: none;
     padding: 6px 16px;
-}
-
-#bookmark-container {
-    height: 100%;
-    width: 100%;
-}
-
-#bookmark-container>iframe {
-    border: none;
-}
-
-#share-bookmark {
-    display: none;
-    width: 100%;
-    height: calc(100vh - 50px);
 }

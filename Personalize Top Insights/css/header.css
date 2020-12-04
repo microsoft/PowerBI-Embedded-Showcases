@@ -1,0 +1,22 @@
+body {
+    overflow: hidden;
+}
+
+#wrapper {
+    margin: 0 auto;
+    width: 100%;
+}
+
+#contoso-header {
+    background: #4946C6;
+    color: #FFF8DC;
+    padding: 2px 0;
+    text-align: left;
+}
+
+#contoso {
+    height: 41px;
+    margin-left: 24px;
+    padding: 5px 0;
+    width: 74px;
+}

@@ -1,0 +1,9 @@
+#report-container {
+    margin: 16px 16px 0 16px;
+    width: 98%;
+    height: calc(100vh - 100px);
+}
+
+#report-container>iframe {
+    border: 1px solid #C4C4C4;
+}

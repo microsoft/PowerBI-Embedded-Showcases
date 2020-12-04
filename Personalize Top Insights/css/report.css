@@ -1,0 +1,10 @@
+#report-container {
+    display: none;
+    height: calc(100vh - 120px);
+    width: 100%;
+}
+
+#report-container>iframe {
+    border: none;
+    overflow: hidden;
+}

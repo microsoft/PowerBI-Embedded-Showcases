@@ -76,68 +76,65 @@ $(document).ready(function () {
 });
 
 // Embed the report and retrieve the existing report bookmarks
-function embedBookmarksReport() {
+async function embedBookmarksReport() {
 
     // Load sample report properties into session
-    return loadSampleReportIntoSession().then(function () {
+    await loadSampleReportIntoSession();
 
-        // Get models. models contains enums that can be used
-        const models = window["powerbi-client"].models;
+    // Get models. models contains enums that can be used
+    const models = window["powerbi-client"].models;
 
-        // Use View permissions
-        let permissions = models.Permissions.View;
+    // Use View permissions
+    let permissions = models.Permissions.View;
 
-        // Embed configuration used to describe the what and how to embed
-        // This object is used when calling powerbi.embed
-        // This also includes settings and options such as filters
-        // You can find more information at https://github.com/Microsoft/PowerBI-JavaScript/wiki/Embed-Configuration-Details
-        let config = {
-            type: "report",
-            tokenType: models.TokenType.Embed,
-            accessToken: reportConfig.accessToken,
-            embedUrl: reportConfig.embedUrl,
-            id: reportConfig.reportId,
-            permissions: permissions,
-            settings: {
-                panes: {
-                    filters: {
-                        expanded: false,
-                        visible: true
-                    },
-                    pageNavigation: {
-                        visible: false
-                    },
+    // Embed configuration used to describe the what and how to embed
+    // This object is used when calling powerbi.embed
+    // This also includes settings and options such as filters
+    // You can find more information at https://github.com/Microsoft/PowerBI-JavaScript/wiki/Embed-Configuration-Details
+    let config = {
+        type: "report",
+        tokenType: models.TokenType.Embed,
+        accessToken: reportConfig.accessToken,
+        embedUrl: reportConfig.embedUrl,
+        id: reportConfig.reportId,
+        permissions: permissions,
+        settings: {
+            panes: {
+                filters: {
+                    expanded: false,
+                    visible: true
                 },
-                layoutType: models.LayoutType.Custom,
-                customLayout: {
-                    displayOption: models.DisplayOption.FitToWidth
-                }
+                pageNavigation: {
+                    visible: false
+                },
+            },
+            layoutType: models.LayoutType.Custom,
+            customLayout: {
+                displayOption: models.DisplayOption.FitToWidth
             }
-        };
+        }
+    };
 
+    // Embed the report and display it within the div container
+    bookmarkShowcaseState.report = powerbi.embed(reportContainer, config);
 
-        // Embed the report and display it within the div container
-        bookmarkShowcaseState.report = powerbi.embed(reportContainer, config);
+    // For accessibility insights
+    setReportAccessibilityProps(bookmarkShowcaseState.report);
 
-        // For accessibility insights
-        setReportAccessibilityProps(bookmarkShowcaseState.report);
+    // Report.on will add an event handler for report loaded event.
+    bookmarkShowcaseState.report.on("loaded", async function () {
 
-        // Report.on will add an event handler for report loaded event.
-        bookmarkShowcaseState.report.on("loaded", function () {
+        // Get report"s existing bookmarks
+        const bookmarks = await bookmarkShowcaseState.report.bookmarksManager.getBookmarks();
 
-            // Get report"s existing bookmarks
-            bookmarkShowcaseState.report.bookmarksManager.getBookmarks().then(function (bookmarks) {
+        // Create bookmarks list from the existing report bookmarks
+        createBookmarksList(bookmarks);
 
-                // Create bookmarks list from the existing report bookmarks
-                createBookmarksList(bookmarks);
-            });
+        // Hide the loader
+        overlay.hide();
 
-            // Hide the loader
-            overlay.hide();
-
-            // Show the container
-            $("#main-div").show();
-        });
+        // Show the container
+        $("#main-div").show();
     });
 }
 
@@ -235,7 +232,7 @@ function getBookmarkByID(bookmarkId) {
 }
 
 // Capture new bookmark of the current state and update the bookmarks list
-function onBookmarkCaptureClicked() {
+async function onBookmarkCaptureClicked() {
 
     let capturedViewname = viewName.val().trim();
     if (!capturedViewname) {
@@ -244,30 +241,29 @@ function onBookmarkCaptureClicked() {
         viewName.removeClass(invalidField);
 
         // Capture the report"s current state
-        bookmarkShowcaseState.report.bookmarksManager.capture().then(function (capturedBookmark) {
+        const capturedBookmark = await bookmarkShowcaseState.report.bookmarksManager.capture({});
 
-            // Build bookmark element
-            let bookmark = {
-                name: "bookmark_" + bookmarkShowcaseState.bookmarkCounter,
-                displayName: capturedViewname,
-                state: capturedBookmark.state
-            }
+        // Build bookmark element
+        let bookmark = {
+            name: "bookmark_" + bookmarkShowcaseState.bookmarkCounter,
+            displayName: capturedViewname,
+            state: capturedBookmark.state
+        }
 
-            // Add the new bookmark to the HTML list
-            bookmarksList.append(buildBookmarkElement(bookmark));
-            bookmarksList.show();
+        // Add the new bookmark to the HTML list
+        bookmarksList.append(buildBookmarkElement(bookmark));
+        bookmarksList.show();
 
-            // Set the captured bookmark as active
-            setBookmarkActive($("#bookmark_" + bookmarkShowcaseState.bookmarkCounter));
+        // Set the captured bookmark as active
+        setBookmarkActive($("#bookmark_" + bookmarkShowcaseState.bookmarkCounter));
 
-            // Apply the color when the new bookmark is created
-            applyColor("bookmark_" + bookmarkShowcaseState.bookmarkCounter);
+        // Apply the color when the new bookmark is created
+        applyColor("bookmark_" + bookmarkShowcaseState.bookmarkCounter);
 
-            // Add the bookmark to the bookmarks array and increase the bookmarks number counter
-            bookmarkShowcaseState.bookmarks.push(bookmark);
-            bookmarkShowcaseState.bookmarkCounter++;
-            $("#modal-action").modal("hide");
-        });
+        // Add the bookmark to the bookmarks array and increase the bookmarks number counter
+        bookmarkShowcaseState.bookmarks.push(bookmark);
+        bookmarkShowcaseState.bookmarkCounter++;
+        $("#modal-action").modal("hide");
     }
 }
 
@@ -296,7 +292,7 @@ function modalButtonClicked(element) {
     }
 }
 
-function createLink() {
+async function createLink() {
 
     // To get the URL of the parent page
     let url = (window.location != window.parent.location) ?
@@ -304,26 +300,25 @@ function createLink() {
         document.location.href;
 
     // Capture the report"s current state
-    bookmarkShowcaseState.report.bookmarksManager.capture().then(function (capturedBookmark) {
+    const capturedBookmark = await bookmarkShowcaseState.report.bookmarksManager.capture({});
 
-        // Build bookmark element
-        let bookmark = {
-            name: "bookmark_" + bookmarkShowcaseState.bookmarkCounter,
-            state: capturedBookmark.state
-        }
+    // Build bookmark element
+    let bookmark = {
+        name: "bookmark_" + bookmarkShowcaseState.bookmarkCounter,
+        state: capturedBookmark.state
+    }
 
-        // Build the share bookmark URL
-        let shareUrl = url.substring(0, url.lastIndexOf("/")) + "/share_bookmark.html" + "?id=" + bookmark.name;
+    // Build the share bookmark URL
+    let shareUrl = url.substring(0, url.lastIndexOf("/")) + "/share_bookmark.html" + "?id=" + bookmark.name;
 
-        // Store bookmark state with name as a key on the local storage
-        // any type of database can be used
-        localStorage.setItem(bookmark.name, bookmark.state);
+    // Store bookmark state with name as a key on the local storage
+    // any type of database can be used
+    localStorage.setItem(bookmark.name, bookmark.state);
 
-        copyLinkText.val(shareUrl);
+    copyLinkText.val(shareUrl);
 
-        // Increase the bookmarks number counter
-        bookmarkShowcaseState.bookmarkCounter++;
-    });
+    // Increase the bookmarks number counter
+    bookmarkShowcaseState.bookmarkCounter++;
 }
 
 function copyLink(element) {

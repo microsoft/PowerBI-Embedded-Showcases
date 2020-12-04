@@ -1,10 +1,10 @@
 // To stop the page load on click event
-$(document).on("click", ".allow-focus", function(element) {
+$(document).on("click", ".allow-focus", function (element) {
     element.stopPropagation();
 });
 
 // On page resize, visuals should get rearranged according to the page
-$(document).ready(function() {
+$(document).ready(function () {
 
     // Bootstrap the bookmark embed container
     powerbi.bootstrap(reportContainer, { type: "report" });
@@ -15,35 +15,35 @@ $(document).ready(function() {
     let layoutsDiv = $("#layouts-div");
     layoutsDiv.hide();
 
-    $("#visuals-layout-btn").click(function() {
+    $("#visuals-layout-btn").click(function () {
         layoutsDiv.toggle();
     });
 
-    $("#visuals-click-btn").click(function() {
+    $("#visuals-click-btn").click(function () {
         layoutsDiv.hide();
     });
 
-    $(document).click(function() {
+    $(document).click(function () {
         layoutsDiv.hide();
     })
 
-    $("#btn-one-col").click(function() {
+    $("#btn-one-col").click(function () {
         onModifyLayoutClicked(0, 1, this);
     });
 
-    $("#btn-two-col-colspan").click(function() {
+    $("#btn-two-col-colspan").click(function () {
         onModifyLayoutClicked(1, 2, this);
     });
 
-    $("#btn-two-col-rowspan").click(function() {
+    $("#btn-two-col-rowspan").click(function () {
         onModifyLayoutClicked(2, 2, this);
     });
 
-    $("#btn-two-cols").click(function() {
+    $("#btn-two-cols").click(function () {
         onModifyLayoutClicked(0, 2, this);
     });
 
-    $("#btn-three-cols").click(function() {
+    $("#btn-three-cols").click(function () {
         onModifyLayoutClicked(0, 3, this);
     });
 
@@ -51,123 +51,119 @@ $(document).ready(function() {
 });
 
 // Embed the report and retrieve all report visuals
-function embedCustomLayoutReport() {
+async function embedCustomLayoutReport() {
 
     // Defualt columns value is two columns
     layoutShowcaseState.columns = ColumnsNumber.Two;
     LayoutShowcaseConsts.span = SpanType.None;
 
     // Load custom layout report properties into session
-    loadLayoutShowcaseReportIntoSession().then(function() {
+    await loadLayoutShowcaseReportIntoSession();
 
-        // Get models. models contains enums that can be used
-        const models = window["powerbi-client"].models;
+    // Get models. models contains enums that can be used
+    const models = window["powerbi-client"].models;
 
-        // Get embed application token from globals
-        let accessToken = reportConfig.accessToken;
+    // Get embed application token from globals
+    let accessToken = reportConfig.accessToken;
 
-        // Get embed URL from globals
-        let embedUrl = reportConfig.embedUrl;
+    // Get embed URL from globals
+    let embedUrl = reportConfig.embedUrl;
 
-        // Get report Id from globals
-        let embedReportId = reportConfig.reportId;
+    // Get report Id from globals
+    let embedReportId = reportConfig.reportId;
 
-        // Use View permissions
-        let permissions = models.Permissions.View;
+    // Use View permissions
+    let permissions = models.Permissions.View;
 
-        // Embed configuration used to describe the what and how to embed
-        // This object is used when calling powerbi.embed
-        // This also includes settings and options such as filters
-        // You can find more information at https://github.com/Microsoft/PowerBI-JavaScript/wiki/Embed-Configuration-Details
-        let config = {
-            type: "report",
-            tokenType: models.TokenType.Embed,
-            accessToken: accessToken,
-            embedUrl: embedUrl,
-            id: embedReportId,
-            permissions: permissions,
-            settings: {
-                panes: {
-                    filters: {
-                        visible: false
-                    },
-                    pageNavigation: {
-                        visible: false
-                    }
+    // Embed configuration used to describe the what and how to embed
+    // This object is used when calling powerbi.embed
+    // This also includes settings and options such as filters
+    // You can find more information at https://github.com/Microsoft/PowerBI-JavaScript/wiki/Embed-Configuration-Details
+    let config = {
+        type: "report",
+        tokenType: models.TokenType.Embed,
+        accessToken: accessToken,
+        embedUrl: embedUrl,
+        id: embedReportId,
+        permissions: permissions,
+        settings: {
+            panes: {
+                filters: {
+                    visible: false
+                },
+                pageNavigation: {
+                    visible: false
                 }
             }
-        };
+        }
+    };
 
-        // Embed Power BI report when Access token and Embed URL are available
-        layoutShowcaseState.layoutReport = powerbi.load(reportContainer, config);
+    // Embed Power BI report when Access token and Embed URL are available
+    layoutShowcaseState.layoutReport = powerbi.load(reportContainer, config);
 
-        // For accessibility insights
-        layoutShowcaseState.layoutReport.setComponentTitle('Playground showcase custom layouts report');
-        layoutShowcaseState.layoutReport.setComponentTabIndex(0);
+    // For accessibility insights
+    layoutShowcaseState.layoutReport.setComponentTitle('Playground showcase custom layouts report');
+    layoutShowcaseState.layoutReport.setComponentTabIndex(0);
 
-        // Clear any other loaded handler events
-        layoutShowcaseState.layoutReport.off("loaded");
+    // Clear any other loaded handler events
+    layoutShowcaseState.layoutReport.off("loaded");
 
-        // Triggers when a report schema is successfully loaded
-        layoutShowcaseState.layoutReport.on("loaded", function() {
-            layoutShowcaseState.layoutReport.getPages()
-                .then(function(pages) {
+    // Triggers when a report schema is successfully loaded
+    layoutShowcaseState.layoutReport.on("loaded", async function () {
+        const pages = await layoutShowcaseState.layoutReport.getPages();
 
-                    // Retrieve first page.
-                    let activePage = jQuery.grep(pages, function(page) { return page.isActive; })[0];
+        // Retrieve first page.
+        let activePage = jQuery.grep(pages, function (page) { return page.isActive; })[0];
 
-                    // Set layoutPageName to active page name
-                    layoutShowcaseState.layoutPageName = activePage.name;
+        // Set layoutPageName to active page name
+        layoutShowcaseState.layoutPageName = activePage.name;
 
-                    // Get the visuals of the active page
-                    activePage.getVisuals()
-                        .then(function(visuals) {
-                            let reportVisuals = visuals.map(function(visual) {
-                                return {
-                                    name: visual.name,
-                                    title: visual.title,
-                                    checked: true
-                                };
-                            });
-                            createVisualsArray(reportVisuals);
-                        });
-                })
+        // Get the visuals of the active page
+        const visuals = await activePage.getVisuals();
 
-            // Implement phase embedding to first load the report, arrange the visuals and then render
-            .then(function() {
-                layoutShowcaseState.layoutReport.render();
-            });
+        let reportVisuals = visuals.map(function (visual) {
+            return {
+                name: visual.name,
+                title: visual.title,
+                checked: true
+            };
         });
 
-        // Clear any other rendered handler events
-        layoutShowcaseState.layoutReport.off("rendered");
+        createVisualsArray(reportVisuals);
 
-        // Triggers when a report is successfully embedded in UI
-        layoutShowcaseState.layoutReport.on("rendered", function() {
-
-            // Phase-embedding
-            // Hide the loader
-            $("#overlay").hide();
-            $('#main-div').children().show();
-            console.log("Report render successful");
-        });
-
-        // Clear any other error handler events
-        layoutShowcaseState.layoutReport.off("error");
-
-        // Handle embed errors
-        layoutShowcaseState.layoutReport.on("error", function(event) {
-            let errorMsg = event.detail;
-            console.error(errorMsg);
-        });
+        // Implement phase embedding to first load the report, arrange the visuals and then render
+        layoutShowcaseState.layoutReport.render();
     });
+
+    // Clear any other rendered handler events
+    layoutShowcaseState.layoutReport.off("rendered");
+
+    // Triggers when a report is successfully embedded in UI
+    layoutShowcaseState.layoutReport.on("rendered", function () {
+
+        // Phase-embedding
+        // Hide the loader
+        $("#overlay").hide();
+        $('#main-div').children().show();
+        console.log("Report render successful");
+    });
+
+    // Clear any other error handler events
+    layoutShowcaseState.layoutReport.off("error");
+
+    // Handle embed errors
+    layoutShowcaseState.layoutReport.on("error", function (event) {
+        let errorMsg = event.detail;
+        console.error(errorMsg);
+    });
+
 }
 
 // Create visuals array from the report visuals and update the HTML
 function createVisualsArray(reportVisuals) {
 
     // Remove all visuals without titles (i.e cards)
-    layoutShowcaseState.layoutVisuals = reportVisuals.filter(function(visual) {
+    layoutShowcaseState.layoutVisuals = reportVisuals.filter(function (visual) {
         return visual.title !== undefined;
     });
 
@@ -176,7 +172,7 @@ function createVisualsArray(reportVisuals) {
     visualsDropdown.empty();
 
     // Build checkbox html list and insert the html code to visualDropdown div
-    layoutShowcaseState.layoutVisuals.forEach(function(element) {
+    layoutShowcaseState.layoutVisuals.forEach(function (element) {
         visualsDropdown.append(buildVisualElement(element));
     });
 
@@ -241,7 +237,7 @@ function renderVisuals() {
     }
 
     // Filter the visuals list to display only the checked visuals
-    let checkedVisuals = layoutShowcaseState.layoutVisuals.filter(function(visual) { return visual.checked; });
+    let checkedVisuals = layoutShowcaseState.layoutVisuals.filter(function (visual) { return visual.checked; });
 
     // Calculating the combined width of the all visuals in a row
     let visualsTotalWidth = reportWidth - (LayoutShowcaseConsts.margin * (layoutShowcaseState.columns + 1));
@@ -276,7 +272,7 @@ function renderVisuals() {
         }
         reportHeight = Math.max(reportHeight, (rows * visualHeight) + (rows + 1) * LayoutShowcaseConsts.margin);
 
-        checkedVisuals.forEach(function(element, idx) {
+        checkedVisuals.forEach(function (element, idx) {
             visualsLayout[element.name] = {
                 x: x,
                 y: y,
@@ -306,7 +302,7 @@ function renderVisuals() {
         }
         reportHeight = Math.max(reportHeight, (rows * visualHeight) + (rows + 1) * LayoutShowcaseConsts.margin);
 
-        checkedVisuals.forEach(function(element, idx) {
+        checkedVisuals.forEach(function (element, idx) {
             visualsLayout[element.name] = {
                 x: x,
                 y: y,
@@ -337,7 +333,7 @@ function renderVisuals() {
         rows = Math.ceil(checkedVisuals.length / layoutShowcaseState.columns);
         reportHeight = Math.max(reportHeight, (rows * visualHeight) + (rows + 1) * LayoutShowcaseConsts.margin);
 
-        checkedVisuals.forEach(function(element) {
+        checkedVisuals.forEach(function (element) {
             visualsLayout[element.name] = {
                 x: x,
                 y: y,
@@ -404,7 +400,7 @@ function renderVisuals() {
 
 // Update the visuals list with the change and rerender all visuals
 function onCheckboxClicked(checkbox) {
-    let visual = jQuery.grep(layoutShowcaseState.layoutVisuals, function(visual) { return visual.name === checkbox.value; })[0];
+    let visual = jQuery.grep(layoutShowcaseState.layoutVisuals, function (visual) { return visual.name === checkbox.value; })[0];
     visual.checked = $(checkbox).is(":checked");
     renderVisuals();
 };

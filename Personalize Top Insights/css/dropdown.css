@@ -10,41 +10,6 @@
     src: url("https://content.powerapps.com/resource/powerbiwfe/fonts/SegoeUI-SemiBold-final.83b7261d0e6f3994ed6d.woff") format("woff");
 }
 
-body {
-    overflow: hidden;
-}
-
-#wrapper {
-    margin: 0 auto;
-    width: 100%;
-}
-
-#contoso-header {
-    background: #4946C6;
-    color: #FFF8DC;
-    padding: 2px 0;
-    text-align: left;
-}
-
-#contoso {
-    height: 41px;
-    margin-left: 24px;
-    padding: 5px 0;
-    width: 74px;
-}
-
-#main-div {
-    background: #F6F6FA;
-    color: #FFF8DC;
-    margin: 0 auto;
-    text-align: left;
-    width: 100%;
-}
-
-#main-div>* {
-    display: none;
-}
-
 .dropdown {
     float: left;
 }
@@ -215,54 +180,4 @@ li {
 
 .active-columns-btn {
     background: rgba(73, 70, 198, 0.3);
-}
-
-.line {
-    border-top: 0.5px solid rgba(0, 0, 0, 0.2);
-    clear: both;
-    margin: 0 16px 0 16px;
-    opacity: 0.7;
-    position: relative;
-    width: 98%;
-}
-
-#report-container {
-    display: none;
-    height: calc(100vh - 120px);
-    width: 100%;
-}
-
-#report-container>iframe {
-    border: none;
-    overflow: hidden;
-}
-
-.rotate {
-    animation: rotation 1s infinite linear;
-}
-
-@keyframes rotation {
-    from {
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(359deg);
-    }
-}
-
-#container {
-    height: calc(100vh - 130px);
-    width: 100%;
-}
-
-#overlay {
-    height: inherit;
-    position: absolute;
-    width: inherit;
-}
-
-#overlay #spinner {
-    position: absolute;
-    top: 50%;
-    left: 50%;
 }

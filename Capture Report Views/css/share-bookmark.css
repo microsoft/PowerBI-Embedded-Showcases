@@ -1,0 +1,68 @@
+body {
+    height: 100%;
+    overflow: hidden;
+}
+
+#container {
+    width: 100%;
+    height: calc(100vh - 130px);
+}
+
+#wrapper {
+    margin: 0 auto;
+    width: 100%;
+}
+
+#contoso-header {
+    background: #1461F8;
+    color: #FFF8DC;
+    padding: 2px 0;
+    text-align: left;
+}
+
+#contoso {
+    height: 41px;
+    margin-left: 24px;
+    padding: 5px 0;
+    width: 74px;
+}
+
+#share-bookmark {
+    display: none;
+    width: 100%;
+    height: calc(100vh - 50px);
+}
+
+.rotate {
+    animation: rotation 1s infinite linear;
+}
+
+@keyframes rotation {
+    from {
+        transform: translate(-50%, -50%) rotate(0deg);
+    }
+    to {
+        transform: translate(-50%, -50%) rotate(359deg);
+    }
+}
+
+#overlay {
+    position: absolute;
+    width: inherit;
+    height: inherit;
+}
+
+#overlay #spinner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+}
+
+#bookmark-container {
+    height: 100%;
+    width: 100%;
+}
+
+#bookmark-container>iframe {
+    border: none;
+}
