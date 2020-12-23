@@ -191,7 +191,7 @@ function handleExportData(result) {
     const resultData = parseData(result.data);
 
     // Filter the unwanted columns
-    reportShowcaseState.data = filterTable(["Latest Purchase Category", "Total spend", "Days since last purchase"], resultData);
+    reportShowcaseState.data = filterTable(["Latest Purchase Category", "Total spend ($)", "Days since last purchase"], resultData);
 
     // Create a table from the 2d array
     const table = createTable(reportShowcaseState.data)
@@ -309,13 +309,13 @@ function createTable(tableData) {
                 cell.setAttribute("class", "table-values");
                 cell.setAttribute("role", "cell");
                 if (columnIndex === 0) {
-                    cell.setAttribute("id", "name-cell");
+                    cell.setAttribute("class", "name-cell");
                 } else if (columnIndex === 1) {
-                    cell.setAttribute("id", "country-cell");
+                    cell.setAttribute("class", "region-cell");
                 } else if (columnIndex === 2) {
-                    cell.setAttribute("id", "mail-cell");
+                    cell.setAttribute("class", "mail-cell");
                 } else if (columnIndex === 3) {
-                    cell.setAttribute("id", "phone-cell");
+                    cell.setAttribute("class", "phone-cell");
                 }
             } else {
                 cell = document.createElement("div");
@@ -324,7 +324,7 @@ function createTable(tableData) {
                 if (columnIndex === 0) {
                     cell.setAttribute("id", "name");
                 } else if (columnIndex === 1) {
-                    cell.setAttribute("id", "country");
+                    cell.setAttribute("id", "region");
                 } else if (columnIndex === 2) {
                     cell.setAttribute("id", "mail");
                 } else if (columnIndex === 3) {

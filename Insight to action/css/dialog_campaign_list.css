@@ -2,7 +2,7 @@ html {
     --table-header-padding: 0 8px 8px 30px;
     --table-cell-padding: 6px 0 6px 30px;
     --name-column: 170px;
-    --country-column: 140px;
+    --region-column: 140px;
     --mail-column: 270px;
     --phone-column: 208px;
 }
@@ -92,9 +92,9 @@ html {
     width: var(--name-column);
 }
 
-#country {
+#region {
     padding: var(--table-header-padding);
-    width: var(--country-column);
+    width: var(--region-column);
 }
 
 #mail {
@@ -112,22 +112,22 @@ html {
     font: 14px "Segoe UI Regular", "segoe_ui_regular", Tahoma, Arial, Helvetica;
 }
 
-#name-cell {
+.name-cell {
     padding: 6px 0 6px 16px;
     width: var(--name-column);
 }
 
-#country-cell {
+.region-cell {
     padding: var(--table-cell-padding);
-    width: var(--country-column);
+    width: var(--region-column);
 }
 
-#mail-cell {
+.mail-cell {
     padding: var(--table-cell-padding);
     width: var(--mail-column);
 }
 
-#phone-cell {
+.phone-cell {
     padding: 6px 30px;
     width: var(--phone-column);
 }
