@@ -7,22 +7,32 @@ let reportRefreshTokenTimer = 0;
 // This function will make the AJAX request to the endpoint and get the JSON response which it will set in the sessions
 function populateEmbedConfigIntoCurrentSession(url, updateCurrentToken) {
 
-    // This returns the JSON response
-    return $.getJSON(url, function(embedConfig) {
+    try {
+        let configFromParentWindow = window.parent.showcases.captureReportViews;
+        if (configFromParentWindow) {
+            let diffMs = new Date(configFromParentWindow.expiration) - new Date();
+            let diffMins = Math.round(((diffMs % 86400000) % 3600000) / 60000);
 
-        // Set the embedToken, embedUrl, reportId
-        setConfig(embedConfig.EmbedToken.Token, embedConfig.EmbedUrl, embedConfig.Id);
-        if (updateCurrentToken) {
+            embedConfig = {
+                EmbedUrl: configFromParentWindow.embedUrl,
+                EmbedToken: {
+                    Token: configFromParentWindow.token
+                },
+                Id: configFromParentWindow.id,
+                MinutesToExpiration: diffMins,
+            };
 
-            // Get the reference to the embedded element
-            let reportContainer = $("#report-container")[0];
-            let embedContainer = powerbi.get(reportContainer);
-
-            if (embedContainer) {
-                embedContainer.setAccessToken(embedConfig.EmbedToken.Token);
-            }
+            handleNewEmbedConfig(url, embedConfig, updateCurrentToken);
         }
-        tokenExpirationRefreshListener(embedConfig.MinutesToExpiration, url, "Report");
+
+        return;
+    } catch (error) {
+        console.error(error);
+    }
+
+    // This returns the JSON response
+    return $.getJSON(url, function (embedConfig) {
+        handleNewEmbedConfig(url, embedConfig, updateCurrentToken);
     });
 }
 
@@ -33,6 +43,23 @@ function tokenExpirationRefreshListener(minutesToExpiration, url, entityType) {
 
     // Set the tokenRefresh timer to count the seconds and request the JSON again when token expires
     setTokenRefreshListener(updateAfterMilliSeconds, reportRefreshTokenTimer, url, entityType);
+}
+
+function handleNewEmbedConfig(tokenRefreshUrl, embedConfig, updateCurrentToken) {
+    // Set the embedToken, embedUrl, reportId
+    setConfig(embedConfig.EmbedToken.Token, embedConfig.EmbedUrl, embedConfig.Id);
+    if (updateCurrentToken) {
+
+        // Get the reference to the embedded element
+        let reportContainer = $("#report-container")[0];
+        let embedContainer = powerbi.get(reportContainer);
+
+        if (embedContainer) {
+            embedContainer.setAccessToken(embedConfig.EmbedToken.Token);
+        }
+    }
+    
+    tokenExpirationRefreshListener(embedConfig.MinutesToExpiration, tokenRefreshUrl, "Report");
 }
 
 // Checking the remaining time and calling the API again
