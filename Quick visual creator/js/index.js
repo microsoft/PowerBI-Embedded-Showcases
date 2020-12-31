@@ -216,6 +216,10 @@ async function embedBaseReport() {
 
         // Implement phase embedding to first load the report, arrange the visuals and call the render
         await baseReportState.report.render();
+
+        // Hide the loader
+        overlay.hide();
+        $(".content").children().show();
     });
 
     // Clear any other rendered handler events
@@ -226,11 +230,6 @@ async function embedBaseReport() {
 
         // Update available visual types on UI
         updateAvailableVisualTypes();
-
-        // Implement Phase-embedding
-        // Hide the loader
-        overlay.hide();
-        $(".content").children().show();
 
         // Enable choosing visual type
         generatorType.removeClass(disabledClass);

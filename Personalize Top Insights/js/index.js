@@ -135,17 +135,17 @@ async function embedCustomLayoutReport() {
         layoutShowcaseState.layoutReport.render();
     });
 
-    // Clear any other rendered handler events
-    layoutShowcaseState.layoutReport.off("rendered");
+    // Clear any other loaded handler events
+    layoutShowcaseState.layoutReport.off("loaded");
 
     // Triggers when a report is successfully embedded in UI
-    layoutShowcaseState.layoutReport.on("rendered", function () {
+    layoutShowcaseState.layoutReport.on("loaded", function () {
 
         // Phase-embedding
         // Hide the loader
         $("#overlay").hide();
         $('#main-div').children().show();
-        console.log("Report render successful");
+        console.log("Report loaded successful");
     });
 
     // Clear any other error handler events
