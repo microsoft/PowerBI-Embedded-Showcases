@@ -1,5 +1,5 @@
 // API Endpoint to get the JSON response of Embed Url, Embed token and reportId
-const reportUrl = "https://aka.ms/sampleReportEmbedConfig";
+const reportUrl = "https://aka.ms/CaptureViewsReportEmbedConfig";
 
 // Set the report refresh token timer
 let reportRefreshTokenTimer = 0;

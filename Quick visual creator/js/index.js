@@ -215,8 +215,9 @@ async function embedBaseReport() {
         rearrangeInCustomLayout();
 
         // Implement phase embedding to first load the report, arrange the visuals and call the render
-        await baseReportState.report.render();
+        baseReportState.report.render();
 
+        // Implement Phase-embedding
         // Hide the loader
         overlay.hide();
         $(".content").children().show();

@@ -1,5 +1,5 @@
 // API Endpoint to get the JSON response of Embed Url, Embed token and reportId
-const reportUrl = "https://playgroundbe-bck-1.azurewebsites.net/Reports/ThemesReportV2";
+const reportUrl = "https://aka.ms/ThemeReportEmbedConfig";
 
 // Set the report refresh token timer
 const reportRefreshTokenTimer = 0;

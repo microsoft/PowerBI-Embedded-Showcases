@@ -124,7 +124,7 @@ async function embedBookmarksReport() {
     // Report.on will add an event handler for report loaded event.
     bookmarkShowcaseState.report.on("loaded", async function () {
 
-        // Get report"s existing bookmarks
+        // Get report's existing bookmarks
         const bookmarks = await bookmarkShowcaseState.report.bookmarksManager.getBookmarks();
 
         // Create bookmarks list from the existing report bookmarks
@@ -144,7 +144,7 @@ function createBookmarksList(bookmarks) {
     // Reset next bookmark ID
     bookmarkShowcaseState.nextBookmarkId = 1;
 
-    // Set bookmarks array to the report"s fetched bookmarks
+    // Set bookmarks array to the report's fetched bookmarks
     bookmarkShowcaseState.bookmarks = bookmarks;
 
     // Build the bookmarks list HTML code
@@ -240,8 +240,8 @@ async function onBookmarkCaptureClicked() {
     } else {
         viewName.removeClass(invalidField);
 
-        // Capture the report"s current state
-        const capturedBookmark = await bookmarkShowcaseState.report.bookmarksManager.capture({});
+        // Capture the report's current state with personalized visuals
+        const capturedBookmark = await bookmarkShowcaseState.report.bookmarksManager.capture({ personalizeVisuals: true });
 
         // Build bookmark element
         let bookmark = {
@@ -299,8 +299,8 @@ async function createLink() {
         document.referrer :
         document.location.href;
 
-    // Capture the report"s current state
-    const capturedBookmark = await bookmarkShowcaseState.report.bookmarksManager.capture({});
+    // Capture the report's current state with personalized visuals
+    const capturedBookmark = await bookmarkShowcaseState.report.bookmarksManager.capture({ personalizeVisuals: true });
 
     // Build bookmark element
     let bookmark = {

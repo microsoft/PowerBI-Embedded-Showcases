@@ -1,5 +1,5 @@
 // API Endpoint to get the JSON response of Embed Url, Embed token and reportId
-const layoutShowcaseReportUrl = "https://playgroundbe-bck-1.azurewebsites.net/Reports/QuickVisualCreatorReport";
+const layoutShowcaseReportUrl = "https://aka.ms/QuickVisualCreatorReportEmbedConfig";
 
 // Set the report refresh token timer
 const reportRefreshTokenTimer = 0;

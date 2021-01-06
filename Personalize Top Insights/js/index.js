@@ -133,13 +133,6 @@ async function embedCustomLayoutReport() {
 
         // Implement phase embedding to first load the report, arrange the visuals and then render
         layoutShowcaseState.layoutReport.render();
-    });
-
-    // Clear any other loaded handler events
-    layoutShowcaseState.layoutReport.off("loaded");
-
-    // Triggers when a report is successfully embedded in UI
-    layoutShowcaseState.layoutReport.on("loaded", function () {
 
         // Phase-embedding
         // Hide the loader

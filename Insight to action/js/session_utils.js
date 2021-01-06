@@ -1,5 +1,5 @@
 // API Endpoint to get the JSON response of Embed Url, Embed token and reportId
-const insightToActionReportUrl = "https://playgroundbe-bck-1.azurewebsites.net/Reports/InsightToActionV2Report";
+const insightToActionReportUrl = "https://aka.ms/InsightToActionReportEmbedConfig";
 
 // Set the report refresh token timer
 let reportRefreshTokenTimer = 0;
