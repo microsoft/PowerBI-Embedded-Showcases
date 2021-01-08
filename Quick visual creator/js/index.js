@@ -212,7 +212,7 @@ async function embedBaseReport() {
         baseReportState.visuals = await baseReportState.page.getVisuals();
 
         // Rearrange the visuals in 3x3 custom layout
-        rearrangeInCustomLayout();
+        await rearrangeInCustomLayout();
 
         // Implement phase embedding to first load the report, arrange the visuals and call the render
         baseReportState.report.render();
@@ -317,7 +317,7 @@ async function embedVisualAuthoringReport() {
 }
 
 // Render all visuals with 3x3 custom layout
-function rearrangeInCustomLayout() {
+async function rearrangeInCustomLayout() {
 
     // render only if report and visuals initialized
     if (!baseReportState.report || !baseReportState.visuals) {
@@ -509,7 +509,7 @@ function rearrangeInCustomLayout() {
     }
 
     // Call updateSettings with the new settings object
-    baseReportState.report.updateSettings(settings);
+    await baseReportState.report.updateSettings(settings);
 }
 
 // Reset the report-container based on the visuals inside it

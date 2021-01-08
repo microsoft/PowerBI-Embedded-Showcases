@@ -129,7 +129,7 @@ async function embedCustomLayoutReport() {
             };
         });
 
-        createVisualsArray(reportVisuals);
+        await createVisualsArray(reportVisuals);
 
         // Implement phase embedding to first load the report, arrange the visuals and then render
         layoutShowcaseState.layoutReport.render();
@@ -149,11 +149,10 @@ async function embedCustomLayoutReport() {
         let errorMsg = event.detail;
         console.error(errorMsg);
     });
-
 }
 
 // Create visuals array from the report visuals and update the HTML
-function createVisualsArray(reportVisuals) {
+async function createVisualsArray(reportVisuals) {
 
     // Remove all visuals without titles (i.e cards)
     layoutShowcaseState.layoutVisuals = reportVisuals.filter(function (visual) {
@@ -170,7 +169,7 @@ function createVisualsArray(reportVisuals) {
     });
 
     // Render all visuals
-    renderVisuals();
+    await renderVisuals();
 }
 
 // Build visual checkbox HTML element
@@ -207,7 +206,7 @@ function isBrowserFirefox() {
 }
 
 // Render all visuals with current configuration
-function renderVisuals() {
+async function renderVisuals() {
 
     // render only if report and visuals initialized
     if (!layoutShowcaseState.layoutReport || !layoutShowcaseState.layoutVisuals) {
@@ -388,7 +387,7 @@ function renderVisuals() {
     }
 
     // Call updateSettings with the new settings object
-    layoutShowcaseState.layoutReport.updateSettings(settings);
+    await layoutShowcaseState.layoutReport.updateSettings(settings);
 }
 
 // Update the visuals list with the change and rerender all visuals
