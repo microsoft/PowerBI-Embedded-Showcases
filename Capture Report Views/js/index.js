@@ -131,10 +131,10 @@ async function embedBookmarksReport() {
         createBookmarksList(bookmarks);
 
         // Hide the loader
-        overlay.hide();
+        overlay.css("visibility", "hidden");
 
         // Show the container
-        $("#main-div").show();
+        $("#main-div").css("visibility", "visible");
     });
 }
 

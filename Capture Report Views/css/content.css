@@ -31,7 +31,7 @@
 #main-div {
     background: #FFF;
     color: #FFF8DC;
-    display: none;
+    visibility: hidden;
     margin: 0 auto;
     text-align: left;
     width: 100%;
