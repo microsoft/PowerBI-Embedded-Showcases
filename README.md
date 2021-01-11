@@ -1,16 +1,32 @@
 # Introduction
-Showcases for Power BI Embedded playground
+Showcases for Power BI Embedded analytics playground
 
 # Contents
 Playground Showcases available in this package currently:
-1.	Personalize Top Insights
-2.	Capture Report Views
-3.  Customize Report colors and Theme
-4.  Insight to action
-5.  Quick visual creator
+1.	Personalize top insights
+2.	Capture report views
+3.  Customize report colors and mode
+4.  Go from insights to quick action
+5.  Quickly create and personalize visuals
 
-# How to use
-1. Use the [.tgz file](playground-showcases-2.0.0.tgz) from this repository
-2. Run __npm install *location_of_tgz_file*__ to install the package in your Node solution
-3. Folders for respective showcases will now be available in the node_modules/playground-showcases
-4. To embed a showcase, point the iframe to the index.html file in respective showcase folder
+## Contributing
+
+This project welcomes contributions and suggestions.  Most contributions require you to agree to a
+Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us
+the rights to use your contribution. For details, visit https://cla.opensource.microsoft.com.
+
+When you submit a pull request, a CLA bot will automatically determine whether you need to provide
+a CLA and decorate the PR appropriately (e.g., status check, comment). Simply follow the instructions
+provided by the bot. You will only need to do this once across all repos using our CLA.
+
+This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).
+For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or
+contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
+
+## Trademarks
+
+This project may contain trademarks or logos for projects, products, or services. Authorized use of Microsoft 
+trademarks or logos is subject to and must follow 
+[Microsoft's Trademark & Brand Guidelines](https://www.microsoft.com/en-us/legal/intellectualproperty/trademarks/usage/general).
+Use of Microsoft trademarks or logos in modified versions of this project must not cause confusion or imply Microsoft sponsorship.
+Any use of third-party trademarks or logos are subject to those third-party's policies.
