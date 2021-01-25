@@ -29,23 +29,37 @@
     color: #D9E6EA;
 }
 
-.btn-theme:hover,
-.btn-theme:focus {
+.btn-theme:hover {
     background: #FFF;
     color: #4A565A;
 }
 
-.btn-theme.dark:hover,
-.btn-theme.dark:focus {
+.btn-theme.dark:hover {
     background: #393939;
     color: #D9E6EA;
 }
 
+/* For Keyboard focus */
+.btn-theme.dark:focus-visible {
+    box-shadow: 0 0 3pt 1pt #D9E6EA;
+}
+
+/* Remove focus when mouse navigation is used */
+.btn-theme.dark:focus:not(:focus-visible) {
+    box-shadow: none;
+}
+
+.btn-theme:focus-visible {
+    box-shadow: 0 0 3pt 1pt rgba(0,123,255,.5);
+}
+
+.btn-theme:focus:not(:focus-visible) {
+    box-shadow: none;
+}
+
 .btn.active.focus,
 .btn.active:focus,
-.btn.focus:active,
-.btn:active:focus,
-.btn:focus {
+.btn:active:focus {
     box-shadow: none;
     outline: 0;
     outline-offset: -2px;
@@ -60,6 +74,30 @@
 .btn-theme.dark[aria-expanded="true"] {
     background: #393939;
     color: #D9E6EA;
+}
+
+input[type="checkbox"]:focus-visible + span.slider.round {
+    box-shadow: 0 0 3pt 2pt rgba(0,123,255,.5);
+    outline: none;
+}
+
+input[type="checkbox"]:focus:not(:focus-visible) + span.slider.round {
+    box-shadow: none;
+    outline: none;
+}
+
+input[type="checkbox"]:focus-visible + span.slider.round.dark {
+    box-shadow: 0 0 3pt 1pt #D9E6EA;
+    outline: none;
+}
+
+input[type="checkbox"]:focus:not(:focus-visible) + span.slider.round.dark {
+    box-shadow: none;
+    outline: none;
+}
+
+input[type="radio"]:focus {
+    outline-offset: initial;
 }
 
 #bucket {

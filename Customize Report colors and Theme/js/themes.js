@@ -74,6 +74,10 @@ const themes = [{
                 }],
                 "categoryLabels": [{
                     "color": { "solid": { "color": "#FFFFFF" } }
+                }],
+                "border": [{
+                    "show": true,
+                    "color": { "solid": { "color": "#484644" } }
                 }]
             }
         }

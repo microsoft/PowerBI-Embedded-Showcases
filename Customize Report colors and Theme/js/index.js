@@ -1,14 +1,3 @@
-// Set properties for Accessibility insights
-function setReportAccessibilityProps(report) {
-    report.setComponentTitle("Playground showcase sample Theme report");
-    report.setComponentTabIndex(0);
-}
-
-// To stop the page load on click event inside dropdown
-$(document).on("click", ".allow-focus", function (element) {
-    element.stopPropagation();
-});
-
 // Perform events only after DOM is loaded
 $(document).ready(function () {
 
@@ -24,13 +13,44 @@ $(document).ready(function () {
     buildThemePalette();
 
     // Cache dynamic elements to toggle the theme
+    themeSlider = $("#theme-slider");
     dataColorNameElements = $(".data-color-name");
     themeSwitchLabel = $(".theme-switch-label");
     horizontalSeparator = $(".dropdown-separator");
     sliderCheckbox = $(".slider");
 
+    // Move the focus back to the button which triggered the dropdown
+    dropdownDiv.on("hidden.bs.dropdown", function () {
+        themeButton.focus();
+    });
+
+    // Focus on the theme slider once the dropdown opens
+    dropdownDiv.on("shown.bs.dropdown", function () {
+        themeSlider.focus();
+    });
+
     // Get all the UI elements to toggle the dark theme
-    allUIElements = [contentElement, themeContainer, themeSwitchLabel, horizontalSeparator, horizontalRule, sliderCheckbox, themeButton, themeBucket, dataColorNameElements];
+    allUIElements = [bodyElement, contentElement, themeContainer, themeSwitchLabel, horizontalSeparator, horizontalRule, sliderCheckbox, themeButton, themeBucket, dataColorNameElements];
+});
+
+// Close the dropdown when focus moves to Choose theme button from Toggle slider
+$(document).on("keydown", "#theme-slider", function(e) {
+    if (e.shiftKey && (e.key === "Tab" || e.keyCode === KEYCODE_TAB)) {
+        dropdownDiv.removeClass("show");
+        themesList.removeClass("show");
+        $(".btn-theme")[0].setAttribute("aria-expanded", false);
+    }
+});
+
+// Set properties for Accessibility insights
+function setReportAccessibilityProps(report) {
+    report.setComponentTitle("Playground showcase sample Theme report");
+    report.setComponentTabIndex(0);
+}
+
+// To stop the page load on click event inside dropdown
+$(document).on("click", ".allow-focus", function (element) {
+    element.stopPropagation();
 });
 
 // Embed the report
@@ -77,7 +97,7 @@ async function embedThemesReport() {
             },
             layoutType: models.LayoutType.Custom,
             customLayout: {
-                displayOption: models.DisplayOption.FitToWidth
+                displayOption: models.DisplayOption.FitToPage
             },
             background: models.BackgroundType.Transparent
         },
@@ -126,9 +146,11 @@ function buildThemeSwitcher() {
     // Div wrapper element
     let divElement = document.createElement("div");
     divElement.setAttribute("class", "theme-element-container");
+    divElement.setAttribute("role", "menuitem");
 
     let spanElement = document.createElement("span");
     spanElement.setAttribute("class", "theme-switch-label");
+    spanElement.setAttribute("id", "dark-label-text");
     let textNodeElement = document.createTextNode("Dark mode");
     spanElement.appendChild(textNodeElement);
     divElement.appendChild(spanElement);
@@ -136,6 +158,7 @@ function buildThemeSwitcher() {
     // Build the checkbox slider
     let checkboxElement = document.createElement("label");
     checkboxElement.setAttribute("class", "switch");
+    checkboxElement.setAttribute("aria-labelledby", "dark-label-text");
 
     let inputCheckboxElement = document.createElement("input");
     inputCheckboxElement.setAttribute("id", "theme-slider");
@@ -161,6 +184,7 @@ function buildSeparator() {
     // Build the separator between theme-switcher and data-colors
     let separatorElement = document.createElement("div");
     separatorElement.setAttribute("class", "dropdown-separator");
+    separatorElement.setAttribute("role", "separator");
     themesList.append(separatorElement);
 }
 
@@ -170,11 +194,14 @@ function buildDataColorElement(id) {
     // Div wrapper element for the data-color
     let divElement = document.createElement("div");
     divElement.setAttribute("class", "theme-element-container");
+    divElement.setAttribute("role", "group");
 
     let inputElement = document.createElement("input");
+    inputElement.setAttribute("role", "menuitemradio");
     inputElement.setAttribute("type", "radio");
     inputElement.setAttribute("name", "data-color");
     inputElement.setAttribute("id", "datacolor" + id);
+    inputElement.setAttribute("aria-label", jsonDataColors[id].name + " color theme");
     inputElement.setAttribute("onclick", "onDataColorWrapperClicked(this);");
     divElement.appendChild(inputElement);
 
@@ -196,7 +223,7 @@ function buildDataColorElement(id) {
     for (let i = 0; i < dataColors.length; i++) {
         let dataColorElement = document.createElement("div");
         dataColorElement.setAttribute("class", "data-color");
-        dataColorElement.setAttribute("style","background:#"+dataColors[i].substr(1));
+        dataColorElement.setAttribute("style", "background:#" + dataColors[i].substr(1));
         colorsDivElement.appendChild(dataColorElement);
     }
 
@@ -209,26 +236,14 @@ function buildDataColorElement(id) {
 // Apply the selected data-color to the report from the wrapper element
 function onDataColorWrapperClicked(element) {
 
-    deselectPreviousDataColor();
+    // Deselect the previously selected data-color
+    $("input[name=data-color]:checked", "#theme-dropdown").prop("checked", false);
 
     // Set the respective data-color as active from the wrapper element
     $(element.parentElement.firstElementChild).prop("checked", true);
 
     // Apply the theme to the report based on the data-color and the background
     applyTheme();
-}
-
-// Deselect the previously selected data-color
-function deselectPreviousDataColor() {
-
-    // Get active data-color id from the dropdown
-    const activeDataColorId = $("input[name=data-color]:checked", "#theme-dropdown")[0].getAttribute("id");
-
-    // Get the DOM element
-    const prevSelectedDataColorElement = document.getElementById(activeDataColorId);
-
-    // Uncheck the checkbox
-    $(prevSelectedDataColorElement).prop("checked", false);
 }
 
 // Apply the theme based on the mode and the data-color selected
