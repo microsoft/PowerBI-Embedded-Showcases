@@ -27,16 +27,23 @@
     margin: 16px;
 }
 
-.btn-action:hover, .btn-action:focus {
+.btn-action:hover {
     background: rgba(73, 70, 198, 0.25);
     color: #4946C6;
+}
+
+.btn-action:focus {
+    box-shadow: 0 0 0 0.1rem #4946C6;
+}
+
+.btn-util:hover > img {
+    filter: brightness(0) invert(1);
 }
 
 .btn.active.focus,
 .btn.active:focus,
 .btn.focus:active,
-.btn:active:focus,
-.btn:focus {
+.btn:active:focus {
     box-shadow: none;
     color: #4946C6;
     outline: 0;
@@ -59,6 +66,11 @@
     padding: 0;
     width: 246px;
     padding: 8px 0;
+}
+
+/* Display the focus on the checkbox for the visual selection */
+input[type="checkbox"]:focus + .checkbox-checkmark {
+    box-shadow: 0 0 0 0.15rem #4946C6;
 }
 
 .checkbox-container {
@@ -134,48 +146,48 @@
     white-space: nowrap;
 }
 
-#layouts-div {
+#layouts-list {
     background: #FFF;
     border-radius: 4px;
-    box-sizing: border-box;
     box-shadow: 0 0.3px 0.9px rgba(0, 0, 0, 0.11), 0 1.6px 3.6px rgba(0, 0, 0, 0.13);
-    display: flex;
-    margin: -8px 0 0 140px;
+    box-sizing: border-box;
+    height: 38px;
+    margin: 8px 0 0 -36px;
+    padding: 0;
     position: absolute;
+    width: 190px;
     z-index: 1;
 }
 
-.btn-white:hover {
+#layouts-list.show {
+    display: flex;
+}
+
+.btn-util {
+    border: 0.25px solid transparent;
+    box-sizing: border-box;
+    outline: none;
+    padding: 0;
+}
+
+.btn-util:hover {
     background: rgba(73, 70, 198, 0.8);
 }
 
-#layouts-list {
-    display: flex;
-    margin: 0;
-    padding-left: 0;
-}
-
-li {
-    display: inline;
-}
-
-.btn-white {
-    border: none;
+.btn-util:focus {
+    border: 2px solid #4946C6;
+    height: 40px;
     outline: none;
-    padding: 0;
 }
 
 .btn-layout {
     background: #FFF;
 }
 
-.svg:hover {
-    filter: brightness(0) invert(1);
-}
-
 .layout-img {
-    height: 36px;
-    padding: 10px;
+    height: 16px;
+    margin: 10px;
+    width: 16px;
 }
 
 .active-columns-btn {

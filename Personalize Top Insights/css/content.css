@@ -11,11 +11,6 @@
     }
 }
 
-#container {
-    height: calc(100vh - 130px);
-    width: 100%;
-}
-
 #overlay {
     height: inherit;
     position: absolute;
@@ -23,7 +18,7 @@
 }
 
 #overlay #spinner {
-    position: absolute;
+    position: fixed;
     top: 50%;
     left: 50%;
 }

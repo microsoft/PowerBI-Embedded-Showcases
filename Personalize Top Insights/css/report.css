@@ -1,10 +1,10 @@
 #report-container {
     display: none;
-    height: calc(100vh - 120px);
+    height: calc((9/16) * 98vw + 20px);
     width: 100%;
 }
 
 #report-container>iframe {
     border: none;
-    overflow: hidden;
+    margin-top: -10px; /* To remove the space after the report-container */
 }

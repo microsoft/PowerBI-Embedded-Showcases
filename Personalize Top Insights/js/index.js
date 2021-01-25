@@ -12,21 +12,6 @@ $(document).ready(function () {
     // Embed the report by calling Endpoint
     embedCustomLayoutReport();
 
-    let layoutsDiv = $("#layouts-div");
-    layoutsDiv.hide();
-
-    $("#visuals-layout-btn").click(function () {
-        layoutsDiv.toggle();
-    });
-
-    $("#visuals-click-btn").click(function () {
-        layoutsDiv.hide();
-    });
-
-    $(document).click(function () {
-        layoutsDiv.hide();
-    })
-
     $("#btn-one-col").click(function () {
         onModifyLayoutClicked(0, 1, this);
     });
@@ -47,13 +32,64 @@ $(document).ready(function () {
         onModifyLayoutClicked(0, 3, this);
     });
 
+    // Focus on the first visual selection when the dropdown opens
+    visualsDiv.on("shown.bs.dropdown", function () {
+        $("input[type=checkbox]")[0].focus();
+    });
+
+    layoutsDiv.on("shown.bs.dropdown", function () {
+
+        // Focus on the current selected layout
+        const activeLayout = $(".active-columns-btn");
+        activeLayout.focus();
+
+        // Scroll the page to the top
+        document.body.scrollTop = document.documentElement.scrollTop = 0;
+    })
+
+    // Move the focus back to the button which triggered the dropdown
+    visualsDiv.on("hidden.bs.dropdown", function () {
+        $("#visuals-click-btn").focus();
+    });
+
+    // Move the focus back to the button which triggered the dropdown
+    layoutsDiv.on("hidden.bs.dropdown", function () {
+        $("#visuals-layout-btn").focus();
+    });
+
+    // Close the layouts dropdown when focus moves from first layout-option to button
+    layoutButtons.on("keydown", function (e) {
+        if (e.shiftKey && (e.key === "Tab" || e.keyCode === KEYCODE_TAB)) /* shift + tab */ {
+            if (document.activeElement.id === firstButtonId) {
+
+                // Close the layouts dropdown
+                layoutsDropdown.removeClass("show");
+                layoutsDiv.removeClass("show");
+                document.getElementById("visuals-layout-btn").setAttribute("aria-expanded", false);
+            }
+        }
+    });
+
     window.addEventListener("resize", renderVisuals);
+});
+
+// Close the visuals dropdown when focus moves from first checkbox to button
+$(document).on("keydown", "input:checkbox", function (e) {
+    if (e.shiftKey && (e.key === "Tab" || e.keyCode === KEYCODE_TAB)) /* shift + tab */ {
+        if (this.id === firstVisualId) {
+
+            // Close the visuals dropdown
+            visualsDropdown.removeClass("show");
+            visualsDiv.removeClass("show");
+            document.getElementById("visuals-click-btn").setAttribute("aria-expanded", false);
+        }
+    }
 });
 
 // Embed the report and retrieve all report visuals
 async function embedCustomLayoutReport() {
 
-    // Defualt columns value is two columns
+    // Default columns value is two columns
     layoutShowcaseState.columns = ColumnsNumber.Two;
     LayoutShowcaseConsts.span = SpanType.None;
 
@@ -102,7 +138,7 @@ async function embedCustomLayoutReport() {
     layoutShowcaseState.layoutReport = powerbi.load(reportContainer, config);
 
     // For accessibility insights
-    layoutShowcaseState.layoutReport.setComponentTitle('Playground showcase custom layouts report');
+    layoutShowcaseState.layoutReport.setComponentTitle("Playground showcase custom layouts report");
     layoutShowcaseState.layoutReport.setComponentTabIndex(0);
 
     // Clear any other loaded handler events
@@ -137,8 +173,8 @@ async function embedCustomLayoutReport() {
         // Phase-embedding
         // Hide the loader
         $("#overlay").hide();
-        $('#main-div').children().show();
-        console.log("Report loaded successful");
+        $("#main-div").children().show();
+        console.log("Report render successful");
     });
 
     // Clear any other error handler events
@@ -160,7 +196,6 @@ async function createVisualsArray(reportVisuals) {
     });
 
     // Clear visualDropdown div
-    let visualsDropdown = $("#visuals-list");
     visualsDropdown.empty();
 
     // Build checkbox html list and insert the html code to visualDropdown div
@@ -177,6 +212,7 @@ function buildVisualElement(visual) {
     let labelElement = document.createElement("label");
     labelElement.setAttribute("class", "checkbox-container checked");
     labelElement.setAttribute("for", "visual_" + visual.name);
+    labelElement.setAttribute("role", "menuitem");
 
     let inputElement = document.createElement("input");
     inputElement.setAttribute("type", "checkbox");
@@ -202,7 +238,7 @@ function buildVisualElement(visual) {
 // Returns true if current browser is Firefox
 function isBrowserFirefox() {
     // Refer https://developer.mozilla.org/en-US/docs/Web/HTTP/Browser_detection_using_the_user_agent#Browser_Name
-    return navigator.userAgent.includes('Firefox');
+    return navigator.userAgent.includes("Firefox");
 }
 
 // Render all visuals with current configuration
@@ -220,7 +256,7 @@ async function renderVisuals() {
     let reportContainer = $("#report-container");
 
     let reportWidth = reportContainer.width();
-    let reportHeight = reportContainer.height();
+    let reportHeight = 0;
 
     // Adjust the report width in Firefox to circumvent the horizontal scrollbar issue
     if (isBrowserFirefox()) {
@@ -268,7 +304,7 @@ async function renderVisuals() {
             visualsLayout[element.name] = {
                 x: x,
                 y: y,
-                width: (idx % visualsPerSection === visualsPerSection - 1) ? visualWidth * 2 : visualWidth,
+                width: (idx % visualsPerSection === visualsPerSection - 1) ? visualWidth * 2 + LayoutShowcaseConsts.margin : visualWidth,
                 height: visualHeight,
                 displayState: {
 
@@ -299,7 +335,7 @@ async function renderVisuals() {
                 x: x,
                 y: y,
                 width: visualWidth,
-                height: !(idx % visualsPerSection) ? visualHeight * 2 : visualHeight,
+                height: !(idx % visualsPerSection) ? visualHeight * 2 + LayoutShowcaseConsts.margin : visualHeight,
                 displayState: {
 
                     // Change the selected visuals display mode to visible
@@ -383,6 +419,10 @@ async function renderVisuals() {
 
     // If reportWidth  or reportHeight is changed, change display option to actual size to add scroll bar
     if (reportWidth !== reportContainer.width() || reportHeight !== reportContainer.height()) {
+
+        // Reset the height of the report-container to avoid the scroll-bar
+        resetContainerHeight(reportHeight);
+
         settings.customLayout.displayOption = models.DisplayOption.ActualSize;
     }
 
@@ -390,14 +430,20 @@ async function renderVisuals() {
     await layoutShowcaseState.layoutReport.updateSettings(settings);
 }
 
-// Update the visuals list with the change and rerender all visuals
+// Reset the report-container based on the visuals inside it
+function resetContainerHeight(newHeight) {
+    const reportContainer = $("#report-container");
+    reportContainer.height(newHeight);
+}
+
+// Update the visuals list with the change and re-render all visuals
 function onCheckboxClicked(checkbox) {
     let visual = jQuery.grep(layoutShowcaseState.layoutVisuals, function (visual) { return visual.name === checkbox.value; })[0];
     visual.checked = $(checkbox).is(":checked");
     renderVisuals();
 };
 
-// Update columns number and rerender the visuals
+// Update columns number and re-render the visuals
 function onModifyLayoutClicked(spanType, column, clickedElement) {
 
     // Selecting the layout option as per the selection
@@ -421,9 +467,10 @@ function setLayoutButtonActive(clickedElement) {
     // CSS classes
     const activeBtnClass = "active-columns-btn";
     const layoutButton = "btn-layout";
+    const buttons = document.getElementsByClassName("btn-util");
 
     // DOM objects
-    let activeBtnClassElements = $("." + activeBtnClass);
+    const activeBtnClassElements = $("." + activeBtnClass);
 
     // Add the White background to the previous active layout button
     activeBtnClassElements.addClass(layoutButton);
@@ -436,4 +483,12 @@ function setLayoutButtonActive(clickedElement) {
 
     // Add the active class to the current selected layout
     $(clickedElement).addClass(activeBtnClass);
+
+    // Reset the aria-checked property
+    for (btn of buttons) {
+        btn.setAttribute("aria-checked", false);
+    }
+
+    // Apply the aria-checked property to the selected layout button
+    clickedElement.setAttribute("aria-checked", true);
 }

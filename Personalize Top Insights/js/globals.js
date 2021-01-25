@@ -34,5 +34,21 @@ let layoutShowcaseState = {
     layoutPageName: null
 };
 
+// Cache DOM elements
+const visualsDropdown = $("#visuals-list");
+const visualsDiv = $(".dropdown");
+const layoutsDiv = $(".layouts");
+const layoutsDropdown = $("#layouts-list");
+const layoutButtons = $(".btn-util");
+
+// Store keycode for TAB key
+const KEYCODE_TAB = 9;
+
+// Store first visual id
+const firstVisualId = "visual_557a8e56d36a1ddd16e8";
+
+// Store id for first button
+const firstButtonId = "btn-one-col";
+
 // Cache the report containers
 const reportContainer = $("#report-container").get(0);
