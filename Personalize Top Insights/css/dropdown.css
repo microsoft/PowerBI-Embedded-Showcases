@@ -32,8 +32,14 @@
     color: #4946C6;
 }
 
-.btn-action:focus {
+/* For key-board focus */
+.btn-action:focus-visible {
     box-shadow: 0 0 0 0.1rem #4946C6;
+}
+
+/* Remove focus for the mouse navigation */
+.btn-action:focus:not(:focus-visible) {
+    box-shadow: none;
 }
 
 .btn-util:hover > img {
@@ -68,9 +74,14 @@
     padding: 8px 0;
 }
 
-/* Display the focus on the checkbox for the visual selection */
-input[type="checkbox"]:focus + .checkbox-checkmark {
+/* Display the focus on the checkbox on keyboard navigation for the visual selection */
+input[type="checkbox"]:focus-visible + .checkbox-checkmark {
     box-shadow: 0 0 0 0.15rem #4946C6;
+}
+
+/* Remove focus for the mouse navigation */
+input[type="checkbox"]:focus:not(:focus-visible) + .checkbox-checkmark {
+    box-shadow: none;
 }
 
 .checkbox-container {
@@ -151,11 +162,11 @@ input[type="checkbox"]:focus + .checkbox-checkmark {
     border-radius: 4px;
     box-shadow: 0 0.3px 0.9px rgba(0, 0, 0, 0.11), 0 1.6px 3.6px rgba(0, 0, 0, 0.13);
     box-sizing: border-box;
-    height: 38px;
+    height: 32px;
     margin: 8px 0 0 -36px;
     padding: 0;
     position: absolute;
-    width: 190px;
+    width: 180px;
     z-index: 1;
 }
 
@@ -164,19 +175,30 @@ input[type="checkbox"]:focus + .checkbox-checkmark {
 }
 
 .btn-util {
+    align-items: center;
     border: 0.25px solid transparent;
     box-sizing: border-box;
+    display: flex;
+    height: 32px;
+    justify-content: center;
     outline: none;
     padding: 0;
+    width: 36px;
 }
 
 .btn-util:hover {
     background: rgba(73, 70, 198, 0.8);
 }
 
-.btn-util:focus {
+/* For key-board focus */
+.btn-util:focus-visible {
     border: 2px solid #4946C6;
-    height: 40px;
+    outline: none;
+}
+
+/* Remove focus for the mouse navigation */
+.btn-util:focus:not(:focus-visible) {
+    border: none;
     outline: none;
 }
 
@@ -186,7 +208,6 @@ input[type="checkbox"]:focus + .checkbox-checkmark {
 
 .layout-img {
     height: 16px;
-    margin: 10px;
     width: 16px;
 }
 

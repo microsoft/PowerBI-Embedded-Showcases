@@ -40,15 +40,17 @@ const visualsDiv = $(".dropdown");
 const layoutsDiv = $(".layouts");
 const layoutsDropdown = $("#layouts-list");
 const layoutButtons = $(".btn-util");
+const chooseVisualsBtn = $("#visuals-click-btn");
+const chooseLayoutBtn = $("#visuals-layout-btn");
 
 // Store keycode for TAB key
 const KEYCODE_TAB = 9;
 
-// Store first visual id
-const firstVisualId = "visual_557a8e56d36a1ddd16e8";
+// Store id for the first visual
+let firstVisualId;
 
 // Store id for first button
-const firstButtonId = "btn-one-col";
+const firstButtonId = $(".btn-util")[0].id;
 
 // Cache the report containers
 const reportContainer = $("#report-container").get(0);

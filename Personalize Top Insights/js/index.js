@@ -45,16 +45,16 @@ $(document).ready(function () {
 
         // Scroll the page to the top
         document.body.scrollTop = document.documentElement.scrollTop = 0;
-    })
+    });
 
     // Move the focus back to the button which triggered the dropdown
     visualsDiv.on("hidden.bs.dropdown", function () {
-        $("#visuals-click-btn").focus();
+        chooseVisualsBtn.focus();
     });
 
     // Move the focus back to the button which triggered the dropdown
     layoutsDiv.on("hidden.bs.dropdown", function () {
-        $("#visuals-layout-btn").focus();
+        chooseLayoutBtn.focus();
     });
 
     // Close the layouts dropdown when focus moves from first layout-option to button
@@ -202,6 +202,9 @@ async function createVisualsArray(reportVisuals) {
     layoutShowcaseState.layoutVisuals.forEach(function (element) {
         visualsDropdown.append(buildVisualElement(element));
     });
+
+    // Store the id of the first visual in state
+    firstVisualId = $("input:checkbox")[0].id;
 
     // Render all visuals
     await renderVisuals();
