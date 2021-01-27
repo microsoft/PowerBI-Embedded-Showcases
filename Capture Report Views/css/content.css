@@ -11,11 +11,6 @@
     }
 }
 
-#container {
-    width: 100%;
-    height: calc(100vh - 130px);
-}
-
 #overlay {
     position: absolute;
     width: inherit;
@@ -23,7 +18,7 @@
 }
 
 #overlay #spinner {
-    position: absolute;
+    position: fixed;
     top: 50%;
     left: 50%;
 }
@@ -31,9 +26,9 @@
 #main-div {
     background: #FFF;
     color: #FFF8DC;
-    visibility: hidden;
     margin: 0 auto;
     text-align: left;
+    visibility: hidden;
     width: 100%;
 }
 
@@ -42,5 +37,5 @@
     clear: both;
     margin: 0 16px;
     opacity: .7;
-    width: 98%;
+    width: auto;
 }

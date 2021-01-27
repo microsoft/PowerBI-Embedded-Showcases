@@ -1,6 +1,25 @@
 body {
     height: 100%;
-    overflow: hidden;
+    scrollbar-color: #A0AEB2 transparent;
+    scrollbar-width: thin;
+}
+
+/* Change custom scrollbar appearance */
+body::-webkit-scrollbar-track {
+    border-radius: 10px;
+    background-color: transparent;
+}
+
+body::-webkit-scrollbar {
+    background-color: transparent;
+    height: 10px;
+    width: 8px;
+}
+
+body::-webkit-scrollbar-thumb {
+    background-color: #A0AEB2;
+    border-radius: 10px;
+    height: 30px;
 }
 
 #wrapper {
@@ -9,10 +28,11 @@ body {
 }
 
 #contoso-header {
+    align-items: center;
     background: #1461F8;
-    color: #FFF8DC;
-    padding: 2px 0;
-    text-align: left;
+    display: flex;
+    height: 44px;
+    margin: 0;
 }
 
 #contoso {

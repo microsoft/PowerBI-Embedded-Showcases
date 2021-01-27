@@ -17,6 +17,10 @@
     background: rgba(20, 97, 248, 0.25);
 }
 
+.btn-action:focus {
+    box-shadow: 0 0 2pt 1pt rgba(0,123,255,.5);
+}
+
 .btn[aria-expanded="true"] {
     background: rgba(20, 97, 248, .15);
     color: #1461F8;
@@ -34,47 +38,48 @@
     margin: 16px 16px 16px 0;
 }
 
-.showcase-radio-container {
+.showcase-checkbox-container {
     cursor: pointer;
-    display: block;
+    display: flex;
     font-weight: normal;
     height: auto;
     margin: 0;
-    padding-bottom: 16px;
+    padding: 8px 0;
     position: relative;
 }
 
-.showcase-radio-container:nth-child(1) {
+.close-dropdown {
     cursor: default;
-    height: 30px;
-    margin: 0 24px;
+    display: flex;
+    height: 28px;
+    margin: 0;
 }
 
-.showcase-radio-container input {
+.showcase-checkbox-container input {
     cursor: pointer;
     opacity: 0;
     position: absolute;
 }
 
-.showcase-radio-checkmark {
+.showcase-checkmark {
     visibility: hidden;
 }
 
-.showcase-radio-container input:checked~.showcase-radio-checkmark {
+.showcase-checkbox-container input:checked~.showcase-checkmark {
     border-color: #3E65FF;
 }
 
-.showcase-radio-checkmark:after {
+.showcase-checkmark:after {
     content: "";
     display: none;
     position: absolute;
 }
 
-.showcase-radio-container input:checked~.showcase-radio-checkmark:after {
+.showcase-checkbox-container input:checked~.showcase-checkmark:after {
     display: block;
 }
 
-.showcase-radio-container .showcase-radio-checkmark:after {
+.showcase-checkbox-container .showcase-checkmark:after {
     background: #3E65FF;
     border-radius: 50%;
     height: 8px;
@@ -83,7 +88,7 @@
     width: 8px;
 }
 
-.radio-title {
+.checkbox-title {
     display: block;
     margin: 0 24px;
     overflow: hidden;
@@ -94,25 +99,37 @@
 #close-btn {
     background: transparent;
     border: 0;
-    float: right;
-    margin-right: -25px;
+    margin-left: auto;
+    padding: 0;
+}
+
+#close-btn:focus {
+    box-shadow: 0 0 0 0.15rem rgba(0,123,255,.5);
     outline: none;
 }
 
 #close-list-btn {
-    margin: -2px -5px 0 0;
-    padding: 15px;
+    height: 24px;
+    padding: 6px;
+    width: 32px;
 }
 
 #bookmarks-list {
     background: #FFF;
     box-shadow: 0 1.2px 3.6px rgba(0, 0, 0, .108), 0 6.4px 14.4px rgba(90, 61, 61, .132);
-    display: none;
-    height: calc(100vh - 100px);
-    margin: 0 0 0 5px;
+    height: 100%;
+    margin: 106px 0 0 -16px;
     opacity: .98;
-    position: fixed;
+    padding-top: 0;
+    position: absolute;
     width: 228px;
+}
+
+.position {
+    transform: translate3d(16px, 5px, 0px);
+    top: 0;
+    left: 0;
+    will-change: transform;
 }
 
 .vertical-alignment-helper {
@@ -165,17 +182,12 @@
 .btn.focus,
 .btn.focus:active,
 .btn:active:focus,
-.btn:focus,
 .btn:hover {
     box-shadow: none;
     color: #1461F8;
     outline: 0;
     outline-offset: -2px;
     text-decoration: none;
-}
-
-.btn:focus{
-    background: rgba(20, 97, 248, 0.25);
 }
 
 .btn-active {
@@ -190,12 +202,15 @@
 
 #close-modal-btn {
     border: none;
+    height: 40px;
+    margin: 2px 2px 0 0;
     opacity: 1;
     outline: none;
+    width: 39px;
 }
 
 #btn-cross {
-    margin: 15px;
+    margin: 10px;
 }
 
 #capture-view-div {
@@ -207,6 +222,20 @@
 }
 
 .btn-links:focus {
+    box-shadow: 0 0 0 0.15rem rgba(0,123,255,.5);
+    outline: none;
+}
+
+#save-bookmark-btn:focus {
+    box-shadow: 0 0 0 0.15rem rgba(0,123,255,.5);
+}
+
+.modal-button:focus {
+    box-shadow: 0 0 0 0.15rem rgba(0,123,255,.5);
+}
+
+#close-modal-btn:focus {
+    box-shadow: 0 0 0 0.15rem rgba(0,123,255,.5);
     outline: none;
 }
 
@@ -244,18 +273,18 @@
     border: .5px solid rgba(0, 0, 0, .2);
 }
 
-#hidden-success {
+#copy-link-text:focus {
+    box-shadow: 0 0 0 2px rgba(0,123,255,.5);
+}
+
+#copy-link-success-msg {
     color: #1461F8;
     font: 12px "Segoe UI SemiBold", segoe_ui_semibold, Tahoma, Arial;
     margin-top: 11px;
 }
 
-.visible {
-    visibility: visible;
-}
-
-.div-hidden {
-    visibility: hidden;
+.view-label {
+    margin-bottom: 0;
 }
 
 input[type="text"] {
@@ -266,15 +295,15 @@ input[type="text"] {
     width: 95%;
 }
 
-input[type="text"]:invalid {
-    box-shadow: none;
-}
-
 .form-control {
     border: 0;
     border-bottom: .5px solid rgba(0, 0, 0, .2);
     border-radius: 0;
     padding: 0;
+}
+
+.form-control:focus {
+    box-shadow: 0 0 0 0.15rem rgba(0,123,255,.5);
 }
 
 .copy-bookmark {
@@ -321,7 +350,7 @@ input[type="text"]:invalid {
     font: 14px/20px "Segoe UI SemiBold", segoe_ui_semibold, Tahoma, Arial;
 }
 
-.blue-background {
+.selected-button {
     background: rgba(20, 97, 248, .15);
     border-radius: 4px;
     border: 1px solid rgba(20, 96, 247, .5);
@@ -329,4 +358,8 @@ input[type="text"]:invalid {
     margin: 0 20px;
     outline: none;
     padding: 6px 16px;
+}
+
+.focused {
+    box-shadow: 0 0 0 0.15rem rgba(0,123,255,.5);
 }

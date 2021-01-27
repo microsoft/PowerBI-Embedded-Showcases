@@ -1,7 +1,7 @@
 #report-container {
-    margin: 16px 16px 0 16px;
-    width: 98%;
-    height: calc(100vh - 100px);
+    margin: 16px;
+    width: auto;
+    height: calc((9/16) * 99vw);
 }
 
 #report-container>iframe {

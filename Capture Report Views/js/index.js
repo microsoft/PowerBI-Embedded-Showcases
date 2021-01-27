@@ -1,9 +1,3 @@
-// Set props for accessibility insights
-function setReportAccessibilityProps(report) {
-    report.setComponentTitle("Playground showcase sample report");
-    report.setComponentTabIndex(0);
-}
-
 // Make sure Document object is ready
 $(document).ready(function () {
 
@@ -11,7 +5,8 @@ $(document).ready(function () {
     powerbi.bootstrap(reportContainer, reportConfig);
 
     // Initalize and cache global DOM object
-    hiddenSuccess = $("#hidden-success");
+    listViewsBtn = $("#display-btn");
+    copyLinkSuccessMsg = $("#copy-link-success-msg");
     viewName = $("#viewname");
     tickBtn = $("#tick-btn");
     tickIcon = $("#tick-icon");
@@ -27,15 +22,35 @@ $(document).ready(function () {
     // Embed the report in the report-container
     embedBookmarksReport();
 
-    hiddenSuccess.addClass(hiddenClass);
-    bookmarksList.hide();
+    closeBtn.click(function () {
+        listViewsBtn.focus();
+        bookmarksList.removeClass("show");
+        bookmarksDropdown.removeClass("show");
 
-    $("#display-btn").click(function () {
-        bookmarksList.toggle("slide");
+        // Set aria-expanded to false when the dropdown is closed by clicking on the Cross button
+        const btn = document.getElementById("display-btn");
+        btn.setAttribute("aria-expanded", false);
+
+        // Scroll the page to the top
+        document.body.scrollTop = document.documentElement.scrollTop = 0;
     });
 
-    $("#close-list-btn").click(function () {
-        bookmarksList.hide("slide");
+    // When Pressed Tab on Close button, focus should move to the active bookmark label
+    closeBtn.on("keydown", function (e) {
+        if (e.key === "Tab" || e.keyCode === KEYCODE_TAB) {
+            if (!e.shiftKey) /* Tab */ {
+                const activeLabel = document.getElementsByClassName(activeBookmark);
+                const activeCheckbox = $(activeLabel).find("input[type=checkbox]");
+                activeCheckbox.focus();
+                e.preventDefault();
+            }
+            else /* Shift + Tab */ {
+
+                // Move focus back to the Button, close the dropdown
+                closeBtn.click();
+                e.preventDefault();
+            }
+        }
     });
 
     copyLinkBtn.click(function () {
@@ -59,21 +74,112 @@ $(document).ready(function () {
         onBookmarkCaptureClicked();
     });
 
-    $("#modal-action").on("hidden.bs.modal", function () {
+    // Stop the form submit event when pressed Enter
+    $("form").submit(function () {
+        return false;
+    });
+
+    // Move the focus back to the button which triggered the dropdown
+    bookmarksDropdown.on("hidden.bs.dropdown", function () {
+        listViewsBtn.focus();
+        clearFocus();
+    });
+
+    // When dropdown is open, focus on the close button
+    bookmarksDropdown.on("shown.bs.dropdown", function () {
+        closeBtn.focus();
+        // Scroll the page to the top
+        document.body.scrollTop = document.documentElement.scrollTop = 0;
+    });
+
+    // Apply focus on the close button when it is opened
+    captureModal.on("shown.bs.modal", function () {
+        closeModal.focus();
+    });
+
+    // To trap the focus inside the capture view modal while it is open
+    captureModal.on("keydown", function (e) {
+        let visibleDiv = saveViewDiv.is(":visible");
+
+        if (visibleDiv) {
+            lastActiveElement = captureModalElements.lastElement.saveView;
+        }
+        else {
+            lastActiveElement = captureModalElements.lastElement.copyLink;
+        }
+
+        if (e.key === "Tab" || e.keyCode === KEYCODE_TAB) {
+            if (e.shiftKey) /* shift + tab */ {
+                // Compare the activeElement using id
+                if ($(document.activeElement)[0].id === captureModalElements.firstElement[0].id) {
+                    lastActiveElement.focus();
+                    e.preventDefault();
+                }
+            } else /* tab */ {
+                if ($(document.activeElement)[0].id === lastActiveElement[0].id) {
+                    captureModalElements.firstElement.focus();
+                    e.preventDefault();
+                }
+            }
+        }
+    });
+
+    captureModal.on("hidden.bs.modal", function () {
 
         // Events executed on BootStrap Modal close event
         $(this).find("input").val("").end();
-        hiddenSuccess.removeClass(visibleClass).addClass(hiddenClass);
+        copyLinkSuccessMsg.removeClass(visible).addClass(invisible);
         copyLinkBtn.removeClass(activeButtonClass);
         saveViewBtn.addClass(activeButtonClass);
-        copyBtn.removeClass(blueBackgroundClass).addClass(copyBookmarkClass);
+        copyBtn.removeClass(selectedButtonClass).addClass(copyBookmarkClass);
         captureViewDiv.hide();
         tickIcon.hide();
         tickBtn.show();
         viewName.removeClass(invalidField);
         saveViewDiv.show();
+
+        // Return Focus to the button which triggered the modal
+        $("#capture-btn").focus();
     });
 });
+
+// To not to close the dropdown when clicked inside
+$(document).on("click", ".allow-focus", function (element) {
+    element.stopPropagation();
+});
+
+// Focus on the label elemene, whose checkbox has the focus
+$(document).on("focus", "input:checkbox", function () {
+    clearFocus();
+    this.parentElement.classList.add("focused");
+});
+
+// Remove the focus from the label and give it to the close button
+$(document).on("keydown", "input:checkbox", function (e) {
+    if (this.id === firstBookmarkId) {
+        if (e.key === "Tab" || e.keyCode === KEYCODE_TAB) {
+            if (e.shiftKey) /* shift + tab */ {
+                clearFocus();
+                closeBtn.focus();
+                e.preventDefault();
+            }
+        }
+    }
+});
+
+// Remove focus from the labels
+function clearFocus() {
+    const labels = document.getElementsByClassName("showcase-checkbox-container");
+    Array.from(labels).forEach(label => {
+        label.classList.remove("focused");
+    });
+}
+
+// Set props for accessibility insights
+function setReportAccessibilityProps(report) {
+    report.setComponentTitle("Playground showcase sample report");
+    report.setComponentTabIndex(0);
+}
 
 // Embed the report and retrieve the existing report bookmarks
 async function embedBookmarksReport() {
@@ -131,10 +237,10 @@ async function embedBookmarksReport() {
         createBookmarksList(bookmarks);
 
         // Hide the loader
-        overlay.css("visibility", "hidden");
+        overlay.addClass(invisible);
 
         // Show the container
-        $("#main-div").css("visibility", "visible");
+        $("#main-div").addClass(visible);
     });
 }
 
@@ -161,26 +267,27 @@ function createBookmarksList(bookmarks) {
     }
 }
 
-// Build bookmark radio button HTML element
+// Build bookmark checkboxes HTML element
 function buildBookmarkElement(bookmark) {
     let labelElement = document.createElement("label");
-    labelElement.setAttribute("class", "showcase-radio-container");
+    labelElement.setAttribute("class", "showcase-checkbox-container");
+    labelElement.setAttribute("role", "menuitem");
 
     let inputElement = document.createElement("input");
-    inputElement.setAttribute("type", "radio");
+    inputElement.setAttribute("type", "checkbox");
     inputElement.setAttribute("name", "bookmark");
     inputElement.setAttribute("id", bookmark.name);
     inputElement.setAttribute("onclick", "onBookmarkClicked(this);");
     labelElement.appendChild(inputElement);
 
     let spanElement = document.createElement("span");
-    spanElement.setAttribute("class", "showcase-radio-checkmark");
+    spanElement.setAttribute("class", "showcase-checkmark");
     labelElement.appendChild(spanElement);
 
     let secondSpanElement = document.createElement("span");
-    secondSpanElement.setAttribute("class", "radio-title");
-    let radioTitleElement = document.createTextNode(bookmark.displayName);
-    secondSpanElement.appendChild(radioTitleElement);
+    secondSpanElement.setAttribute("class", "checkbox-title");
+    let checkboxTitleElement = document.createTextNode(bookmark.displayName);
+    secondSpanElement.appendChild(checkboxTitleElement);
     labelElement.appendChild(secondSpanElement);
 
     return labelElement;
@@ -208,16 +315,18 @@ function onBookmarkClicked(element) {
 // Set the bookmark as the active bookmark on the list
 function setBookmarkActive(bookmarkSelector) {
 
-    // Set bookmark radio button to checked
-    bookmarkSelector.attr("checked", true);
+    $("input:checkbox").prop("checked", false);
+
+    // Set bookmark checkbox to checked
+    bookmarkSelector.prop("checked", true);
 }
 
-// Apply color to the selected checkbox
+// Activate selected checkbox
 function applyColor(elementId) {
-    let radioSelected = "input[type=radio]";
+    let selectedCheckbox = "input[type=checkbox]";
 
-    // Looping through the radio buttons of the div
-    bookmarksList.find(radioSelected).each(function () {
+    // Looping through the checkboxes of the div
+    bookmarksList.find(selectedCheckbox).each(function () {
         if (this.id === elementId) {
             $(this.parentNode).removeClass(inactiveBookmark).addClass(activeBookmark);
         } else {
@@ -252,10 +361,19 @@ async function onBookmarkCaptureClicked() {
 
         // Add the new bookmark to the HTML list
         bookmarksList.append(buildBookmarkElement(bookmark));
-        bookmarksList.show();
+
+        // Open the bookmarks list div and show the applied bookmark
+        $("#bookmarks-list").addClass("show position");
+
+        bookmarksDropdown.addClass("show");
+
+        // Set aria-expanded to false when the dropdown is closed by clicking on the Cross button
+        const btn = document.getElementById("display-btn");
+        btn.setAttribute("aria-expanded", true);
 
         // Set the captured bookmark as active
-        setBookmarkActive($("#bookmark_" + bookmarkShowcaseState.bookmarkCounter));
+        const newBookmark = "bookmark_" + bookmarkShowcaseState.bookmarkCounter;
+        setBookmarkActive($(newBookmark));
 
         // Apply the color when the new bookmark is created
         applyColor("bookmark_" + bookmarkShowcaseState.bookmarkCounter);
@@ -263,7 +381,7 @@ async function onBookmarkCaptureClicked() {
         // Add the bookmark to the bookmarks array and increase the bookmarks number counter
         bookmarkShowcaseState.bookmarks.push(bookmark);
         bookmarkShowcaseState.bookmarkCounter++;
-        $("#modal-action").modal("hide");
+        captureModal.modal("hide");
     }
 }
 
@@ -278,11 +396,11 @@ function modalButtonClicked(element) {
 
     if (element.id === "save-view-btn") {
         saveViewBtn.addClass(activeButtonClass);
-        hiddenSuccess.removeClass(visibleClass).addClass(hiddenClass);
+        copyLinkSuccessMsg.removeClass(visible).addClass(invisible);
         tickIcon.hide();
         tickBtn.show();
         captureViewDiv.hide();
-        copyBtn.removeClass(blueBackgroundClass).addClass(copyBookmarkClass);
+        copyBtn.removeClass(selectedButtonClass).addClass(copyBookmarkClass);
         viewName.removeClass(invalidField);
         saveViewDiv.show();
     } else if (element.id === "copy-link-btn") {
@@ -327,7 +445,7 @@ function copyLink(element) {
     $(element).removeClass(copyBookmarkClass);
 
     // Apply the color
-    $(element).addClass(blueBackgroundClass);
+    $(element).addClass(selectedButtonClass);
 
     // Hide the Copy text
     tickBtn.hide();
@@ -345,5 +463,5 @@ function copyLink(element) {
     if (window.getSelection) { // All browsers, except IE <= 8
         window.getSelection().removeAllRanges();
     }
-    hiddenSuccess.removeClass(hiddenClass).addClass(visibleClass);
+    copyLinkSuccessMsg.removeClass(invisible).addClass(visible);
 }
