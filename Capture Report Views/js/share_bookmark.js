@@ -4,19 +4,16 @@ function setReportAccessibilityProps(report) {
     report.setComponentTabIndex(0);
 }
 
-$(document).ready(function() {
+$(document).ready(function () {
 
     // Bootstrap the bookmark container
     powerbi.bootstrap(bookmarkContainer, reportConfig);
 
-    // Custom loader caching
-    overlay = $("#overlay");
-
-    embedSharedBookmark();
+    embedSharedBookmarkReport();
 });
 
 // Embed shared report with bookmark on load
-async function embedSharedBookmark() {
+async function embedSharedBookmarkReport() {
 
     // Load sample report properties into session
     await loadSampleReportIntoSession()

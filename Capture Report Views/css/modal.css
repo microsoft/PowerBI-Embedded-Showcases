@@ -17,8 +17,14 @@
     background: rgba(20, 97, 248, 0.25);
 }
 
-.btn-action:focus {
+/* For keyboard focus */
+.btn-action:focus-visible {
     box-shadow: 0 0 2pt 1pt rgba(0,123,255,.5);
+}
+
+/* For mouse focus */
+.btn-action:focus:not(:focus-visible) {
+    box-shadow: none;
 }
 
 .btn[aria-expanded="true"] {
@@ -100,12 +106,8 @@
     background: transparent;
     border: 0;
     margin-left: auto;
-    padding: 0;
-}
-
-#close-btn:focus {
-    box-shadow: 0 0 0 0.15rem rgba(0,123,255,.5);
     outline: none;
+    padding: 0;
 }
 
 #close-list-btn {
@@ -221,21 +223,39 @@
     padding: 0 0 8px 0;
 }
 
-.btn-links:focus {
+.btn-links:focus-visible {
     box-shadow: 0 0 0 0.15rem rgba(0,123,255,.5);
     outline: none;
 }
 
-#save-bookmark-btn:focus {
+.btn-links:focus:not(:focus-visible) {
+    box-shadow: none;
+    outline: none;
+}
+
+#save-bookmark-btn:focus-visible {
     box-shadow: 0 0 0 0.15rem rgba(0,123,255,.5);
 }
 
-.modal-button:focus {
+#save-bookmark-btn:focus:not(:focus-visible) {
+    box-shadow: none;
+}
+
+.modal-btn:focus-visible {
     box-shadow: 0 0 0 0.15rem rgba(0,123,255,.5);
 }
 
-#close-modal-btn:focus {
+.modal-btn:focus:not(:focus-visible) {
+    box-shadow: none;
+}
+
+.close:focus-visible {
     box-shadow: 0 0 0 0.15rem rgba(0,123,255,.5);
+    outline: none;
+}
+
+.close:focus:not(:focus-visible) {
+    box-shadow: none;
     outline: none;
 }
 
@@ -269,12 +289,24 @@
     margin: 5px 20px 0 5px;
 }
 
-#copy-link-text {
-    border: .5px solid rgba(0, 0, 0, .2);
+.modal-text {
+    background: transparent;
+    height: 32px;
+    margin-top: 15px;
+    outline: 0;
+    width: 95%;
 }
 
-#copy-link-text:focus {
-    box-shadow: 0 0 0 2px rgba(0,123,255,.5);
+.modal-text:focus-visible {
+    box-shadow: 0 0 0 0.15rem rgba(0,123,255,.5);
+}
+
+.modal-text:focus:not(:focus-visible) {
+    box-shadow: none;
+}
+
+#copy-link-text {
+    border: .5px solid rgba(0, 0, 0, .2);
 }
 
 #copy-link-success-msg {
@@ -287,23 +319,14 @@
     margin-bottom: 0;
 }
 
-input[type="text"] {
-    background: transparent;
-    height: 32px;
-    margin-top: 15px;
-    outline: 0;
-    width: 95%;
-}
-
-.form-control {
+#viewname {
     border: 0;
     border-bottom: .5px solid rgba(0, 0, 0, .2);
-    border-radius: 0;
     padding: 0;
 }
 
-.form-control:focus {
-    box-shadow: 0 0 0 0.15rem rgba(0,123,255,.5);
+#viewname::placeholder {
+    font: 400 14px/20px "Segoe UI", segoe_ui_regular, Tahoma, Arial;
 }
 
 .copy-bookmark {

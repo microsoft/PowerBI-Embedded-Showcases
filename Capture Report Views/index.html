@@ -42,7 +42,7 @@
                         <div role="tabpanel" id="save-view-div" aria-labelledby="save-view-btn">
                             <form novalidate>
                                 <label class="view-label" for="viewname">Enter a name for this view:</label>
-                                <input type="text" id="viewname" placeholder="Example: December 2019 Sales Profit" class="form-control" required />
+                                <input type="text" class="modal-text" id="viewname" placeholder="Example: December 2019 Sales Profit" required>
                                 <div class="invalid-feedback">
                                     Please provide a valid name
                                 </div>
@@ -52,10 +52,10 @@
                             </form>
                         </div>
                         <div role="tabpanel" id="capture-view-div" aria-labelledby="copy-link-btn">
-                            Use this link to share the view with colleagues<input type="text" id="copy-link-text" readonly>
+                            Use this link to share the view with colleagues<input type="text" class="modal-text" id="copy-link-text" readonly>
                             <div id="copy-link-success-msg" class="invisible">Copied successfully!</div>
                             <div class="capture-btn-div">
-                                <button class="copy-bookmark modal-button" id="copy-btn">
+                                <button class="copy-bookmark modal-btn" id="copy-btn">
                                     <img role="presentation" id="tick-icon" src="img/tickicon.svg" alt="tickmark"/>
                                     <span id="tick-btn">Copy</span>
                                 </button>
@@ -84,7 +84,7 @@
                         </button>
                         <ul class="dropdown-menu checkbox-menu allow-focus" role="menu" id="bookmarks-list" aria-labelledby="display-btn">
                             <label class="close-dropdown">
-                                <button id="close-btn" aria-label="Close bookmarks dropdown">
+                                <button id="close-btn" class="close" aria-label="Close bookmarks dropdown">
                                     <img role="presentation" id="close-list-btn" src="img/cross.svg" alt="Close">
                                 </button>
                             </label>
@@ -107,9 +107,9 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/powerbi-client@2.15.1/dist/powerbi.min.js"></script>
     
-    <script src="js/globals.js?v=08012021"></script>
+    <script src="js/globals.js?v=27012021"></script>
     <script src="js/session_utils.js?v=25012021"></script>
-    <script src="js/index.js?v=08012021"></script>
+    <script src="js/index.js?v=27012021"></script>
 </body>
 
 </html>

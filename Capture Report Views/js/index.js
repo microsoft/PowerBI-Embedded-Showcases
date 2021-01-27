@@ -4,28 +4,13 @@ $(document).ready(function () {
     // Bootstrap the report-container
     powerbi.bootstrap(reportContainer, reportConfig);
 
-    // Initalize and cache global DOM object
-    listViewsBtn = $("#display-btn");
-    copyLinkSuccessMsg = $("#copy-link-success-msg");
-    viewName = $("#viewname");
-    tickBtn = $("#tick-btn");
-    tickIcon = $("#tick-icon");
-    copyLinkBtn = $("#copy-link-btn");
-    bookmarksList = $("#bookmarks-list");
-    copyBtn = $("#copy-btn");
-    saveViewBtn = $("#save-view-btn");
-    captureViewDiv = $("#capture-view-div");
-    saveViewDiv = $("#save-view-div");
-    copyLinkText = $("#copy-link-text");
-    overlay = $("#overlay");
-
     // Embed the report in the report-container
     embedBookmarksReport();
 
     closeBtn.click(function () {
         listViewsBtn.focus();
-        bookmarksList.removeClass("show");
-        bookmarksDropdown.removeClass("show");
+        bookmarksList.removeClass(displayClass);
+        bookmarksDropdown.removeClass(displayClass);
 
         // Set aria-expanded to false when the dropdown is closed by clicking on the Cross button
         const btn = document.getElementById("display-btn");
@@ -40,7 +25,7 @@ $(document).ready(function () {
         if (e.key === "Tab" || e.keyCode === KEYCODE_TAB) {
             if (!e.shiftKey) /* Tab */ {
                 const activeLabel = document.getElementsByClassName(activeBookmark);
-                const activeCheckbox = $(activeLabel).find("input[type=checkbox]");
+                const activeCheckbox = $(activeLabel).find(checkbox);
                 activeCheckbox.focus();
                 e.preventDefault();
             }
@@ -78,6 +63,8 @@ $(document).ready(function () {
     $("form").submit(function () {
         return false;
     });
+
+    closeBtn.on("focus", clearFocus);
 
     // Move the focus back to the button which triggered the dropdown
     bookmarksDropdown.on("hidden.bs.dropdown", function () {
@@ -151,27 +138,23 @@ $(document).on("click", ".allow-focus", function (element) {
 // Focus on the label elemene, whose checkbox has the focus
 $(document).on("focus", "input:checkbox", function () {
     clearFocus();
-    this.parentElement.classList.add("focused");
+    this.parentElement.classList.add(focused);
 });
 
-// Remove the focus from the label and give it to the close button
-$(document).on("keydown", "input:checkbox", function (e) {
-    if (this.id === firstBookmarkId) {
-        if (e.key === "Tab" || e.keyCode === KEYCODE_TAB) {
-            if (e.shiftKey) /* shift + tab */ {
-                clearFocus();
-                closeBtn.focus();
-                e.preventDefault();
-            }
-        }
+// Remove the focus from the label if mouse is used
+$(document).on("click", "input:checkbox", function () {
+    if (!checkBoxState) /* If Mouse is used */ {
+        clearFocus();
     }
+
+    checkBoxState = null;
 });
 
 // Remove focus from the labels
 function clearFocus() {
     const labels = document.getElementsByClassName("showcase-checkbox-container");
     Array.from(labels).forEach(label => {
-        label.classList.remove("focused");
+        label.classList.remove(focused);
     });
 }
 
@@ -363,9 +346,9 @@ async function onBookmarkCaptureClicked() {
         bookmarksList.append(buildBookmarkElement(bookmark));
 
         // Open the bookmarks list div and show the applied bookmark
-        $("#bookmarks-list").addClass("show position");
+        bookmarksList.addClass("show position");
 
-        bookmarksDropdown.addClass("show");
+        bookmarksDropdown.addClass(displayClass);
 
         // Set aria-expanded to false when the dropdown is closed by clicking on the Cross button
         const btn = document.getElementById("display-btn");
@@ -463,5 +446,6 @@ function copyLink(element) {
     if (window.getSelection) { // All browsers, except IE <= 8
         window.getSelection().removeAllRanges();
     }
+    
     copyLinkSuccessMsg.removeClass(invisible).addClass(visible);
 }
