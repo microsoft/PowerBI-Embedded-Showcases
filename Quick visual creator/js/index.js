@@ -1,8 +1,3 @@
-// To stop the page load on click event
-$(document).on("click", ".allow-focus", function (element) {
-    element.stopPropagation();
-});
-
 // On ready event, bootstrap the embed containers and embed the report
 $(document).ready(async function () {
 
@@ -31,7 +26,35 @@ $(document).ready(async function () {
     // Initialize the custom dropdowns
     initializeDropdowns();
 
-    $(".slider").addClass(disabledSliders);
+    // Focus the close button when modal opens
+    visualCreatorModal.on("shown.bs.modal", function () {
+        closeModalButton.focus();
+    });
+
+    // Pressing Tab should move focus to Close button
+    createVisualButton.on("keydown", function (event) {
+        if (event.keyCode === KEYCODE_TAB || event.key === "Tab") {
+            if (!event.shiftKey) /* Tab Press */ {
+                closeModalButton.focus();
+                event.preventDefault();
+            }
+        }
+    });
+
+    // If Create button is enabled, moves focus to it
+    closeModalButton.on("keydown", function (event) {
+        if (event.keyCode === KEYCODE_TAB || event.key === "Tab") {
+            if (event.shiftKey) /* Shift + Tab Press */ {
+                if (!createVisualButton.is(":disabled")) {
+                    createVisualButton.focus();
+                    event.preventDefault();
+                }
+                else {
+                    event.preventDefault();
+                }
+            }
+        }
+    });
 
     // When the close button is clicked
     closeModalButton.click(function () {
@@ -70,26 +93,46 @@ $(document).ready(async function () {
 
     titleToggle.change(function () {
 
-        // If title toggle is checked then show enabled erase-tool
         if (this.checked) {
+
+            // Reset the visual title if no custom title is set
+            if (!customVisualTitle) {
+                visualCreatorShowcaseState.newVisual.resetProperty(propertyToSelector("titleText"));
+            }
             customTitleWrapper.removeClass(toggleWrappersDisabledClass);
-            disabledEraseTool.hide();
-            enabledEraseTool.show();
+            visualTitleText.prop("disabled", false);
+            hideDisabledEraserAndAligns();
         }
         else {
             customTitleWrapper.addClass(toggleWrappersDisabledClass);
-            disabledEraseTool.show();
-            enabledEraseTool.hide();
+            visualTitleText.prop("disabled", true);
+            showDisabledEraserAndAligns();
         }
     });
 
     // Close all the open select dropdowns if clicked inside the modal
     visualCreatorModal.click(function () {
         const selectItems = $(".select-items");
-
         selectItems.each(function () {
             $(this).addClass(selectHideClass);
         })
+    });
+
+    // Focus on the alignment blocks using keyboard
+    alignmentBlocks.on("keydown", function (event) {
+        if ((event.keyCode === KEYCODE_ENTER || event.key === "Enter" || event.keyCode === KEYCODE_SPACE || event.key === "Space")) {
+
+            // Split the alignment from the id and call the function
+            const alignmentId = this.id.split("-")[1];
+            onAlignClicked(alignmentId);
+        }
+    })
+
+    // Focus on the eraser tool blocks using keyboard
+    enabledEraseTool.on("keydown", function (event) {
+        if ((event.keyCode === KEYCODE_ENTER || event.key === "Enter" || event.keyCode === KEYCODE_SPACE || event.key === "Space")) {
+            onEraseToolClicked();
+        }
     });
 
     // Disable the Create button on first load
@@ -99,11 +142,16 @@ $(document).ready(async function () {
     $(window).on("resize", rearrangeInCustomLayout);
 });
 
+// To stop the page load on click event
+$(document).on("click", ".allow-focus", function (element) {
+    element.stopPropagation();
+});
+
 // Add event listener on document for key-board
 $(document).keydown(function (event) {
 
     // Close the modal on Escape key
-    if (event.keyCode == 27) {
+    if (event.keyCode === KEYCODE_ESCAPE || event.key === "Escape") {
 
         // Hide the modal
         visualCreatorModal.modal("hide");
@@ -116,37 +164,66 @@ $(document).keydown(function (event) {
     }
 });
 
+function hideDisabledEraserAndAligns() {
+    enabledEraseTool.prop("disabled", false);
+    alignmentBlocks.prop("disabled", false);
+    disabledEraseTool.hide();
+    enabledEraseTool.show();
+    enabledAligns.show();
+    disabledAligns.hide();
+}
+
+// Show the disabled items on modal close
+function showDisabledEraserAndAligns() {
+    disabledEraseTool.prop("disabled", true);
+    alignmentBlocks.prop("disabled", true);
+    disabledEraseTool.show();
+    enabledEraseTool.hide();
+    disabledAligns.show();
+    enabledAligns.hide();
+}
+
 // Reset the modal and perform clean-up activities
 function resetModal() {
 
     // Hide all the select-box when the modal is closed
     $(".select-items").addClass(selectHideClass);
 
-    // Show the Edit icon-div and hide the authoring container-div
+    // Show the Edit icon container and hide the authoring container
     editArea.show();
     visualAuthoringArea.hide();
+
+    resetVisualCreatorOptions();
+}
+
+function resetVisualCreatorOptions() {
 
     // Disable the create button
     createVisualButton.prop("disabled", true);
 
-    // Uncheck the visual properties checkbox
+    // Uncheck the visual properties checkboxes
     visualPropertiesCheckboxes.prop("checked", false);
+
+    // Disable the visual properties checkboxes
+    visualPropertiesCheckboxes.prop("disabled", true);
+
+    // Disable the visual title textbox
+    visualTitleText.prop("disabled", true);
 
     // Enable all the toggle wrappers
     toggleWrappers.removeClass(toggleWrappersDisabledClass);
 
     $(".slider").addClass(disabledSliders);
-
-    // Enable the toggle sliders for properties
-    legendToggle.prop("disabled", false);
-    xAxisToggle.prop("disabled", false);
-    yAxisToggle.prop("disabled", false);
 }
 
 // Set accessibility insights for the report
 function setAccessibilityInsights() {
     baseReportState.report.setComponentTitle("Playground showcase quick visual creator");
     baseReportState.report.setComponentTabIndex(0);
+}
+
+function setAccessibilityInsightsForAuthoringReport() {
+    visualCreatorShowcaseState.report.setComponentTitle("Visual authoring report");
 }
 
 // Embed the report and retrieve all report visuals
@@ -243,12 +320,13 @@ async function embedBaseReport() {
     baseReportState.report.on("commandTriggered", function (event) {
 
         // Open the modal and set the fields, properties and title for the visual
-        openModal(event.detail);
+        openModalAndFillState(event.detail);
     });
 
     baseReportState.report.on("buttonClicked", function () {
-        // Show the modal
-        openModal();
+
+        // Show the modal to create the visual
+        openModalAndFillState();
     });
 
     // Clear any other error handler events
@@ -286,11 +364,18 @@ async function embedVisualAuthoringReport() {
     // Embed Power BI report when Access token and Embed URL are available
     visualCreatorShowcaseState.report = powerbi.embed(visualDisplayArea, config);
 
+    // For accessibility insights
+    setAccessibilityInsightsForAuthoringReport();
+
     // Clear any other loaded handler events
     visualCreatorShowcaseState.report.off("loaded");
 
     // Triggers when a report schema is successfully loaded
     visualCreatorShowcaseState.report.on("loaded", async function () {
+
+        // Set the tabindex to -1 to remove the authoring iFrame from keyboard navigation
+        authoringiFrame = $(visualDisplayArea).find("iframe");
+        authoringiFrame.prop("tabindex", -1);
 
         const pages = await visualCreatorShowcaseState.report.getPages();
 
@@ -523,57 +608,53 @@ function initializeDropdowns() {
 
     // Look for any elements with the class "styled-select"
     const styledSelects = document.getElementsByClassName("styled-select");
-    for (let i = 0; i < styledSelects.length; i++) {
+    const length = styledSelects.length;
+    for (let i = 0; i < length; i++) {
         const selectedElement = styledSelects[i].getElementsByTagName("select")[0];
 
         // For each element, create a new div that will act as the selected item
         const dropdownElement = document.createElement("div");
         dropdownElement.setAttribute("class", "select-selected");
         dropdownElement.setAttribute("id", "selected-value-" + i);
+        dropdownElement.setAttribute("tabindex", 0);
         dropdownElement.innerHTML = selectedElement.options[selectedElement.selectedIndex].innerHTML;
         styledSelects[i].appendChild(dropdownElement);
 
         // For each element, create a new div that will contain the option list
         const dropdownItem = document.createElement("div");
         dropdownItem.setAttribute("class", "select-items select-hide");
-        for (let j = 1; j < selectedElement.length; j++) {
+        dropdownItem.setAttribute("role", "listbox");
+
+        // Create 3 options of data-field for selected visual-type
+        const selectedElementLength = selectedElement.length;
+        for (let j = 0; j < selectedElementLength; j++) {
 
             // For each option in the original select element,
             // create a new div that will act as an option item
             const optionItem = document.createElement("div");
-            optionItem.innerHTML = selectedElement.options[j].innerHTML;
+            optionItem.setAttribute("role", "option");
+            optionItem.setAttribute("tabindex", 0);
 
-            // Adding new click event listener
+            // Create first default option for visual selection dropdown
+            if (i === 0 && j === 0) {
+                optionItem.innerHTML = selectVisualTypeHeader;
+            }
+            else {
+                optionItem.innerHTML = selectedElement.options[j].innerHTML;
+            }
+
+            // Add new click event listener
             optionItem.addEventListener("click", function () {
 
                 // When an item is clicked, update the original select box, and the selected item
-                let selects, previousSibling;
-                selects = this.parentNode.parentNode.getElementsByTagName("select")[0];
-                previousSibling = this.parentNode.previousSibling;
-                for (let i = 0; i < selects.length; i++) {
-                    if (selects.options[i].innerHTML === this.innerHTML) {
-                        selects.selectedIndex = i;
-                        previousSibling.innerHTML = this.innerHTML;
-                        let childElements = this.parentNode.getElementsByClassName(sameAsSelectedClass);
-                        for (let k = 0; k < childElements.length; k++) {
-                            childElements[k].removeAttribute("class");
-                        }
+                updateAuthoringVisual(this);
+            });
 
-                        this.setAttribute("class", sameAsSelectedClass);
-                        break;
-                    }
-                }
+            // Add new keydown event listener
+            optionItem.addEventListener("keydown", function (event) {
 
-                previousSibling.click();
-
-                // Changing the visual type or updating the data role field, according to the dropdown id
-                if (selects.id === "visual-type") {
-                    changeVisualType(previousSibling.innerHTML);
-                    editArea.hide();
-                    visualAuthoringArea.show();
-                } else {
-                    updateDataRoleField(selects.parentNode.parentNode.children[0].id, previousSibling.innerHTML);
-                }
+                // Handle all the keyboard events
+                handleKeyEventsForDropdownItems(event, this);
             });
 
             dropdownItem.appendChild(optionItem);
@@ -581,29 +662,160 @@ function initializeDropdowns() {
 
         styledSelects[i].appendChild(dropdownItem);
 
-        // Adding new click event listener for the select box
+        // Add new click event listener for the select box
         dropdownElement.addEventListener("click", function (event) {
             // When the select box is clicked, close any other select boxes,
             // and open/close the current select box
             event.stopPropagation();
             closeAllSelect(this);
             this.nextSibling.classList.toggle(selectHideClass);
-            this.classList.toggle("select-arrow-active");
         });
+
+        // Open the dropdowns using Enter OR Space press
+        dropdownElement.addEventListener("keydown", function (event) {
+            // When the Enter OR Space is pressed on the button, close any other select boxes,
+            // and open/close the current select box
+            handleKeyEventsForDropdowns(event, this);
+        });
+    }
+}
+
+// Handle key events for dropdown elements
+function handleKeyEventsForDropdowns(event, dropdownElement) {
+    if (event.keyCode === KEYCODE_ENTER || event.key === "Enter" || event.keyCode === KEYCODE_SPACE || event.key === "Space") {
+        if (dropdownElement.id === visualTypeId || !generatorFields.hasClass(generatorFieldsDisabledClass)) {
+            event.stopPropagation();
+            closeAllSelect(dropdownElement);
+            dropdownElement.nextSibling.classList.toggle(selectHideClass);
+
+            // Focus on the first option when dropdown opens
+            if (!dropdownElement.nextSibling.classList.contains(selectHideClass)) {
+                dropdownElement.nextSibling.firstChild.focus();
+            }
+        }
+    }
+
+    // If dropdown is open, the focus should not move using Keyboard to other dropdowns
+    if ((event.keyCode === KEYCODE_TAB || event.key === "Tab")) /* Shift + Tab Press */ {
+        if (event.shiftKey) {
+            if (!dropdownElement.nextSibling.classList.contains(selectHideClass)) {
+                dropdownElement.focus();
+                event.preventDefault();
+            }
+        }
+        else {
+            if (dropdownElement.id === "selected-value-3" && createVisualButton.is(":disabled")) {
+                closeModalButton.focus();
+                event.preventDefault();
+            }
+        }
+    }
+}
+
+// All the key-events for the dropdown items
+function handleKeyEventsForDropdownItems(event, optionItem) {
+
+    // Focus trap for the dropdowns
+    if (event.keyCode === KEYCODE_TAB || event.key === "Tab") {
+        if (event.shiftKey) /* shift + tab */ {
+            if (document.activeElement.innerHTML === optionItem.parentNode.firstChild.innerHTML) {
+                optionItem.parentElement.previousSibling.focus();
+                event.preventDefault();
+            }
+        }
+        else {
+            // To handle the case of hidden dropdown items
+            // If the Focus is on the second last item of the dropdown and Tab is Pressed when last item is hidden, Move focus to the top
+            let flag = false;
+            let flag2 = false;
+            const sibilings = optionItem.parentElement.children;
+            const length = sibilings.length;
+            if (sibilings[length - 1].style.display === "none") {
+                flag = true;
+            }
+
+            // If the focus is on the first item of the dropdown and last two items are hidden, Move focus to the top
+            for (let i = 0; i < length; i++) {
+                if (i < 2) {
+                    if (sibilings[i].style.display === "none" && sibilings[i + 1].style.display === "none") {
+                        flag2 = true;
+                    }
+                    else {
+                        flag2 = false;
+                    }
+                }
+            }
+
+            if (document.activeElement.innerHTML === (flag2 ? (optionItem.parentNode.firstChild.innerHTML) : (flag) ? optionItem.parentNode.lastChild.previousSibling.innerHTML : optionItem.parentNode.lastChild.innerHTML)) {
+                optionItem.parentElement.previousSibling.focus();
+                event.preventDefault();
+            }
+
+            // Reset
+            flag = false;
+            flag2 = false;
+        }
+    }
+
+    // Using the keyboard, update the original select box, and the selected item by pressing Space OR Enter
+    if ((event.keyCode === KEYCODE_ENTER || event.key === "Enter" || event.keyCode === KEYCODE_SPACE || event.key === "Space")) {
+        updateAuthoringVisual(optionItem);
+    }
+}
+
+// Update the visual based on the selections in the dropdowns
+async function updateAuthoringVisual(element) {
+    let selects, previousSibling;
+    selects = element.parentNode.parentNode.getElementsByTagName("select")[0];
+    const selectsLength = selects.length;
+    previousSibling = element.parentNode.previousSibling;
+    for (let i = 0; i < selectsLength; i++) {
+        if (selects.options[i].innerHTML === element.innerHTML) {
+            selects.selectedIndex = i;
+            previousSibling.innerHTML = element.innerHTML;
+            let childElements = element.parentNode.getElementsByClassName(sameAsSelectedClass);
+            let childElementsLength = childElements.length;
+            for (let k = 0; k < childElementsLength; k++) {
+                childElements[k].removeAttribute("class");
+            }
+
+            element.setAttribute("class", sameAsSelectedClass);
+            break;
+        }
+    }
+
+    // Focus on the div when the dropdown is closed
+    document.getElementById(element.parentElement.previousSibling.id).focus();
+
+    previousSibling.click();
+
+    // Change the visual type or update the data role field, according to the dropdown id
+    if (selects.id === "visual-type") {
+        await changeVisualType(previousSibling.innerHTML);
+
+        // If default option is selected, show the edit area and hide the authoring container
+        if (previousSibling.innerHTML === selectVisualTypeHeader) {
+            editArea.show();
+            visualAuthoringArea.hide();
+        }
+        else {
+            editArea.hide();
+            visualAuthoringArea.show();
+        }
+    }
+    else {
+        await updateDataRoleField(selects.parentNode.parentNode.children[0].id, previousSibling.innerHTML);
     }
 }
 
 // Close all select boxes in the document, except the current select box
 function closeAllSelect(element) {
-
     const arrNo = [];
     const selected = $(".select-selected");
     const selectItems = $(".select-items");
     for (let i = 0; i < selected.length; i++) {
         if (element === selected[i]) {
             arrNo.push(i);
-        } else {
-            selected[i].classList.remove("select-arrow-active");
         }
     }
 
@@ -614,55 +826,80 @@ function closeAllSelect(element) {
     }
 }
 
-// Changing the visual type
+// Get the visual from it's display name (e.x. Area Chart)
+function getVisualFromDisplayName(visualTypeDisplayName) {
+    return visualTypeToDataRoles.filter((function (e) { return e.displayName === visualTypeDisplayName }))[0];
+}
+
+// Get the visual from it's name (e.x. areaChart)
+function getVisualFromName(name) {
+    return visualTypeToDataRoles.filter((function (e) { return e.name === name }))[0];
+}
+
+// Change the visual type
 async function changeVisualType(visualTypeDisplayName) {
+
+    // If default option is selected, delete the already created visual and reset the showcase state and modal options
+    if (visualTypeDisplayName === selectVisualTypeHeader) {
+        resetVisualGenerator();
+        visualCreatorShowcaseState.newVisual = null;
+        resetModal();
+        return;
+    }
+
+    // Get the visual-type and data-roles from it's display name
+    const visual = getVisualFromDisplayName(visualTypeDisplayName);
+    const visualType = visual.name;
+    const dataRoles = visual.dataRoles;
+
+    // Do not change OR reset the modal when the same option is selected while changing the visual
+    if (visualCreatorShowcaseState.visualType === visualType) {
+        return;
+    }
 
     // Remove all data-fields from the state if visual is being edited
     if (selectedVisual.visual) {
         resetGeneratorDataRoles();
     }
 
-    // Get the visual type from the display name
-    const visualTypeData = visualTypeToDataRoles.filter((function (e) { return e.displayName === visualTypeDisplayName }))[0];
-    const visualTypeName = visualTypeData.name;
-
     // Retrieve the visual's capabilities
-    const capabilities = await baseReportState.report.getVisualCapabilities(visualTypeName);
+    const capabilities = await baseReportState.report.getVisualCapabilities(visualType);
 
-    // Validating data roles existence on the given visual type
-    if (!validateDataRoles(capabilities, visualTypeData.dataRoles)) {
+    // Validate data roles existence on the given visual type
+    if (!validateDataRoles(capabilities, dataRoles)) {
         resetVisualGenerator();
         handleInvalidDataRoles();
         return;
     }
 
-    // Enable the fields section
+    // Enable the data fields section
     generatorFields.removeClass(disabledClass);
     generatorFields.removeClass(generatorFieldsDisabledClass);
 
     // Disable the properties section
     generatorProperties.addClass(disabledClass);
 
+    // Disable the toggle sliders
     $(".slider").addClass(disabledSliders);
-
-    // Disable the Create button
-    createVisualButton.prop("disabled", true);
 
     // Reset all the properties
     resetGeneratorProperties();
+
+    // Disable the Create button
+    createVisualButton.prop("disabled", true);
 
     // Reset the data fields count
     visualCreatorShowcaseState.dataFieldsCount = 0;
 
     // If the visual doesn't exist, create new visual, otherwise, delete the old visual and create new visual
     if (!visualCreatorShowcaseState.newVisual) {
-        await visualCreatorShowcaseState.page.createVisual(visualTypeName, getVisualLayout());
-        updateVisualType(visualTypeName, visualTypeData.dataRoles);
+        await visualCreatorShowcaseState.page.createVisual(visualType, getVisualLayout());
+        updateVisualType(visualType, dataRoles);
     }
-    else if (visualTypeName !== visualCreatorShowcaseState.visualType) {
+    else if (visualType !== visualCreatorShowcaseState.visualType) {
         await visualCreatorShowcaseState.page.deleteVisual(visualCreatorShowcaseState.newVisual.name);
-        await visualCreatorShowcaseState.page.createVisual(visualTypeName, getVisualLayout());
-        updateVisualType(visualTypeName, visualTypeData.dataRoles);
+        await visualCreatorShowcaseState.page.createVisual(visualType, getVisualLayout());
+        updateVisualType(visualType, dataRoles);
     }
 }
 
@@ -672,19 +909,27 @@ function updateVisualType(visualTypeName, dataRoles) {
     updateCurrentVisualState(visualTypeName);
     resetGeneratorDataRoles();
     updateAvailableDataRoles(dataRoles);
-    updateDropdownsVisibility();
+
+    // Update the dropdown options to hide the selected items
+    updateDropdownOptions();
 
     // Uncheck all the properties checkbox
     visualPropertiesCheckboxes.prop("checked", false);
+
+    // Enable all the properties checkbox
+    visualPropertiesCheckboxes.prop("disabled", true);
+
+    // Enable the visual title textbox
+    visualTitleText.prop("disabled", true);
 
     // Disable the properties div
     generatorProperties.addClass(generatorPropertiesDisabledClass);
 
     // Show the disabled items on visual type is changed
-    disabledEraseTool.show();
-    enabledEraseTool.hide();
-    disabledAligns.show();
-    enabledAligns.hide();
+    showDisabledEraserAndAligns();
+
+    // Focus on the visual type dropdown
+    $("#selected-value-0").focus();
 }
 
 // Update the visual state
@@ -696,18 +941,19 @@ async function updateCurrentVisualState(visualTypeName) {
     visualCreatorShowcaseState.newVisual = visuals[0];
     visualCreatorShowcaseState.visualType = visualTypeName;
 
-    // Enabling the pie chart legend (disabled by default)
+    // Enable the pie chart legend (disabled by default)
     if (visualTypeName === "pieChart") {
         visualCreatorShowcaseState.newVisual.setProperty(propertyToSelector("legend"), { schema: schemas.property, value: true });
     }
 
-    // Formatting the title to be more accessible
+    // Format the title to be more accessible
     visualCreatorShowcaseState.newVisual.setProperty(propertyToSelector("titleSize"), { schema: schemas.property, value: 25 });
     visualCreatorShowcaseState.newVisual.setProperty(propertyToSelector("titleColor"), { schema: schemas.property, value: "#000" });
 
-    // Disabling unavailable properties for specific visual types
+    // Disable unavailable properties for specific visual types
     toggleWrappers.removeClass(toggleWrappersDisabledClass);
-    for (let i = 0; i < showcaseProperties.length; i++) {
+
+    for (let i = 0; i < showcasePropertiesLength; i++) {
         if (visualTypeProperties[visualTypeName].indexOf(showcaseProperties[i]) < 0) {
 
             // Uncheck the unavailable properties for the created visual
@@ -719,14 +965,14 @@ async function updateCurrentVisualState(visualTypeName) {
     }
 }
 
-// Update the data roles and the data roles fields, on the dropdown menus
+// Update the labels for the dropdowns
 function updateAvailableDataRoles(dataRoles) {
     const dataRolesNamesElements = document.querySelectorAll(".inline-select-text");
 
     // Get the select wrappers to change the title to the data-roles
     const selectWrappers = $(".select-selected").slice(1);
-
-    for (let i = 0; i < dataRoles.length; i++) {
+    const length = dataRoles.length;
+    for (let i = 0; i < length; i++) {
         dataRolesNamesElements[i].innerHTML = dataRoles[i];
         dataRolesNamesElements[i].id = dataRoles[i];
 
@@ -740,8 +986,14 @@ function updateAvailableDataRoles(dataRoles) {
 function updateAvailableDataFields(dataRoleElement, dataFields) {
     const fieldDivElements = dataRoleElement.querySelector(".select-items").children;
     const fieldOptionElements = dataRoleElement.querySelectorAll("option");
-    for (let i = 0; i < dataFields.length; i++) {
-        fieldDivElements[i].innerHTML = dataFields[i];
+
+    const defaultOptionText = dataRoleElement.firstElementChild.innerHTML;
+    fieldDivElements[0].innerHTML = "Select " + defaultOptionText;
+    fieldOptionElements[0].innerHTML = "Select " + defaultOptionText;
+
+    const length = dataFields.length;
+    for (let i = 0; i < length; i++) {
+        fieldDivElements[i + 1].innerHTML = dataFields[i];
         fieldOptionElements[i + 1].innerHTML = dataFields[i];
     }
 }
@@ -750,22 +1002,64 @@ function updateAvailableDataFields(dataRoleElement, dataFields) {
 function updateAvailableVisualTypes() {
     const typesDivElements = $(".select-items")[0].children;
     const typesOptionElements = $("#visual-type")[0].children;
-    for (let i = 0; i < visualTypeToDataRoles.length; i++) {
-        typesDivElements[i].innerHTML = visualTypeToDataRoles[i].displayName;
+
+    const visualTypeToDataRolesLength = visualTypeToDataRoles.length;
+    for (let i = 0; i < visualTypeToDataRolesLength; i++) {
+        typesDivElements[i + 1].innerHTML = visualTypeToDataRoles[i].displayName;
         typesOptionElements[i + 1].innerHTML = visualTypeToDataRoles[i].displayName;
     }
+}
+
+// If data-role is being reset, then remove it from the visual and return
+async function checkForResetDataRole(dataRole, field) {
+    const visualDataField = field.split(" ");
+
+    // If any option with Select word is selected, remove the data-role from the field and return
+    if (visualDataField[0].toLowerCase() === "select") {
+
+        // Get the visual capabilities
+        const capabilities = await visualCreatorShowcaseState.newVisual.getCapabilities();
+
+        // Get the data role name
+        const dataRoleName = capabilities.dataRoles.filter(function (dr) { return dr.displayName === dataRole })[0].name;
+
+        // Check if the data role already has a field
+        if (visualCreatorShowcaseState.dataRoles[dataRoleName]) {
+
+            // Remove the existing data-field from the visual
+            await visualCreatorShowcaseState.newVisual.removeDataField(dataRoleName, 0);
+            visualCreatorShowcaseState.dataRoles[dataRoleName] = null;
+            visualCreatorShowcaseState.dataFieldsCount--;
+
+            // If dataroles count becomes one, then disable the UI
+            if (visualCreatorShowcaseState.dataFieldsCount === 1) {
+                generatorProperties.addClass(disabledClass);
+                generatorProperties.addClass(generatorPropertiesDisabledClass);
+                resetVisualCreatorOptions();
+                showDisabledEraserAndAligns();
+            }
+        }
+        return true;
+    }
+    return false;
 }
 
 // Update data roles field on the visual
 async function updateDataRoleField(dataRole, field) {
 
+    // Check if data-role is getting reset for the visual
+    const isResetDataRole = await checkForResetDataRole(dataRole, field);
+    if (isResetDataRole) {
+        return;
+    }
+
     // Check if the requested field is not the same as the selected field
     if (field !== visualCreatorShowcaseState.dataRoles[dataRole]) {
 
-        // Getting the visual capabilities
+        // Get the visual capabilities
         const capabilities = await visualCreatorShowcaseState.newVisual.getCapabilities();
 
-        // Getting the data role name
+        // Get the data role name
         const dataRoleName = capabilities.dataRoles.filter(function (dr) { return dr.displayName === dataRole })[0].name;
 
         // Remove whitespace from field
@@ -778,86 +1072,107 @@ async function updateDataRoleField(dataRole, field) {
             await visualCreatorShowcaseState.newVisual.removeDataField(dataRoleName, 0);
             visualCreatorShowcaseState.dataFieldsCount--;
 
-            // If there are no more data fields, recreating the visual before adding the data field
+            // If there are no more data fields, recreate the visual before adding the data field
             if (visualCreatorShowcaseState.dataFieldsCount === 0) {
-                await visualCreatorShowcaseState.page.createVisual(visualCreatorShowcaseState.visualType, getVisualLayout());
-
-                const visuals = await visualCreatorShowcaseState.page.getVisuals();
-                visualCreatorShowcaseState.newVisual = visuals[0];
-                visualCreatorShowcaseState.dataFieldsCount++;
-                visualCreatorShowcaseState.dataRoles[dataRoleName] = dataFieldKey;
                 await visualCreatorShowcaseState.newVisual.addDataField(dataRoleName, dataFieldsTargets[dataFieldKey]);
-                updateDropdownsVisibility();
+                visualCreatorShowcaseState.dataRoles[dataRoleName] = dataFieldKey;
+                visualCreatorShowcaseState.dataFieldsCount++;
+
+                // Update the dropdown options to hide the selected items
+                updateDropdownOptions();
             } else {
                 visualCreatorShowcaseState.dataFieldsCount++;
                 visualCreatorShowcaseState.dataRoles[dataRoleName] = dataFieldKey;
                 visualCreatorShowcaseState.newVisual.addDataField(dataRoleName, dataFieldsTargets[dataFieldKey]);
-                updateDropdownsVisibility()
+
+                // Update the dropdown options to hide the selected items
+                updateDropdownOptions();
             }
 
         } else {
 
-            // Adding a new field
+            // Add a new field
             visualCreatorShowcaseState.dataRoles[dataRoleName] = dataFieldKey;
             await visualCreatorShowcaseState.newVisual.addDataField(dataRoleName, dataFieldsTargets[dataFieldKey]);
-            updateDropdownsVisibility();
+
+            // Update the dropdown options to hide the selected items
+            updateDropdownOptions();
             visualCreatorShowcaseState.dataFieldsCount++;
 
-            // Showing the visual if there are 2 or more data fields
+            // Show the visual if there are 2 or more data fields
             if (visualCreatorShowcaseState.dataFieldsCount > 1) {
                 generatorProperties.removeClass(disabledClass);
                 generatorProperties.removeClass(generatorPropertiesDisabledClass);
-                customTitleWrapper.removeClass(toggleWrappersDisabledClass);
                 createVisualButton.prop("disabled", false);
-                visualPropertiesCheckboxes.prop("checked", true);
-                visualPropertiesCheckboxes.prop("disabled", false);
-                updateAvailableProperties(visualCreatorShowcaseState.visualType);
 
-                // Make title property active
-                makeTitlePropActive();
-                // Show the enabled items to change, align or clear the title
-                disabledEraseTool.hide();
-                enabledEraseTool.show();
-                disabledAligns.hide();
-                enabledAligns.show();
+                // If data-roles are three, do not repeat
+                if (visualCreatorShowcaseState.dataFieldsCount !== 3) {
+                    visualPropertiesCheckboxes.prop("checked", true);
+                    visualPropertiesCheckboxes.prop("disabled", false);
+                    customTitleWrapper.removeClass(toggleWrappersDisabledClass);
+                    updateAvailableProperties(visualCreatorShowcaseState.visualType);
+                    visualTitleText.prop("disabled", false);
+
+                    // Set title property active in visual creation
+                    setTitlePropActive();
+
+                    // Show the enabled items to change, align or clear the title
+                    hideDisabledEraserAndAligns();
+                }
             }
         }
     }
 }
 
-function makeTitlePropActive() {
-    const titleProp = $("#" + "title" + "-toggle").prop("checked", true);
+function setTitlePropActive() {
+    const titleProp = $("#" + "title" + "-toggle");
     const relatedToggle = titleProp.next();
     relatedToggle.removeClass(disabledSliders);
 }
 
+function toggleSliders(element, action) {
+    const property = $("#" + element + "-toggle");
+    const relatedToggle = property.next();
+    if (action === "disable") {
+        relatedToggle.addClass(disabledSliders);
+    }
+    else {
+        relatedToggle.removeClass(disabledSliders);
+    }
+}
+
 // Update available properties as per visual type
 function updateAvailableProperties(visualType) {
-    for (let i = 0; i < showcaseProperties.length; i++) {
+    for (let i = 0; i < showcasePropertiesLength; i++) {
         if (visualTypeProperties[visualType].indexOf(showcaseProperties[i]) < 0) {
             $("#" + showcaseProperties[i] + "-toggle").prop("checked", false);
-            const property = $("#" + showcaseProperties[i] + "-toggle");
-            const relatedToggle = property.next();
-            relatedToggle.addClass(disabledSliders);
+            $("#" + showcaseProperties[i] + "-toggle").prop("disabled", true);
+            toggleSliders(showcaseProperties[i], "disable");
         }
         else {
             $("#" + showcaseProperties[i] + "-toggle").prop("checked", true);
-            const property = $("#" + showcaseProperties[i] + "-toggle");
-            const relatedToggle = property.next();
-            relatedToggle.removeClass(disabledSliders);
+            toggleSliders(showcaseProperties[i], "enable");
         }
     }
 }
 
-// Update the visibility of the dropdowns
-function updateDropdownsVisibility() {
+// Update the dropdown options to hide the selected items
+function updateDropdownOptions() {
     $(".select-items div").show();
 
-    // Hide the option which is selected in the dropdowns above
+    // Hide the selected dropdown option from the other data-fields dropdowns
     const selected = $(".select-selected");
     selected.each(function () {
         const selectedValue = $(this).text();
         $(".select-items div:contains(" + selectedValue + ")").hide();
+
+        // Do not hide the selected option in the respective dropdown options list
+        const dropdownElements = document.getElementById(this.id).nextElementSibling.children;
+        for (element of dropdownElements) {
+            if (element.innerHTML === selectedValue) {
+                $(element).show();
+            }
+        }
     });
 }
 
@@ -884,19 +1199,9 @@ function toggleProperty(propertyName) {
 
     const newValue = $("#" + propertyName + "-toggle")[0].checked;
 
-    // TODO : Temporary fix for bar chart as xAxis effect is coming as yAxis and vice-versa
-    if (visualCreatorShowcaseState.visualType === "barChart") {
-        if (propertyName === "xAxis") {
-            propertyName = "yAxis";
-        }
-        else if (propertyName === "yAxis") {
-            propertyName = "xAxis";
-        }
-    }
-
     visualCreatorShowcaseState.properties[propertyName] = newValue;
 
-    // Setting the property on the visual
+    // Set the property on the visual
     visualCreatorShowcaseState.newVisual.setProperty(propertyToSelector(propertyName), { schema: schemas.property, value: newValue });
 }
 
@@ -910,7 +1215,7 @@ function onAlignClicked(direction) {
     $("#align-" + direction).addClass(selectedClass);
     visualCreatorShowcaseState.properties["titleAlign"] = direction;
 
-    // Setting the property on the visual
+    // Set the property on the visual
     visualCreatorShowcaseState.newVisual.setProperty(propertyToSelector("titleAlign"), { schema: schemas.property, value: direction });
 }
 
@@ -943,7 +1248,8 @@ function onEraseToolClicked() {
 
     visualTitleText.val("");
     customVisualTitle = "";
-    // Resetting the title text to auto generated
+
+    // Reset the title text to auto generated
     visualCreatorShowcaseState.newVisual.resetProperty(propertyToSelector("titleText"));
 }
 
@@ -955,7 +1261,7 @@ function updateTitleText() {
     const visualTitle = visualTitleText.val();
     customVisualTitle = visualTitle;
 
-    // If the title is blank, reseting the title to auto generated
+    // If the title is blank, reset the title to auto generated
     if (visualTitle === "") {
         customVisualTitle = "";
         onEraseToolClicked();
@@ -997,7 +1303,7 @@ function resetGeneratorVisual() {
     visualCreatorShowcaseState.page.deleteVisual(visualCreatorShowcaseState.newVisual.name);
     visualCreatorShowcaseState.newVisual = null;
     visualCreatorShowcaseState.visualType = null;
-    $(".select-selected")[0].innerHTML = "Select visual type";
+    $(".select-selected")[0].innerHTML = selectVisualTypeHeader;
     $("#visual-type ~ .select-items > .same-as-selected").show();
     $("#visual-type ~ .select-items > .same-as-selected")[0].removeAttribute("class");
 }
@@ -1024,10 +1330,8 @@ function resetGeneratorProperties() {
 // Reset the visual generator (data roles, properties and visual)
 function resetVisualGenerator() {
 
-    if (!visualCreatorShowcaseState.newVisual) {
-        resetPropertiesWrapper();
+    if (!visualCreatorShowcaseState.newVisual)
         return;
-    }
 
     generatorFields.addClass(disabledClass);
     generatorProperties.addClass(disabledClass);
@@ -1038,12 +1342,13 @@ function resetVisualGenerator() {
     resetGeneratorDataRoles();
     resetGeneratorProperties();
     resetGeneratorVisual();
-    resetPropertiesWrapper();
+    showDisabledEraserAndAligns();
 }
 
 // Validate the existence of each dataRole on the visual's capabilities
 function validateDataRoles(capabilities, dataRolesDisplayNames) {
-    for (let i = 0; i < dataRolesDisplayNames.length; i++) {
+    const length = dataRolesDisplayNames.length;
+    for (let i = 0; i < length; i++) {
 
         // Filter the corrsponding dataRole in the visual's capabilities dataRoles
         if (capabilities.dataRoles.filter(function (dr) { return dr.displayName === dataRolesDisplayNames[i] }).length === 0) {
@@ -1058,16 +1363,8 @@ function handleInvalidDataRoles() {
     console.error("Applied data-roles cannot be assigned to the created visual.");
 }
 
-// Show the disabled items on modal close
-function resetPropertiesWrapper() {
-    disabledEraseTool.show();
-    enabledEraseTool.hide();
-    disabledAligns.show();
-    enabledAligns.hide();
-}
-
 // Create a visual and append that to the base report
-// If the visual is selected for editing, this function will edit the visual, otherwise will create a visual
+// If the visual is selected for editing, this function will edit the visual, otherwise it will create a new visual
 async function appendVisualToReport() {
     const newVisual = visualCreatorShowcaseState.newVisual;
     if (!newVisual) {
@@ -1087,11 +1384,11 @@ async function appendVisualToReport() {
         const visualResponse = await baseReportState.page.createVisual(visualCreatorShowcaseState.visualType, mainVisualState);
         const visual = visualResponse.visual;
 
-        // Formatting the title to be more accessible
+        // Format the title to be more accessible
         visual.setProperty(propertyToSelector("titleSize"), { schema: schemas.property, value: 13 });
         visual.setProperty(propertyToSelector("titleColor"), { schema: schemas.property, value: "#000" });
 
-        // Enabling the legend property for Pie chart
+        // Enable the legend property for Pie chart
         if (visualCreatorShowcaseState.visualType === "pieChart") {
             visual.setProperty(propertyToSelector("legend"), { schema: schemas.property, value: true });
         }
@@ -1106,16 +1403,10 @@ async function appendVisualToReport() {
                     propertyValue = customVisualTitle;
                 }
             }
-            if (visualCreatorShowcaseState.visualType === "pieChart" && (propertyName === "xAxis" || propertyName === "yAxis")) {
-                return;
-            }
-            if ((visualCreatorShowcaseState.visualType === "columnChart" || visualCreatorShowcaseState.visualType === "barChart") && (propertyName === "legend")) {
-                return;
-            }
-            visual.setProperty(propertyToSelector(propertyName), { schema: schemas.property, value: propertyValue });
+            visual.setProperty(propertyToSelector(propertyName), { schema: schemas.property, value: propertyValue }).catch(err => console.log(err));
         });
 
-        // Disabling the legend for the column and bar charts
+        // Disable the legend for the column and bar charts
         if (visualCreatorShowcaseState.visualType === "columnChart" || visualCreatorShowcaseState.visualType === "barChart") {
             visual.setProperty(propertyToSelector("legend"), { schema: schemas.property, value: false });
         }
@@ -1134,34 +1425,11 @@ async function appendVisualToReport() {
         // Append the created visual to the visuals state of the report
         baseReportState.visuals.push(visual);
 
-        // Shift baseShape, Image, actionButton to the end
-        const mainVisualIndex = baseReportState.visuals.findIndex(
-            (visual) => visual.type === "basicShape"
-        );
-
-        if (mainVisualIndex !== -1) {
-            baseReportState.visuals.push(baseReportState.visuals.splice(mainVisualIndex, 1)[0]);
-        }
-
-        const imageVisualIndex = baseReportState.visuals.findIndex(
-            (visual) => visual.type === "image"
-        );
-
-        if (imageVisualIndex !== -1) {
-            baseReportState.visuals.push(baseReportState.visuals.splice(imageVisualIndex, 1)[0]);
-        }
-
-        const actionButtonVisualIndex = baseReportState.visuals.findIndex(
-            (visual) => visual.type === "actionButton"
-        );
-
-        if (actionButtonVisualIndex !== -1) {
-            baseReportState.visuals.push(baseReportState.visuals.splice(actionButtonVisualIndex, 1)[0]);
-        }
-
         // Visual creation is completed
         visualCreationInProgress = false;
-        rearrangeInCustomLayout();
+
+        // Shift the custom visual at last and rearrange all the visuals
+        await shiftCustomVisualAtEndAndRearrange();
     }
     else {
         if (visualTitleText.val() !== "") {
@@ -1174,11 +1442,11 @@ async function appendVisualToReport() {
             await oldVisual.changeType(visualCreatorShowcaseState.visualType);
         }
 
-        // Formatting the title to be more accessible
+        // Format the title to be more accessible
         oldVisual.setProperty(propertyToSelector("titleSize"), { schema: schemas.property, value: 13 });
         oldVisual.setProperty(propertyToSelector("titleColor"), { schema: schemas.property, value: "#000" });
 
-        // Enabling the legend property for Pie chart
+        // Enable the legend property for Pie chart
         if (visualCreatorShowcaseState.visualType === "pieChart") {
             oldVisual.setProperty(propertyToSelector("legend"), { schema: schemas.property, value: true });
         }
@@ -1196,40 +1464,39 @@ async function appendVisualToReport() {
                 oldVisual.resetProperty(propertyToSelector("titleText"));
             }
             else {
-                if (visualCreatorShowcaseState.visualType === "pieChart" && (propertyName === "xAxis" || propertyName === "yAxis")) {
-                    return;
-                }
-                if ((visualCreatorShowcaseState.visualType === "columnChart" || visualCreatorShowcaseState.visualType === "barChart") && (propertyName === "legend")) {
-                    return;
-                }
                 oldVisual.setProperty(propertyToSelector(propertyName), { schema: schemas.property, value: propertyValue });
             }
         });
 
-        // Disabling the legend for the column and bar charts
+        // Disable the legend for the column and bar charts
         if (visualCreatorShowcaseState.visualType === "columnChart" || visualCreatorShowcaseState.visualType === "barChart") {
             oldVisual.setProperty(propertyToSelector("legend"), { schema: schemas.property, value: false });
         }
-
-        // Remove the data-roles which are null
-        Object.keys(visualCreatorShowcaseState.dataRoles).forEach((key) => (visualCreatorShowcaseState.dataRoles[key] === null) && delete visualCreatorShowcaseState.dataRoles[key]);
 
         // Add data-fields to the created visual
         Object.entries(visualCreatorShowcaseState.dataRoles).forEach(async function (dataField) {
             const [dataRole, field] = dataField;
 
-            // Get data-fields from the data-role
-            const dataFieldProp = await oldVisual.getDataFields(dataRole);
+            if (field) {
+                // Get data-fields from the data-role
+                const dataFieldProp = await oldVisual.getDataFields(dataRole);
 
-            if (dataFieldProp.length === 0) {
-                oldVisual.addDataField(dataRole, dataFieldsTargets[field]);
+                // Check if any data-role is associated with the data-field, If yes then first remove then add new one
+                if (dataFieldProp.length === 0) {
+                    oldVisual.addDataField(dataRole, dataFieldsTargets[field]);
+                }
+                else {
+                    await oldVisual.removeDataField(dataRole, 0);
+                    oldVisual.addDataField(dataRole, dataFieldsTargets[field]);
+                }
             }
-            else {
+            else /* If field is null then remove the datarole */ {
                 await oldVisual.removeDataField(dataRole, 0);
-                oldVisual.addDataField(dataRole, dataFieldsTargets[field]);
             }
         });
+
         customVisualTitle = "";
+
         // Use the visual from the state to update it's properties
         selectedVisual.visual = null;
     }
@@ -1238,8 +1505,40 @@ async function appendVisualToReport() {
     resetVisualGenerator();
 }
 
+// Push the custom visual - (actionButton, shape, image) to last and Rearrange
+async function shiftCustomVisualAtEndAndRearrange() {
+
+    // Shift baseShape, Image, actionButton to the end
+    const mainVisualIndex = baseReportState.visuals.findIndex(
+        (visual) => visual.type === "basicShape"
+    );
+
+    if (mainVisualIndex !== -1) {
+        baseReportState.visuals.push(baseReportState.visuals.splice(mainVisualIndex, 1)[0]);
+    }
+
+    const imageVisualIndex = baseReportState.visuals.findIndex(
+        (visual) => visual.type === "image"
+    );
+
+    if (imageVisualIndex !== -1) {
+        baseReportState.visuals.push(baseReportState.visuals.splice(imageVisualIndex, 1)[0]);
+    }
+
+    const actionButtonVisualIndex = baseReportState.visuals.findIndex(
+        (visual) => visual.type === "actionButton"
+    );
+
+    if (actionButtonVisualIndex !== -1) {
+        baseReportState.visuals.push(baseReportState.visuals.splice(actionButtonVisualIndex, 1)[0]);
+    }
+
+    // Rearrange the visuals
+    await rearrangeInCustomLayout();
+}
+
 // This function opens the modal and fill the dropdowns with the data-roles, properties and title of the visual
-async function openModal(visualData) {
+async function openModalAndFillState(visualData) {
 
     if (!visualData) {
         // If visualData is not preset, just show the modal
@@ -1247,14 +1546,25 @@ async function openModal(visualData) {
         return;
     }
 
+    // Fill the state object from the visual response
+    await fillStateFromTheVisualData(visualData);
+}
+
+// Fill the state object from the visual response
+async function fillStateFromTheVisualData(visualData) {
+
     // Pass the visual to get the IVisual response
     const visualResponse = await getIVisualResponse(visualData.visual);
     selectedVisual.visual = visualResponse;
 
     const visualType = visualResponse.type;
-    const visualDataRole = visualTypeToDataRoles.filter((function (e) { return e.name === visualType }))[0];
 
-    visualDataRole.dataRoleNames.forEach(async function (dataRole) {
+    // Get the visual data-roles and data-role names from it's name
+    const visualResult = getVisualFromName(visualType);
+    const dataRoles = visualResult.dataRoles;
+    const dataRoleNames = visualResult.dataRoleNames;
+
+    dataRoleNames.forEach(async function (dataRole) {
 
         // Get data-roles from the visual
         const dataField = await visualResponse.getDataFields(dataRole);
@@ -1281,14 +1591,36 @@ async function openModal(visualData) {
         }
     });
 
-    // Add properties to the created visual
+    // Fetch properties from the visual, which properties need to be reset
     Object.entries(visualCreatorShowcaseState.properties).forEach(async function (visualProperty) {
-        const [propertyName, propertyValue] = visualProperty;
-        const property = await visualResponse.getProperty(propertyToSelector(propertyName));
-        visualCreatorShowcaseState.properties[propertyName] = property.value;
+
+        // Get the property name
+        const propertyName = visualProperty[0];
+
+        if (visualTypeProperties[visualType].indexOf(propertyName) >= 0 || propertyName === "title" || propertyName === "titleText" || propertyName === "titleAlign") {
+            const property = await visualResponse.getProperty(propertyToSelector(propertyName));
+            if (property.schema === schemas.default) {
+                if (propertyName === "xAxis" || propertyName === "yAxis") {
+                    visualCreatorShowcaseState.properties[propertyName] = true;
+                }
+                else if (propertyName === "legend") {
+                    visualCreatorShowcaseState.properties[propertyName] = false;
+                }
+            }
+            else {
+                visualCreatorShowcaseState.properties[propertyName] = property.value;
+            }
+        }
     });
 
-    // This will create visual inside the modal
+    // Based on the state object, create a visual inside the modal
+    await createVisualInsideTheModalInEditMode(visualType, dataRoles);
+}
+
+// Based on the state object, create a visual inside the modal
+async function createVisualInsideTheModalInEditMode(visualType, dataRoles) {
+
+    // Create visual inside the modal
     const newVisual = await visualCreatorShowcaseState.page.createVisual(visualType, getVisualLayout());
 
     // Update state
@@ -1296,11 +1628,11 @@ async function openModal(visualData) {
     visualCreatorShowcaseState.visualType = newVisual.visual.type;
     const visual = newVisual.visual;
 
-    // Formatting the title to be more accessible
+    // Format the title to be more accessible
     visual.setProperty(propertyToSelector("titleSize"), { schema: schemas.property, value: 25 });
     visual.setProperty(propertyToSelector("titleColor"), { schema: schemas.property, value: "#000" });
 
-    // Enabling the legend property for Pie chart
+    // Enable the legend property for Pie chart
     if (visualCreatorShowcaseState.visualType === "pieChart") {
         visual.setProperty(propertyToSelector("legend"), { schema: schemas.property, value: true });
     }
@@ -1315,16 +1647,10 @@ async function openModal(visualData) {
                 propertyValue = customVisualTitle;
             }
         }
-        if (visualCreatorShowcaseState.visualType === "pieChart" && (propertyName === "xAxis" || propertyName === "yAxis")) {
-            return;
-        }
-        if ((visualCreatorShowcaseState.visualType === "columnChart" || visualCreatorShowcaseState.visualType === "barChart") && (propertyName === "legend")) {
-            return;
-        }
-        visual.setProperty(propertyToSelector(propertyName), { schema: schemas.property, value: propertyValue });
+        visual.setProperty(propertyToSelector(propertyName), { schema: schemas.property, value: propertyValue }).catch(err => console.log(err));
     });
 
-    // Disabling the legend for the column and bar charts
+    // Disable the legend for the column and bar charts
     if (visualCreatorShowcaseState.visualType === "columnChart" || visualCreatorShowcaseState.visualType === "barChart") {
         visual.setProperty(propertyToSelector("legend"), { schema: schemas.property, value: false });
     }
@@ -1339,25 +1665,28 @@ async function openModal(visualData) {
     });
 
     // Update data-roles for the given visual type in the UI
-    updateAvailableDataRoles(visualDataRole.dataRoles);
+    updateAvailableDataRoles(dataRoles);
 
-    // Make the title property active
-    makeTitlePropActive();
+    // Set the title property active
+    setTitlePropActive();
+
+    visualPropertiesCheckboxes.prop("disabled", false);
 
     // Populate properties as per state inside the modal
     populateProperties(visualCreatorShowcaseState);
+
+    if (titleToggle.is(":checked")) {
+        visualTitleText.prop("disabled", false);
+    }
+    else {
+        visualTitleText.prop("disabled", true);
+    }
 
     // Remove disabled class from data-roles and properties
     generatorFields.removeClass(generatorFieldsDisabledClass);
     generatorFields.removeClass(disabledClass);
     generatorProperties.removeClass(generatorPropertiesDisabledClass);
     generatorProperties.removeClass(disabledClass);
-
-    // Hide the disabled-erase-tool and alignments
-    disabledEraseTool.hide();
-    enabledEraseTool.show();
-    disabledAligns.hide();
-    enabledAligns.show();
 
     // Enable Create visual button
     createVisualButton.prop("disabled", false);
@@ -1372,14 +1701,18 @@ async function openModal(visualData) {
 
 // Populate the visual data inside the modal
 function populateProperties(visualCreatorShowcaseState) {
-    const visualTypeData = visualTypeToDataRoles.filter((function (e) { return e.name === visualCreatorShowcaseState.visualType }))[0];
-    const visualTypeName = visualTypeData.displayName;
+
+    // Get the visual-type, data-roles and data-role names from it's name
+    const visual = getVisualFromName(visualCreatorShowcaseState.visualType);
+    const visualDisplayName = visual.displayName;
+    const dataRoles = visual.dataRoles;
+    const dataRoleNames = visual.dataRoleNames;
 
     // Set the type of the visual in visual-type dropdown
-    $("#selected-value-0").text(visualTypeName);
+    $("#selected-value-0").text(visualDisplayName);
     const visualSelectItems = $(".select-items").get(0).children;
     Array.from(visualSelectItems).forEach(visualSelectItem => {
-        if (visualSelectItem.innerHTML === visualTypeName) {
+        if (visualSelectItem.innerHTML === visualDisplayName) {
             visualSelectItem.classList.add(sameAsSelectedClass);
         }
     });
@@ -1387,46 +1720,42 @@ function populateProperties(visualCreatorShowcaseState) {
     // Set the data-roles for the visual
     Object.entries(visualCreatorShowcaseState.dataRoles).forEach(dataField => {
         const [dataRole, field] = dataField;
-        const index = visualTypeData.dataRoleNames.indexOf(dataRole);
+        const index = dataRoleNames.indexOf(dataRole);
         const dataRoleField = dataFieldsMappings[field];
         if (index !== -1) {
-            const value = visualTypeData.dataRoles[index];
+            const value = dataRoles[index];
             selectDataRoles(value, dataRoleField);
         }
     });
 
+    // Update the dropdown options to hide the selected items
+    updateDropdownOptions();
+
     // Set the properties for the visual
-    for (let i = 0; i < showcaseProperties.length; i++) {
+    setVisualProperties();
+}
+
+// Set the visual properties as per the state object
+function setVisualProperties() {
+    for (let i = 0; i < showcasePropertiesLength; i++) {
         if (visualTypeProperties[visualCreatorShowcaseState.visualType].indexOf(showcaseProperties[i]) < 0) {
 
             // Uncheck the inapplicable properties for the created visual
             $("#" + showcaseProperties[i] + "-toggle").prop("checked", false);
+            $("#" + showcaseProperties[i] + "-toggle").prop("disabled", true);
 
             // Disable the pointer events for the properties
             $("#" + showcaseProperties[i] + ".toggle-wrapper").addClass(toggleWrappersDisabledClass);
-            const property = $("#" + showcaseProperties[i] + "-toggle");
-            const relatedToggle = property.next();
-            relatedToggle.addClass(disabledSliders);
-
+            toggleSliders(showcaseProperties[i], "disable");
         }
         else {
             $("#" + showcaseProperties[i] + "-toggle").prop("checked", true);
-            const property = $("#" + showcaseProperties[i] + "-toggle");
-            const relatedToggle = property.next();
-            relatedToggle.removeClass(disabledSliders);
+            toggleSliders(showcaseProperties[i], "enable");
         }
     }
 
     Object.entries(visualCreatorShowcaseState.properties).forEach(property => {
         let [propertyName, propertyValue] = property;
-        if (visualCreatorShowcaseState.visualType === "barChart") {
-            if (propertyName === "xAxis") {
-                propertyName = "yAxis";
-            }
-            else if (propertyName === "yAxis") {
-                propertyName = "xAxis";
-            }
-        }
 
         if (propertyName === "titleAlign") {
             if (propertyValue === "center" || propertyValue === "right") {
@@ -1442,6 +1771,17 @@ function populateProperties(visualCreatorShowcaseState) {
         }
         $("#" + propertyName + "-toggle").prop("checked", propertyValue);
     });
+
+    const titleCheck = visualCreatorShowcaseState.properties["title"];
+    if (titleCheck) {
+        hideDisabledEraserAndAligns();
+    }
+    else {
+        showDisabledEraserAndAligns();
+        customVisualTitle = "";
+        visualTitleText.val("");
+        visualTitleText.prop("disabled", true);
+    }
 
     // Disable the toggle property for Barchart and Columnchart
     if (visualCreatorShowcaseState.visualType === "barChart" || visualCreatorShowcaseState.visualType === "columnChart") {
@@ -1461,8 +1801,9 @@ function populateProperties(visualCreatorShowcaseState) {
 // Populate the data-roles in the modal
 function selectDataRoles(dataRoleName, dataRoleValue) {
     const selectSpanWrappers = $(".select-wrapper span");
+    const length = selectSpanWrappers.length;
 
-    for (let i = 0; i < selectSpanWrappers.length; i++) {
+    for (let i = 0; i < length; i++) {
         if (selectSpanWrappers[i].innerHTML === dataRoleName) {
             $("#selected-value-" + (i + 1)).text(dataRoleValue);
             const visualSelectItems = $(".select-items").get(i + 1).children;

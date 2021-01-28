@@ -74,6 +74,7 @@ const overlay = $("#overlay");
 const visualDisplayArea = $("#visual-authoring-container").get(0);
 const editArea = $("#edit-area");
 const visualAuthoringArea = $("#visual-authoring-container");
+const visualTypeDropdown = $("#selected-value-0");
 const createVisualButton = $("#create-visual-btn");
 const generatorType = $("#generator-type");
 const generatorFields = $("#generator-fields");
@@ -88,6 +89,7 @@ const legendToggle = $("#legend-toggle");
 const xAxisToggle = $("#xAxis-toggle");
 const yAxisToggle = $("#yAxis-toggle");
 const titleToggle = $("#title-toggle");
+const alignRight = $("#align-right");
 const closeModalButton = $("#close-modal");
 const alignLeft = $("#align-left");
 const reportContainer = $(".report-container").get(0);
@@ -95,6 +97,9 @@ const customTitleWrapper = $(".custom-title-wrapper");
 const alignmentBlocks = $(".alignment-block");
 const visualPropertiesCheckboxes = $(".property-checkbox");
 const toggleWrappers = $(".toggle-wrapper");
+
+// Cache showcasePropertiesLength
+const showcasePropertiesLength = showcaseProperties.length;
 
 // Get models. models contain enums that can be used
 const models = window["powerbi-client"].models;
@@ -109,9 +114,19 @@ const selectedClass = "selected";
 const sameAsSelectedClass = "same-as-selected";
 const toggleWrappersDisabledClass = "disabled";
 const disabledSliders = "disabled-sliders";
+const visualTypeId = "selected-value-0";
+
+// Key codes
+const KEYCODE_TAB = 9;
+const KEYCODE_ENTER = 13;
+const KEYCODE_ESCAPE = 27;
+const KEYCODE_SPACE = 32;
 
 // Store the position of the main visual [basicShape]
 let mainVisualState;
+
+// Get the reference for the iframe inside the modal to remove it from the tab-order
+let authoringiFrame;
 
 // Custom title for the visual
 let customVisualTitle = "";
@@ -131,3 +146,6 @@ const visualHeaderReportSetting = {
         ]
     }
 }
+
+// Headers
+const selectVisualTypeHeader = "Select visual type";

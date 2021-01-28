@@ -9,7 +9,7 @@
     src: url("https://content.powerapps.com/resource/powerbiwfe/fonts/SegoeUI-SemiBold-final.83b7261d0e6f3994ed6d.woff") format("woff");
 }
 
-*, *:focus, *:hover{
+*, *:hover{
     outline: none;
 }
 
@@ -86,6 +86,10 @@ body.modal-open {
     margin: auto;
 }
 
+.select-items > div:focus {
+    background-color: #E3E8EE;
+}
+
 .btn-create {
     align-items: center;
     background: #51ACF5;
@@ -116,11 +120,20 @@ body.modal-open {
     background: #1B81EF;
 }
 
+.btn-create:focus {
+    box-shadow: 0 0 3pt 1pt rgba(0,123,255,0.5);
+}
+
+#erase-tool-enabled:focus {
+    border: none;
+    box-shadow: 0 0 0 0.15rem #118DFF;
+    outline: none;
+}
+
 .btn.active.focus,
 .btn.active:focus,
 .btn.focus:active,
-.btn:active:focus,
-.btn:focus {
+.btn:active:focus {
     box-shadow: none;
     outline: 0;
     outline-offset: -2px;
@@ -133,10 +146,15 @@ body.modal-open {
 }
 
 #close-modal {
-    margin-top: -24px;
+    display: flex;
+    margin-top: -14px;
     opacity: 1;
     outline: none;
-    padding: 16px 20px 16px 16px;
+    padding: 20px;
+}
+
+#close-modal:focus {
+    box-shadow: 0 0 0 0.15rem rgba(0,123,255,.5);
 }
 
 .modal-footer {
@@ -164,6 +182,7 @@ body.modal-open {
 .custom-title-wrapper {
     align-items: center;
     display: flex;
+    justify-content: space-between;
 }
 
 .custom-title-wrapper.disabled input[type="text"] {
@@ -264,6 +283,15 @@ body.modal-open {
     -webkit-transition: .4s;
 }
 
+input[type="checkbox"]:focus + .slider.round {
+    box-shadow: 0 0 3pt 2pt rgba(0,123,255,0.5);
+}
+
+.alignment-block:focus {
+    box-shadow: 0 0 0 0.15rem #118DFF;
+    outline: none;
+}
+
 .slider.disabled-sliders:before {
     background: #BAC3C8;
     border: 0;
@@ -312,7 +340,8 @@ input:checked + .slider:before {
 }
 
 .alignment-block {
-    cursor: pointer;
+    background: transparent;
+    border: none;
     display: inline-flex;
     height: 25px;
     margin-right: 6px;
@@ -323,6 +352,10 @@ input:checked + .slider:before {
 
 .alignment-block.selected {
     background: #BAC3C8;
+}
+
+.cursor {
+    cursor: pointer;
 }
 
 .title-alignment-wrapper {
@@ -341,24 +374,31 @@ input:checked + .slider:before {
     width: 206px;
 }
 
+#visual-title:focus {
+    box-shadow: 0 0 0 0.15rem rgba(0,123,255,.5);
+    outline: none;
+}
+
 #visual-title::placeholder {
     color: #A19F9D;
     font-size: 14px;
     vertical-align: middle;
 }
 
-#erase-tool-div {
-    margin-left: 18px;
-    cursor: pointer;
+.eraser-button {
+    background: transparent;
+    border: none;
+    margin-top: 5px;
 }
 
 #erase-tool-enabled {
-    display: inherit;
+    cursor: pointer;
+    display: flex;
     margin-left: 8px;
 }
 
 #erase-tool-disabled {
-    display: inherit;
+    display: flex;
     margin-left: 8px;
 }
 
@@ -386,6 +426,10 @@ input:checked + .slider:before {
     border-radius: 2px;
 }
 
+.select-selected:focus{
+    box-shadow: 0 0 0 0.15rem rgba(0,123,255,.5);
+}
+
 .select-items {
     background: #FFFFFF;
     box-shadow: 0 3.2px 7.2px rgba(0, 0, 0, 0.132), 0 0.6px 1.8px rgba(0, 0, 0, 0.108);
@@ -408,6 +452,7 @@ input:checked + .slider:before {
 
 .same-as-selected {
     background: #F2F5F8;
+    font-weight: 600;
 }
 
 div.generator-type-disabled span {

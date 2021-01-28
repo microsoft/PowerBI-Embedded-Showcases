@@ -1,7 +1,7 @@
 body {
     background: #F7F8F6;
     height: 100%;
-    scrollbar-color: #D2D0CE transparent;
+    scrollbar-color: #A0AEB2 transparent;
     scrollbar-width: thin;
 }
 
@@ -18,7 +18,7 @@ body::-webkit-scrollbar {
 }
 
 body::-webkit-scrollbar-thumb {
-    background-color: #D2D0CE;
+    background-color: #A0AEB2;
     border-radius: 10px;
     height: 30px;
 }
@@ -32,9 +32,9 @@ body::-webkit-scrollbar-thumb {
 .header {
     align-items: center;
     background: #1B81EF;
-    color: #FFF8DC;
     display: flex;
     height: 44px;
+    margin: 0;
 }
 
 .contoso {
