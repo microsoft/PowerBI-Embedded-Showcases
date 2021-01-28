@@ -26,6 +26,9 @@ $(document).ready(async function () {
     // Initialize the custom dropdowns
     initializeDropdowns();
 
+    // Select the contents of the visual title when it is focused
+    visualTitleText.focus(function () { $(this).select(); });
+
     // Focus the close button when modal opens
     visualCreatorModal.on("shown.bs.modal", function () {
         closeModalButton.focus();
@@ -779,7 +782,11 @@ async function updateAuthoringVisual(element) {
                 childElements[k].removeAttribute("class");
             }
 
-            element.setAttribute("class", sameAsSelectedClass);
+            // Do not add the class if default option is selected for the data-fields
+            if (getFirstWord(element.innerHTML) !== "select") {
+                element.setAttribute("class", sameAsSelectedClass);
+            }
+
             break;
         }
     }
@@ -1010,12 +1017,16 @@ function updateAvailableVisualTypes() {
     }
 }
 
+// Returns the first word of the text in lowercase
+function getFirstWord(text) {
+    return text.split(" ")[0].toLowerCase();
+}
+
 // If data-role is being reset, then remove it from the visual and return
 async function checkForResetDataRole(dataRole, field) {
-    const visualDataField = field.split(" ");
 
-    // If any option with Select word is selected, remove the data-role from the field and return
-    if (visualDataField[0].toLowerCase() === "select") {
+    // If option with "select" word is selected, remove the data-role from visual and return
+    if (getFirstWord(field) === "select") {
 
         // Get the visual capabilities
         const capabilities = await visualCreatorShowcaseState.newVisual.getCapabilities();
@@ -1304,8 +1315,12 @@ function resetGeneratorVisual() {
     visualCreatorShowcaseState.newVisual = null;
     visualCreatorShowcaseState.visualType = null;
     $(".select-selected")[0].innerHTML = selectVisualTypeHeader;
-    $("#visual-type ~ .select-items > .same-as-selected").show();
-    $("#visual-type ~ .select-items > .same-as-selected")[0].removeAttribute("class");
+
+    // Remove sameAsSelected class
+    const visualTypeOption = $("#visual-type ~ .select-items > .same-as-selected")[0];
+    if (visualTypeOption) {
+        visualTypeOption.removeAttribute("class");
+    }
 }
 
 // Reset the properties section

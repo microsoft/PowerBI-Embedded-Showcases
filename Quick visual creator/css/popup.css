@@ -120,14 +120,12 @@ body.modal-open {
     background: #1B81EF;
 }
 
-.btn-create:focus {
+.btn-create:focus-visible {
     box-shadow: 0 0 3pt 1pt rgba(0,123,255,0.5);
 }
 
-#erase-tool-enabled:focus {
-    border: none;
-    box-shadow: 0 0 0 0.15rem #118DFF;
-    outline: none;
+.btn-create:focus:not(:focus-visible) {
+    box-shadow: none;
 }
 
 .btn.active.focus,
@@ -283,12 +281,21 @@ body.modal-open {
     -webkit-transition: .4s;
 }
 
-input[type="checkbox"]:focus + .slider.round {
+input[type="checkbox"]:focus-visible + .slider.round {
     box-shadow: 0 0 3pt 2pt rgba(0,123,255,0.5);
 }
 
-.alignment-block:focus {
+input[type="checkbox"]:focus:not(:focus-visible) + .slider.round {
+    box-shadow: none;
+}
+
+.alignment-block:focus-visible {
     box-shadow: 0 0 0 0.15rem #118DFF;
+    outline: none;
+}
+
+.alignment-block:focus:not(:focus-visible) {
+    box-shadow: none;
     outline: none;
 }
 
@@ -411,6 +418,16 @@ input:checked + .slider:before {
     display: none;
 }
 
+#erase-tool-enabled:focus-visible {
+    box-shadow: 0 0 0 0.15rem #118DFF;
+    outline: none;
+}
+
+#erase-tool-enabled:focus:not(:focus-visible) {
+    box-shadow: none;
+    outline: none;
+}
+
 #aligns-enabled {
     display: none;
 }
@@ -426,8 +443,12 @@ input:checked + .slider:before {
     border-radius: 2px;
 }
 
-.select-selected:focus{
+.select-selected:focus-visible{
     box-shadow: 0 0 0 0.15rem rgba(0,123,255,.5);
+}
+
+.select-selected:focus:not(:focus-visible){
+    box-shadow: none;
 }
 
 .select-items {
