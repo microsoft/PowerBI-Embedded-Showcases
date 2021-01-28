@@ -5,6 +5,8 @@ html {
     --region-column: 140px;
     --mail-column: 270px;
     --phone-column: 208px;
+    --table-cell-font: 14px "Segoe UI Regular", "segoe_ui_regular", Tahoma, Arial, Helvetica;
+    --table-cell-color: #323130;
 }
 
 .dialog-insight-to-action {
@@ -20,20 +22,25 @@ html {
 }
 
 .btn-dialog-insight-to-action {
+    background: #FFF;
     border: 1px solid #669B61;
     border-radius: 4px;
     color: #669B61;
     cursor: pointer;
     font: 14px/29px "Segoe UI SemiBold", "segoe_ui_semibold", Tahoma, Arial;
     height: 32px;
+    line-height: 28px;
     margin-right: 8px;
-    text-align: center;
     width: 116px;
 }
 
-.btn-dialog-insight-to-action:hover,
-.btn-dialog-insight-to-action:focus {
+.btn-dialog-insight-to-action:hover {
     background: rgba(102, 155, 97, 0.15);
+}
+
+.btn-dialog-insight-to-action:focus {
+    box-shadow: 0 0 0 2px rgba(0,123,255,.5);
+    outline: none;
 }
 
 .btn-dialog-insight-to-action:active {
@@ -44,7 +51,7 @@ html {
 #dialog-table {
     color: #212121;
     height: 288px;
-    overflow-y: scroll;
+    overflow: hidden scroll;
     scrollbar-color: #D2D0CE #FFF;
     scrollbar-width: thin;
     width: 837px;
@@ -65,12 +72,6 @@ html {
     background-color: #D2D0CE;
     border-radius: 10px;
     height: 30px;
-}
-
-.tbody {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
 }
 
 .table-row {
@@ -170,6 +171,10 @@ html {
     position: absolute;
     top: 8px;
     width: 18px;
+}
+
+input[type="checkbox"]:focus + .checkbox-circle {
+    box-shadow: 0 0 4px 1.33px rgba(0,123,255,1);
 }
 
 .table-checkbox>input:checked~.checkbox-circle {

@@ -24,74 +24,74 @@
 <body>
     <!-- Page content -->
     <div id="wrapper">
-        <div id="contoso-header">
-            <img src="img/contoso.svg" id="contoso" alt="contoso">
-        </div>
-        <div id="insight-to-action-embed-area">
+        <h1 id="contoso-header">
+            <img src="img/contoso.svg" id="contoso" alt="contoso" aria-label="Contoso logo" />
+        </h1>
+        <main id="insight-to-action-embed-area">
             <div id="overlay">
-                <img src="img/spinner.svg" id="spinner" class="rotate" alt="loader">
+                <img src="img/spinner.svg" id="spinner" class="rotate" alt="loader" aria-label="Loading report">
             </div>
             <div id="main-div">
                 <div id="report-container"></div>
                 <div id="dialog-mask">
-                    <div id="distribution-dialog" class="dialog-insight-to-action">
+                    <div role="dialog" id="distribution-dialog" class="dialog-insight-to-action"> 
                         <h2 class="dialog-header">
                             <span class="text-dialog-header">Campaign distribution list</span>
-                            <img class="btn-close-distribution-dialog" src="img/cross.svg" />
+                            <button id="close1" class="wrapper-close" aria-label="Close dialog">
+                                <img role="presentation"  class="btn-close-distribution-dialog" src="img/cross.svg" alt="close"/>
+                            </button>
                         </h2>
                         <div class="dialog-body">
                             <div id="dialog-table"></div>
                         </div>
                         <footer class="dialog-footer">
-                            <div id="send-coupon" class="btn-dialog-insight-to-action">Send coupon</div>
-                            <div id="send-discount" class="btn-dialog-insight-to-action">Send discount</div>
+                            <button id="send-coupon" class="btn-dialog-insight-to-action">Send coupon</button>
+                            <button id="send-discount" class="btn-dialog-insight-to-action">Send discount</button>
                         </footer>
                     </div>
-                    <div id="send-dialog" class="dialog-insight-to-action-small">
+                    <div role="dialog" id="send-dialog" class="dialog-insight-to-action-small">
                         <h2 class="dialog-header">
                             <span class="text-dialog-header"></span>
-                            <img class="btn-close-distribution-dialog" src="img/cross.svg" />
+                            <button id="close2" class="wrapper-close" aria-label="Close dialog">
+                                <img role="presentation" class="btn-close-distribution-dialog" src="img/cross.svg" alt="close"/>
+                            </button>
                         </h2>
-                        <div class="dialog-body">
+                        <div role="form" class="dialog-body">
                             <div class="send-dialog-row">
-                                <div class="send-dialog-field">Title</div>
-                                <input type="text" class="title" name="title" />
+                                <label id="send-coupon-title" for="send-title" class="send-dialog-field">Title</label>
+                                <input type="text" class="title" id="send-title" name="title" />
                             </div>
                             <div class="send-dialog-row">
-                                <div class="send-dialog-field">Body</div>
-                                <textarea class="send-dialog-input" name="messageBody"></textarea>
+                                <label for="message-content" class="send-dialog-field">Body</label>
+                                <textarea class="send-dialog-input" id="message-content" name="messageBody"></textarea>
                             </div>
                         </div>
                         <footer class="dialog-footer">
-                            <div id="send-message" class="btn-insight-to-action-send">Send</div>
+                            <button id="send-message" class="btn-insight-to-action-send">Send</button>
                         </footer>
                     </div>
-                    <div id="success-dialog" class="dialog-insight-to-action-small">
+                    <div role="dialog" id="success-dialog" class="dialog-insight-to-action-small">
                         <div class="dialog-header">
-                            <img id="success-cross" class="btn-close-distribution-dialog" src="img/cross.svg" />
+                            <button id="success-cross" class="wrapper-close" aria-label="Close dialog">
+                                <img role="presentation" class="btn-close-distribution-dialog" src="img/cross.svg" alt="close"/>
+                            </button>
                         </div>
                         <div id="success-content">
-                            <img id="image-success" src="img/success.svg" />
+                            <img role="presentation" id="image-success" src="img/success.svg"/>
                             <div class="text-success">Sent successfully!</div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </main>
     </div>
-
-    <!-- External JS to make Promise work in IE 11 -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bluebird/3.3.4/bluebird.min.js"></script>
-
-    <!-- External JS to make .append() work in IE 11 -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-polyfills/0.1.42/polyfill.js" integrity="sha256-bXiN+GW47t3Gf2R1yZ6ldDMv8bbAmmnyhxmaTKfZDfU=" crossorigin="anonymous"></script>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/powerbi-client@2.15.1/dist/powerbi.min.js"></script>
-    <script src="js/globals.js?v=10112020"></script>
+    
+    <script src="js/globals.js?v=23122020"></script>
     <script src="js/session_utils.js?v=25012021"></script>
-    <script src="js/index.js?v=23122020"></script>
-
+    <script src="js/index.js?v=05012021"></script>
 </body>
 
 </html>

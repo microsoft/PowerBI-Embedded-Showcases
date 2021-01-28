@@ -1,9 +1,3 @@
-// Set props for accessibility insights
-function setReportAccessibilityProps(report) {
-    report.setComponentTitle("Insight to Action report");
-    report.setComponentTabIndex(0);
-}
-
 // Make sure Document object is ready
 $(document).ready(function () {
 
@@ -21,19 +15,27 @@ $(document).ready(function () {
     // Embed the report in the report-container
     embedReport();
 
-    $(".btn-close-distribution-dialog").on("click", function () {
+    closeBtn1.on("click", function () {
         onCloseClicked();
     });
 
-    $("#send-discount").on("click", function () {
+    closeBtn2.on("click", function () {
+        onCloseClicked();
+    });
+
+    successCross.on("click", function () {
+        onCloseClicked();
+    });
+
+    sendDiscountBtn.on("click", function () {
         onSendClicked("discount");
     });
 
-    $("#send-coupon").on("click", function () {
+    sendCouponBtn.on("click", function () {
         onSendClicked("coupon");
     });
 
-    $("#send-message").on("click", function () {
+    sendMessageBtn.on("click", function () {
         onSendDialogSendClicked();
         setTimeout(() => {
             if (isDialogClosed === false) {
@@ -41,7 +43,46 @@ $(document).ready(function () {
             }
         }, 3000);
     });
+
+    // Select the contents of textarea when it receives focus
+    $("textarea").focus(function () { $(this).select(); });
+
+    // To trap the focus inside the success dialog and close it on Escape press
+    successDialog.on("keydown", event => handleKeyEvents(event, successDialogElements));
+
+    // To trap the focus inside the distribution dialog and close dialog on Escape key press
+    distributionDialog.on("keydown", event => handleKeyEvents(event, distributionDialogElements));
+
+    // To trap the focus inside the send dialog and close dialog on Escape key press
+    sendDialog.on("keydown", event => handleKeyEvents(event, sendDialogElements));
 });
+
+function handleKeyEvents(event, elements) {
+    if (event.keyCode === KEYCODE_ESCAPE || event.key === "Escape") {
+        onCloseClicked();
+        return;
+    }
+    if (event.key === "Tab" || event.keyCode === KEYCODE_TAB) {
+        if (event.shiftKey) /* shift + tab */ {
+            // Compare the activeElement using id
+            if ($(document.activeElement)[0].id === elements.firstElement[0].id) {
+                elements.lastElement.focus();
+                event.preventDefault();
+            }
+        } else /* tab */ {
+            if ($(document.activeElement)[0].id === elements.lastElement[0].id) {
+                elements.firstElement.focus();
+                event.preventDefault();
+            }
+        }
+    }
+}
+
+// Set props for accessibility insights
+function setReportAccessibilityProps(report) {
+    report.setComponentTitle("Insight to Action report");
+    report.setComponentTabIndex(0);
+}
 
 // Embed the report
 async function embedReport() {
@@ -148,7 +189,7 @@ async function embedReport() {
 
     // Adding onClick listener for the button in the report
     reportShowcaseState.report.on("buttonClicked", async function () {
-        
+
         // Populate data according to the current filters on the table visual
         const result = await tableVisual.exportData(models.ExportDataType.Underlying);
         handleExportData(result);
@@ -158,7 +199,7 @@ async function embedReport() {
     // Adding onClick listener for the custom menu in the table visual in the report
     reportShowcaseState.report.on("commandTriggered", async function (event) {
         if (event.detail.command === "campaign") {
-            
+
             // Populate data according to the current filters on the table visual
             const result = await tableVisual.exportData(models.ExportDataType.Underlying);
             handleExportData(result);
@@ -182,6 +223,7 @@ function onSendClicked(name) {
     successDialog.hide();
     dialogMask.show();
     sendDialog.show();
+    closeBtn2.focus();
 }
 
 // Handles the export data API result
@@ -210,6 +252,7 @@ function onStartCampaignClicked() {
     sendDialog.hide();
     dialogMask.show();
     distributionDialog.show();
+    closeBtn1.focus();
 }
 
 // Open success dialog
@@ -218,6 +261,7 @@ function onSendDialogSendClicked() {
     sendDialog.hide();
     dialogMask.show();
     successDialog.show();
+    successCross.focus();
     isDialogClosed = false;
 }
 
@@ -263,24 +307,21 @@ function filterTable(filterValues, table) {
 
 // Build the HTML table from the data
 function createTable(tableData) {
-    let table = document.createElement("div");
-    table.setAttribute("role", "table");
-    let tableBody = document.createElement("div");
-    tableBody.setAttribute("class", "tbody");
-    let rowIndex = 0;
+    let table = document.createElement("table");
+    let tableBody = document.createElement("tbody");
 
     // Building table headers, table rows and table columns
-    tableData.forEach(function (rowData) {
-        let row = document.createElement("div");
+    tableData.forEach(function (rowData, rowIndex) {
+        let row = document.createElement("tr");
         row.setAttribute("class", "table-row");
-        row.setAttribute("role", "row");
 
         if (rowIndex !== 0) {
-            let cell = document.createElement("div");
+            let cell = document.createElement("td");
             cell.setAttribute("class", "cell-checkbox");
 
             let tableCheckbox = document.createElement("label");
             tableCheckbox.setAttribute("class", "table-checkbox");
+            tableCheckbox.setAttribute("aria-label", "Include " + rowData[0]);
 
             let checkboxElement = document.createElement("input");
             checkboxElement.setAttribute("type", "checkbox");
@@ -301,13 +342,10 @@ function createTable(tableData) {
             row.append(cell);
         }
 
-        let columnIndex = 0;
-        rowData.forEach(function (cellData) {
+        rowData.forEach(function (cellData, columnIndex) {
             let cell;
             if (rowIndex !== 0) {
-                cell = document.createElement("div");
-                cell.setAttribute("class", "table-values");
-                cell.setAttribute("role", "cell");
+                cell = document.createElement("td");
                 if (columnIndex === 0) {
                     cell.setAttribute("class", "name-cell");
                 } else if (columnIndex === 1) {
@@ -318,9 +356,8 @@ function createTable(tableData) {
                     cell.setAttribute("class", "phone-cell");
                 }
             } else {
-                cell = document.createElement("div");
+                cell = document.createElement("th");
                 cell.setAttribute("class", "table-headers");
-                cell.setAttribute("role", "columnheader");
                 if (columnIndex === 0) {
                     cell.setAttribute("id", "name");
                 } else if (columnIndex === 1) {
@@ -331,13 +368,10 @@ function createTable(tableData) {
                     cell.setAttribute("id", "phone");
                 }
             }
-            columnIndex++;
             cell.append(document.createTextNode(cellData));
             row.append(cell);
         });
-
         tableBody.append(row);
-        rowIndex++;
     });
 
     table.append(tableBody);

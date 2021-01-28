@@ -7,6 +7,10 @@
     width: 392px;
 }
 
+#send-coupon-title {
+    margin-top: 0;
+}
+
 .title {
     border: 1px solid #A19F9D;
     border-radius: 2px;
@@ -20,6 +24,7 @@
 }
 
 .title:focus {
+    box-shadow: 0 0 0 2px rgba(0,123,255,.5);
     outline: none;
 }
 
@@ -36,10 +41,12 @@
 }
 
 .send-dialog-input:focus {
+    box-shadow: 0 0 0 2px rgba(0,123,255,.5);
     outline: none;
 }
 
 .btn-insight-to-action-send {
+    background: #FFF;
     border: 1px solid #669B61;
     border-radius: 4px;
     color: #669B61;
@@ -50,9 +57,13 @@
     width: 64px;
 }
 
-.btn-insight-to-action-send:hover,
-.btn-insight-to-action-send:focus {
+.btn-insight-to-action-send:hover {
     background: rgba(102, 155, 97, 0.15);
+}
+
+.btn-insight-to-action-send:focus {
+    box-shadow: 0 0 0 2px rgba(0,123,255,.5);
+    outline: none;
 }
 
 .btn-insight-to-action-send:active {

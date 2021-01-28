@@ -1,7 +1,7 @@
 body {
     height: 100%;
     overflow-y: auto;
-    scrollbar-color: #D2D0CE #FFF;
+    scrollbar-color: #A0AEB2 #FFF;
     scrollbar-width: thin;
 }
 
@@ -18,7 +18,7 @@ body::-webkit-scrollbar {
 }
 
 body::-webkit-scrollbar-thumb {
-    background-color: #D2D0CE;
+    background-color: #A0AEB2;
     border-radius: 10px;
     height: 30px;
 }
@@ -31,12 +31,11 @@ body::-webkit-scrollbar-thumb {
 
 #contoso-header {
     background: #094624;
-    color: #FFF8DC;
     display: flex;
     align-items: center;
     height: 44px;
+    margin: 0;
     min-width: 850px;
-    width: 100%;
 }
 
 #contoso {

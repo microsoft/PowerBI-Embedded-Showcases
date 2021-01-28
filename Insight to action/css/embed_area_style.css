@@ -87,10 +87,24 @@
     margin-top: 18px;
 }
 
+.wrapper-close {
+    background: transparent;
+    border: 0;
+    height: 40px;
+    margin: -9px 10px 0 0;
+    padding: 0;
+    width: 40px;
+}
+
+.wrapper-close:focus {
+    box-shadow: 0 0 0 2px rgba(0,123,255,.5);
+    outline: none;
+}
+
 .btn-close-distribution-dialog {
     cursor: pointer;
     height: 16px;
-    margin: 4px 22px 0 0;
+    margin: 10px;
     position: relative;
     width: 16px;
 }
