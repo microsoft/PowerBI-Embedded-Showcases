@@ -23,7 +23,12 @@
     width: 392px;
 }
 
-.title:focus {
+.input-content:focus:not(:focus-visible) {
+    box-shadow: none;
+    outline: none;
+}
+
+.input-content:focus-visible {
     box-shadow: 0 0 0 2px rgba(0,123,255,.5);
     outline: none;
 }
@@ -38,11 +43,6 @@
     padding: 5px 10px;
     resize: none;
     width: 392px;
-}
-
-.send-dialog-input:focus {
-    box-shadow: 0 0 0 2px rgba(0,123,255,.5);
-    outline: none;
 }
 
 .btn-insight-to-action-send {
@@ -61,8 +61,13 @@
     background: rgba(102, 155, 97, 0.15);
 }
 
-.btn-insight-to-action-send:focus {
+.btn-insight-to-action-send:focus-visible {
     box-shadow: 0 0 0 2px rgba(0,123,255,.5);
+    outline: none;
+}
+
+.btn-insight-to-action-send:focus:not(:focus-visible) {
+    box-shadow: none;
     outline: none;
 }
 

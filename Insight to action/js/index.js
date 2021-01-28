@@ -44,8 +44,8 @@ $(document).ready(function () {
         }, 3000);
     });
 
-    // Select the contents of textarea when it receives focus
-    $("textarea").focus(function () { $(this).select(); });
+    // Select the contents of text input when they receive focus
+    $(".input-content").focus(function () { $(this).select(); });
 
     // To trap the focus inside the success dialog and close it on Escape press
     successDialog.on("keydown", event => handleKeyEvents(event, successDialogElements));

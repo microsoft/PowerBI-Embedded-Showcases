@@ -96,8 +96,13 @@
     width: 40px;
 }
 
-.wrapper-close:focus {
+.wrapper-close:focus-visible {
     box-shadow: 0 0 0 2px rgba(0,123,255,.5);
+    outline: none;
+}
+
+.wrapper-close:focus:not(:focus-visible) {
+    box-shadow: none;
     outline: none;
 }
 

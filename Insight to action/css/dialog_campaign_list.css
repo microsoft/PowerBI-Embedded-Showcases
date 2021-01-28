@@ -38,8 +38,13 @@ html {
     background: rgba(102, 155, 97, 0.15);
 }
 
-.btn-dialog-insight-to-action:focus {
+.btn-dialog-insight-to-action:focus-visible {
     box-shadow: 0 0 0 2px rgba(0,123,255,.5);
+    outline: none;
+}
+
+.btn-dialog-insight-to-action:focus:not(:focus-visible) {
+    box-shadow: none;
     outline: none;
 }
 
@@ -173,8 +178,12 @@ html {
     width: 18px;
 }
 
-input[type="checkbox"]:focus + .checkbox-circle {
+input[type="checkbox"]:focus-visible + .checkbox-circle {
     box-shadow: 0 0 4px 1.33px rgba(0,123,255,1);
+}
+
+input[type="checkbox"]:focus:not(:focus-visible) + .checkbox-circle {
+    box-shadow: none;
 }
 
 .table-checkbox>input:checked~.checkbox-circle {
