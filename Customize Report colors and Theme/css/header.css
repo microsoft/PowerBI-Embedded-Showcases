@@ -1,0 +1,47 @@
+body {
+    background: #FAF9F8;
+    height: 100%;
+    scrollbar-color: #A0AEB2 transparent;
+    scrollbar-width: thin;
+}
+
+body.dark {
+    background: #3B3A39;
+}
+
+/* Change custom scrollbar appearance */
+body::-webkit-scrollbar-track {
+    border-radius: 10px;
+    background-color: transparent;
+}
+
+body::-webkit-scrollbar {
+    background-color: transparent;
+    height: 10px;
+    width: 8px;
+}
+
+body::-webkit-scrollbar-thumb {
+    background-color: #A0AEB2;
+    border-radius: 10px;
+    height: 30px;
+}
+
+.wrapper {
+    margin: 0 auto;
+    width: 100%;
+}
+
+.header {
+    align-items: center;
+    background: #69797E;
+    display: flex;
+    height: 44px;
+    margin: 0;
+}
+
+.contoso {
+    height: 41px;
+    margin-left: 24px;
+    width: 74px;
+}

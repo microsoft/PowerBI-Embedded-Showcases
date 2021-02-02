@@ -1,0 +1,272 @@
+/* TODO: Change font URL in the final environment */
+@font-face {
+    font-family: "segoe_ui_regular";
+    src: url("https://content.powerapps.com/resource/powerbiwfe/fonts/SegoeUI-Regular-final.8956d1f5b4190f537497.woff") format("woff");
+}
+
+@font-face {
+    font-family: "segoe_ui_semibold";
+    src: url("https://content.powerapps.com/resource/powerbiwfe/fonts/SegoeUI-SemiBold-final.83b7261d0e6f3994ed6d.woff") format("woff");
+}
+
+.theme-report-container {
+    display: flex;
+}
+
+.btn-theme {
+    background: #FAF9F8;
+    border: 1px solid #4A565A;
+    border-radius: 4px;
+    color: #4A565A;
+    display: flex;
+    height: 32px;
+    margin: 16px;
+}
+
+.btn-theme.dark {
+    background: #3B3A39;
+    border: 1px solid #D9E6EA;
+    color: #D9E6EA;
+}
+
+.btn-theme:hover {
+    background: #FFF;
+    color: #4A565A;
+}
+
+.btn-theme.dark:hover {
+    background: #393939;
+    color: #D9E6EA;
+}
+
+/* For Keyboard focus */
+.btn-theme.dark:focus-visible {
+    box-shadow: 0 0 3pt 1pt #D9E6EA;
+}
+
+/* Remove focus when mouse navigation is used */
+.btn-theme.dark:focus:not(:focus-visible) {
+    box-shadow: none;
+}
+
+.btn-theme:focus-visible {
+    box-shadow: 0 0 3pt 1pt rgba(0,123,255,.5);
+}
+
+.btn-theme:focus:not(:focus-visible) {
+    box-shadow: none;
+}
+
+.btn.active.focus,
+.btn.active:focus,
+.btn:active:focus {
+    box-shadow: none;
+    outline: 0;
+    outline-offset: -2px;
+    text-decoration: none;
+}
+
+.btn-theme[aria-expanded="true"] {
+    background: #D3D6D7;
+    color: #4A565A;
+}
+
+.btn-theme.dark[aria-expanded="true"] {
+    background: #393939;
+    color: #D9E6EA;
+}
+
+input[type="checkbox"]:focus-visible + span.slider.round {
+    box-shadow: 0 0 3pt 2pt rgba(0,123,255,.5);
+    outline: none;
+}
+
+input[type="checkbox"]:focus:not(:focus-visible) + span.slider.round {
+    box-shadow: none;
+    outline: none;
+}
+
+input[type="checkbox"]:focus-visible + span.slider.round.dark {
+    box-shadow: 0 0 3pt 1pt #D9E6EA;
+    outline: none;
+}
+
+input[type="checkbox"]:focus:not(:focus-visible) + span.slider.round.dark {
+    box-shadow: none;
+    outline: none;
+}
+
+input[type="radio"]:focus {
+    outline-offset: initial;
+}
+
+#bucket {
+    display: flex;
+    margin: 1px 8px 0 4px;
+}
+
+.bucket-theme.dark {
+    fill: #D9E6EA;
+}
+
+.theme-selector-label {
+    cursor: pointer;
+    display: flex;
+    font: 14px/20px "Segoe UI SemiBold", "segoe_ui_semibold", Tahoma, Arial, Helvetica;
+    margin-top: -1.5px;
+}
+
+.theme-container {
+    background: #FFF;
+    border: 1px solid #FFF;
+    border-radius: 4px;
+    box-shadow: 0 6.4px 14.4px rgba(0, 0, 0, 0.132), 0 1.2px 3.6px rgba(0, 0, 0, 0.108);
+    box-sizing: border-box;
+    height: 244px;
+    margin: 10px 0 0 0;
+    padding: 16px;
+    width: 336px;
+}
+
+.theme-container.dark {
+    background: #3B3A39;
+    border: 1px solid #69797E;
+}
+
+.theme-element-container {
+    align-items: center;
+    box-sizing: border-box;
+    display: flex;
+    height: 36px;
+    padding: 0;
+    position: relative;
+}
+
+.theme-element-container input {
+    cursor: pointer;
+    opacity: 1;
+    position: relative;
+}
+
+input[type="radio"],
+input[type="checkbox"] {
+    margin: 0;
+}
+
+.data-color-name {
+    color: #323130;
+    cursor: pointer;
+    font: 14px/20px "Segoe UI Regular", "segoe_ui_regular", Tahoma, Arial, Helvetica;
+    margin-left: 8px;
+}
+
+.data-color-name.dark {
+    color: #FFF;
+}
+
+.data-color {
+    display: inline-block;
+    height: 20px;
+    width: 20px;
+}
+
+.theme-colors {
+    border: 1px solid #717171;
+    cursor: pointer;
+    display: inline;
+    height: 22px;
+    line-height: 0;
+    margin-left: auto;
+}
+
+.theme-switch-label {
+    color: #323130;
+    font: 14px/20px "Segoe UI SemiBold", "segoe_ui_semibold", Tahoma, Arial, Helvetica;
+    margin-left: 6px;
+}
+
+.theme-switch-label.dark {
+    color: #FFF;
+}
+
+/* Box around the slider checkbox */
+.switch {
+    border: 1px solid #69797E;
+    border-radius: 34px;
+    box-sizing: border-box;
+    display: flex;
+    height: 20px;
+    margin: auto 0;
+    margin-left: auto;
+    position: relative;
+    width: 40px;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+    height: 0;
+    opacity: 0;
+    width: 0;
+}
+
+/* The toggle slider for the theme selection */
+.slider {
+    background: #FFF;
+    bottom: 0;
+    cursor: pointer;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    transition: .4s;
+    -webkit-transition: .4s;
+}
+
+.slider:before {
+    background: #69797E;
+    bottom: 3px;
+    content: "";
+    height: 12px;
+    left: 3px;
+    position: absolute;
+    transition: .4s;
+    width: 12px;
+    -webkit-transition: .4s;
+}
+
+.slider.dark:before {
+    background: #FFF;
+}
+
+input:checked+.slider.dark {
+    background: #69797E;
+}
+
+input+.slider.dark {
+    background: #69797E;
+}
+
+input:checked+.slider:before {
+    -webkit-transform: translateX(20px);
+    -ms-transform: translateX(20px);
+    transform: translateX(20px);
+}
+
+/* Rounded toggle slider for the theme selection */
+.slider.round {
+    border-radius: 34px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}
+
+.dropdown-separator {
+    border-top: 0.5px solid rgba(0, 0, 0, 0.2);
+    margin: 16px 0;
+    opacity: 0.7;
+}
+
+.dropdown-separator.dark {
+    border-top: 0.5px solid #69797E;
+}

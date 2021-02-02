@@ -1,0 +1,56 @@
+/* The custom loader animation to be displayed till the report is embedded */
+.rotate {
+    animation: rotation 1s infinite linear;
+}
+
+@keyframes rotation {
+    from {
+        transform: translate(-50%, -50%) rotate(0deg);
+    }
+    to {
+        transform: translate(-50%, -50%) rotate(359deg);
+    }
+}
+
+.container {
+    display: flex;
+    height: auto;
+    padding: 0;
+    width: 100%;
+}
+
+#overlay {
+    height: inherit;
+    position: fixed;
+    width: inherit;
+}
+
+#overlay #spinner {
+    left: 50%;
+    position: fixed;
+    top: 50%;
+}
+
+.content {
+    background: #FAF9F8;
+    display: none;
+    margin: 0 auto;
+    text-align: left;
+    width: 100%;
+}
+
+.content.dark {
+    background: #3B3A39;
+}
+
+.horizontal-rule {
+    border-top: .5px solid rgba(0, 0, 0, .2);
+    clear: both;
+    margin: 0 16px;
+    opacity: .7;
+    width: 98%;
+}
+
+.horizontal-rule.dark {
+    border-top: .5px solid #605E5C;
+}

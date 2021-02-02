@@ -1,0 +1,216 @@
+/* TODO: Change font URL in the final environment */
+
+@font-face {
+    font-family: "segoe_ui_regular";
+    src: url("https://content.powerapps.com/resource/powerbiwfe/fonts/SegoeUI-Regular-final.8956d1f5b4190f537497.woff") format("woff");
+}
+
+@font-face {
+    font-family: "segoe_ui_semibold";
+    src: url("https://content.powerapps.com/resource/powerbiwfe/fonts/SegoeUI-SemiBold-final.83b7261d0e6f3994ed6d.woff") format("woff");
+}
+
+.dropdown {
+    float: left;
+}
+
+.btn-action[aria-expanded="true"] {
+    background: rgba(73, 70, 198, 0.15);
+    color: #4946C6;
+}
+
+.btn-action {
+    background: #F6F6FA;
+    border: 1px solid #4946C6;
+    color: #4946C6;
+    font: 14px "Segoe UI SemiBold", segoe_ui_semibold, Tahoma, Arial;
+    margin: 16px;
+}
+
+.btn-action:hover {
+    background: rgba(73, 70, 198, 0.25);
+    color: #4946C6;
+}
+
+/* For key-board focus */
+.btn-action:focus-visible {
+    box-shadow: 0 0 0 0.1rem #4946C6;
+}
+
+/* Remove focus for the mouse navigation */
+.btn-action:focus:not(:focus-visible) {
+    box-shadow: none;
+}
+
+.btn-util:hover > img {
+    filter: brightness(0) invert(1);
+}
+
+.btn.active.focus,
+.btn.active:focus,
+.btn.focus:active,
+.btn:active:focus {
+    box-shadow: none;
+    color: #4946C6;
+    outline: 0;
+    outline-offset: -2px;
+    text-decoration: none;
+}
+
+#visuals-layout-btn {
+    margin-left: 0
+}
+
+#caret-img {
+    margin: 0 0 0 4px;
+}
+
+#visuals-list {
+    border-radius: 2px;
+    box-shadow: 0 0.6px 1.8px rgba(0, 0, 0, 0.108), 0 3.2px 7.2px rgba(0, 0, 0, 0.132);
+    margin: 8px 0 0 0;
+    padding: 0;
+    width: 246px;
+    padding: 8px 0;
+}
+
+/* Display the focus on the checkbox on keyboard navigation for the visual selection */
+input[type="checkbox"]:focus-visible + .checkbox-checkmark {
+    box-shadow: 0 0 0 0.15rem #4946C6;
+}
+
+/* Remove focus for the mouse navigation */
+input[type="checkbox"]:focus:not(:focus-visible) + .checkbox-checkmark {
+    box-shadow: none;
+}
+
+.checkbox-container {
+    cursor: pointer;
+    display: block;
+    font-size: 16px;
+    height: 36px;
+    padding: 8px 8px 8px 35px;
+    position: relative;
+}
+
+.checkbox-container input {
+    cursor: pointer;
+    opacity: 0;
+    position: absolute;
+}
+
+.checkbox-checkmark {
+    background: #FFF;
+    border: 1px solid #C8C8EE;
+    border-radius: 2px;
+    height: 20px;
+    left: 8px;
+    position: absolute;
+    top: 8px;
+    transition: background-color 100ms ease;
+    width: 20px;
+}
+
+.checkbox-container input:checked~.checkbox-checkmark {
+    background: rgba(73, 70, 198, 0.3);
+}
+
+.checkbox-container input:checked {
+    background: #808080;
+}
+
+.checkbox-checkmark:after {
+    content: "";
+    display: none;
+    position: absolute;
+}
+
+.checkbox-container input:checked~.checkbox-checkmark:after {
+    display: block;
+}
+
+.checkbox-title {
+    color: #323130;
+    display: block;
+    font: 400 14px "Segoe UI", segoe_ui_regular, Tahoma, Arial;
+    margin-top: -1px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.checkbox-container .checkbox-checkmark:after {
+    border: 1px solid #4946C6;
+    border-width: 0 1px 1px 0;
+    height: 12px;
+    left: 6px;
+    padding: 2px;
+    top: 1px;
+    transform: rotate(45deg);
+    width: 6px;
+}
+
+.checkbox-menu label {
+    clear: both;
+    color: #333;
+    font-weight: 400;
+    margin: 0;
+    white-space: nowrap;
+}
+
+#layouts-list {
+    background: #FFF;
+    border-radius: 4px;
+    box-shadow: 0 0.3px 0.9px rgba(0, 0, 0, 0.11), 0 1.6px 3.6px rgba(0, 0, 0, 0.13);
+    box-sizing: border-box;
+    height: 32px;
+    margin: 8px 0 0 -36px;
+    padding: 0;
+    position: absolute;
+    width: 180px;
+    z-index: 1;
+}
+
+#layouts-list.show {
+    display: flex;
+}
+
+.btn-util {
+    align-items: center;
+    border: 0.25px solid transparent;
+    box-sizing: border-box;
+    display: flex;
+    height: 32px;
+    justify-content: center;
+    outline: none;
+    padding: 0;
+    width: 36px;
+}
+
+.btn-util:hover {
+    background: rgba(73, 70, 198, 0.8);
+}
+
+/* For key-board focus */
+.btn-util:focus-visible {
+    border: 2px solid #4946C6;
+    outline: none;
+}
+
+/* Remove focus for the mouse navigation */
+.btn-util:focus:not(:focus-visible) {
+    border: none;
+    outline: none;
+}
+
+.btn-layout {
+    background: #FFF;
+}
+
+.layout-img {
+    height: 16px;
+    width: 16px;
+}
+
+.active-columns-btn {
+    background: rgba(73, 70, 198, 0.3);
+}

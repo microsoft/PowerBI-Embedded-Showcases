@@ -1,0 +1,83 @@
+body {
+    height: 100%;
+    scrollbar-color: #A0AEB2 transparent;
+    scrollbar-width: thin;
+}
+
+/* Change custom scrollbar appearance */
+body::-webkit-scrollbar-track {
+    border-radius: 10px;
+    background-color: transparent;
+}
+
+body::-webkit-scrollbar {
+    background-color: transparent;
+    height: 10px;
+    width: 8px;
+}
+
+body::-webkit-scrollbar-thumb {
+    background-color: #A0AEB2;
+    border-radius: 10px;
+    height: 30px;
+}
+
+#wrapper {
+    margin: 0 auto;
+    width: 100%;
+}
+
+#contoso-header {
+    align-items: center;
+    background: #1461F8;
+    display: flex;
+    height: 44px;
+    margin: 0;
+}
+
+#contoso {
+    height: 41px;
+    margin-left: 24px;
+    padding: 5px 0;
+    width: 74px;
+}
+
+#share-bookmark {
+    height: calc(9/16 * 95vw);
+    visibility: hidden;
+    width: auto;
+}
+
+.rotate {
+    animation: rotation 1s infinite linear;
+}
+
+@keyframes rotation {
+    from {
+        transform: translate(-50%, -50%) rotate(0deg);
+    }
+    to {
+        transform: translate(-50%, -50%) rotate(359deg);
+    }
+}
+
+#overlay {
+    position: absolute;
+    width: inherit;
+    height: inherit;
+}
+
+#overlay #spinner {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+}
+
+#bookmark-container {
+    height: 100%;
+    width: 100%;
+}
+
+#bookmark-container>iframe {
+    border: none;
+}

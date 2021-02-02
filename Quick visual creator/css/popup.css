@@ -1,0 +1,505 @@
+/* TODO: Change font URL in the final environment */
+@font-face {
+    font-family: "segoe_ui_regular";
+    src: url("https://content.powerapps.com/resource/powerbiwfe/fonts/SegoeUI-Regular-final.8956d1f5b4190f537497.woff") format("woff");
+}
+
+@font-face {
+    font-family: "segoe_ui_semibold";
+    src: url("https://content.powerapps.com/resource/powerbiwfe/fonts/SegoeUI-SemiBold-final.83b7261d0e6f3994ed6d.woff") format("woff");
+}
+
+*, *:hover{
+    outline: none;
+}
+
+.fade {
+    transition: opacity .25s linear;
+}
+
+/* Override Bootstrap modal's padding-right property which is applied, when the modal is opened */
+body.modal-open {
+    padding-right: 0 !important;
+}
+
+.modal.show {
+    display: flex !important;
+}
+
+.modal-container{
+    align-items: center;
+    border-radius: 2px 2px 0 0;
+    display: flex;
+    height: 647px;
+    margin: auto;
+    width: 784px;
+}
+
+.modal.modal-static .modal-dialog{
+    transform: none;
+}
+
+.modal-content {
+    height: 647px;
+}
+
+.modal-dialog {
+    max-width: inherit;
+}
+
+.modal-body {
+    display: flex;
+    margin: 0 24px;
+    padding: 0;
+}
+
+#visual-creator-options {
+    box-sizing: border-box;
+    margin-top: -9px;
+    padding-right: 23px;
+    width: 279px;
+}
+
+#visual-preview {
+    background: #F2F5F8;
+    border-radius: 4px;
+    box-sizing: border-box;
+    display: flex;
+    height: 499px;
+    width: 460px;
+}
+
+.authoring-area {
+    background: #FFF;
+    border: 1px solid #FFF;
+    border-radius: 2px;
+    box-sizing: border-box;
+    box-shadow: 0 1.6px 3.6px rgba(0, 0, 0, 0.13), 0 0.3px 0.9px rgba(0, 0, 0, 0.11);
+    display: flex;
+    height: 252px;
+    margin: auto;
+    width: 426px;
+}
+
+#edit-image {
+    display: block;
+    margin: auto;
+}
+
+.select-items > div:focus {
+    background-color: #E3E8EE;
+}
+
+.btn-create {
+    align-items: center;
+    background: #51ACF5;
+    border: 1px solid #51ACF5;
+    border-radius: 4px;
+    color: #FDFDFD;
+    display: inline-flex;
+    font: 14px/20px "Segoe UI SemiBold", "segoe_ui_semibold", Tahoma, Arial, Helvetica;
+    height: 32px;
+    justify-content: space-around;
+    margin: 0 4px 0 0;
+    width: 94px;
+}
+
+.btn-create:hover {
+    background: #3992F2;
+    color: #FDFDFD;
+    outline: none;
+}
+
+.btn-create:disabled {
+    background: transparent;
+    border: 1px solid #C3D4E1;
+    color: #C3D4E1;
+}
+
+.btn-create:active {
+    background: #1B81EF;
+}
+
+.btn-create:focus-visible {
+    box-shadow: 0 0 3pt 1pt rgba(0,123,255,0.5);
+}
+
+.btn-create:focus:not(:focus-visible) {
+    box-shadow: none;
+}
+
+.btn.active.focus,
+.btn.active:focus,
+.btn.focus:active,
+.btn:active:focus {
+    box-shadow: none;
+    outline: 0;
+    outline-offset: -2px;
+    text-decoration: none;
+}
+
+.modal-header {
+    border: 0;
+    padding: 22px 24px 33px 24px;
+}
+
+#close-modal {
+    display: flex;
+    margin-top: -14px;
+    opacity: 1;
+    outline: none;
+    padding: 20px;
+}
+
+#close-modal:focus {
+    box-shadow: 0 0 0 0.15rem rgba(0,123,255,.5);
+}
+
+.modal-footer {
+    border: 0;
+    padding: 8px 19px 24px 12px;
+}
+
+.modal-title {
+    color: #1A1A1A;
+    font: 20px/28px "Segoe UI SemiBold", "segoe_ui_semibold", Tahoma, Arial, Helvetica;
+    margin-top: -5px;
+}
+
+.select-wrapper, .toggle-wrapper {
+    display: flex;
+    height: 32px;
+    justify-content: space-between;
+    margin-top: 5px;
+}
+
+.toggle-wrapper.disabled {
+    pointer-events: none;
+}
+
+.custom-title-wrapper {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+}
+
+.custom-title-wrapper.disabled input[type="text"] {
+    pointer-events: none;
+}
+
+/* Select Menu */
+.styled-select {
+    appearance: none;
+    background: url('../img/enabled-images/chevron.svg') transparent no-repeat calc(100% - 10px) !important;
+    border: 1px solid #ACACAC;
+    border-radius: 2px;
+    box-sizing: border-box;
+    cursor: pointer;
+    font: 14px/20px "Segoe UI Regular", "segoe_ui_regular", Tahoma, Arial, Helvetica;
+    position: relative;
+    width: 256px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
+
+.styled-select select {
+    display: none; /*hide original SELECT element: */
+}
+
+.generator-disabled {
+    pointer-events: none;
+}
+
+.inline-select-text, .inline-toggle-text {
+    color: #201F1E;
+    font: 14px/20px "Segoe UI Regular", "segoe_ui_regular", Tahoma, Arial, Helvetica;
+    line-height: 32px;
+}
+
+.inline-select {
+    appearance: none;
+    background: url('../img/enabled-images/chevron.svg') transparent no-repeat calc(100% - 10px) !important;
+    border: 1px solid #ACACAC;
+    border-radius: 2px;
+    box-sizing: border-box;
+    cursor: pointer;
+    margin-left: 8px;
+    width: 199px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
+
+#generator-fields, #generator-properties, .title-wrapper {
+    margin-top: 22px;
+}
+
+/* Toggle Button */
+.inline-toggle-text {
+    width: auto;
+}
+
+/* The switch - the box around the slider */
+.switch {
+    height: 20px;
+    margin: 7px 0 7px 16px;
+    position: relative;
+    width: 40px;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+    height: 0;
+    opacity: 0;
+    width: 0;
+}
+
+/* The slider */
+.slider {
+    border: 1px solid #54ADF4;
+    background-color: #EDEFF0;
+    bottom: 0;
+    cursor: pointer;
+    height: 20px;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    transition: .4s;
+    -webkit-transition: .4s;
+}
+
+.slider:before {
+    background-color: #54ADF4;
+    bottom: 3px;
+    content: "";
+    height: 12px;
+    left: 3px;
+    position: absolute;
+    top: 19%;
+    transition: .4s;
+    width: 12px;
+    -webkit-transition: .4s;
+}
+
+input[type="checkbox"]:focus-visible + .slider.round {
+    box-shadow: 0 0 3pt 2pt rgba(0,123,255,0.5);
+}
+
+input[type="checkbox"]:focus:not(:focus-visible) + .slider.round {
+    box-shadow: none;
+}
+
+.alignment-block:focus-visible {
+    box-shadow: 0 0 0 0.15rem #118DFF;
+    outline: none;
+}
+
+.alignment-block:focus:not(:focus-visible) {
+    box-shadow: none;
+    outline: none;
+}
+
+.slider.disabled-sliders:before {
+    background: #BAC3C8;
+    border: 0;
+    top: 20%;
+}
+
+input:checked+.slider.disabled-sliders {
+    background: #EDEFF0;
+    border: 0;
+}
+
+input+.slider.disabled-sliders {
+    background: #EDEFF0;
+    border: 0;
+}
+
+input:checked + .slider {
+    background-color: #2196F3;
+    border: 0;
+}
+
+input:checked + .slider:before {
+    background-color: #FFF;
+    top: 20%;
+    transform: translateX(22px);
+    -webkit-transform: translateX(22px);
+    -ms-transform: translateX(22px);
+}
+
+/* Rounded sliders */
+.slider.round {
+    border-radius: 40px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}
+
+#alignment-blocks-wrapper {
+    height: 32px;
+    margin-top: 4px;
+}
+
+#alignment-blocks-wrapper img {
+    margin: auto;
+}
+
+.alignment-block {
+    background: transparent;
+    border: none;
+    display: inline-flex;
+    height: 25px;
+    margin-right: 6px;
+    padding: 1px 4px;
+    user-select: none;
+    width: 25px;
+}
+
+.alignment-block.selected {
+    background: #BAC3C8;
+}
+
+.cursor {
+    cursor: pointer;
+}
+
+.title-alignment-wrapper {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+#visual-title {
+    border: 1px solid #A19F9D;
+    border-radius: 2px;
+    font: 14px/20px "Segoe UI Regular", "segoe_ui_regular", Tahoma, Arial, Helvetica;
+    height: 32px;
+    margin-top: 8px;
+    padding-left: 8px;
+    width: 206px;
+}
+
+#visual-title:focus {
+    box-shadow: 0 0 0 0.15rem rgba(0,123,255,.5);
+    outline: none;
+}
+
+#visual-title::placeholder {
+    color: #A19F9D;
+    font-size: 14px;
+    vertical-align: middle;
+}
+
+.eraser-button {
+    background: transparent;
+    border: none;
+    margin-top: 5px;
+}
+
+#erase-tool-enabled {
+    cursor: pointer;
+    display: flex;
+    margin-left: 8px;
+}
+
+#erase-tool-disabled {
+    display: flex;
+    margin-left: 8px;
+}
+
+.generator-options {
+    color: #201F1E;
+    font: 14px/20px "Segoe UI SemiBold", "segoe_ui_semibold", Tahoma, Arial, Helvetica;
+}
+
+#erase-tool-enabled {
+    display: none;
+}
+
+#erase-tool-enabled:focus-visible {
+    box-shadow: 0 0 0 0.15rem #118DFF;
+    outline: none;
+}
+
+#erase-tool-enabled:focus:not(:focus-visible) {
+    box-shadow: none;
+    outline: none;
+}
+
+#aligns-enabled {
+    display: none;
+}
+
+/* Style the items (options), including the selected item: */
+.select-selected, .select-items div {
+    color: #000;
+    cursor: pointer;
+    padding: 5px 10px;
+}
+
+.select-selected {
+    border-radius: 2px;
+}
+
+.select-selected:focus-visible{
+    box-shadow: 0 0 0 0.15rem rgba(0,123,255,.5);
+}
+
+.select-selected:focus:not(:focus-visible){
+    box-shadow: none;
+}
+
+.select-items {
+    background: #FFFFFF;
+    box-shadow: 0 3.2px 7.2px rgba(0, 0, 0, 0.132), 0 0.6px 1.8px rgba(0, 0, 0, 0.108);
+    border-radius: 2px;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 100%;
+    z-index: 99;
+}
+
+/* Hide the items when the select box is closed */
+.select-hide {
+    display: none;
+}
+
+.select-items div:hover, .same-as-selected {
+    background-color: #E3E8EE;
+}
+
+.same-as-selected {
+    background: #F2F5F8;
+    font-weight: 600;
+}
+
+div.generator-type-disabled span {
+    color: #BEBBB8;
+}
+
+div.generator-type-disabled div.select-selected {
+    color: #BEBBB8;
+}
+
+div.generator-type-disabled div.styled-select {
+    background: url('../img/disabled-images/chevron.svg') transparent no-repeat calc(100% - 10px) !important;
+}
+
+div.generator-fields-disabled span {
+    color: #BEBBB8;
+}
+
+div.generator-fields-disabled div.select-selected {
+    color: #BEBBB8;
+}
+
+div.generator-fields-disabled div.inline-select {
+    background: url('../img/disabled-images/chevron.svg') transparent no-repeat calc(100% - 10px) !important;
+}
+
+div.generator-properties-disabled span {
+    color: #BEBBB8;
+}

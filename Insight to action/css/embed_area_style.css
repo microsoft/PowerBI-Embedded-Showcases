@@ -1,0 +1,127 @@
+/* TODO: Change font URL in the final environment */
+
+@font-face {
+    font-family: "segoe_ui_regular";
+    src: url("https://content.powerapps.com/resource/powerbiwfe/fonts/SegoeUI-Regular-final.8956d1f5b4190f537497.woff") format("woff");
+}
+
+@font-face {
+    font-family: "segoe_ui_semibold";
+    src: url("https://content.powerapps.com/resource/powerbiwfe/fonts/SegoeUI-SemiBold-final.83b7261d0e6f3994ed6d.woff") format("woff");
+}
+
+#main-div {
+    border: none;
+    display: none;
+}
+
+#overlay {
+    height: inherit;
+    width: inherit;
+}
+
+#overlay #spinner {
+    left: 50%;
+    position: fixed;
+    top: 50%;
+}
+
+.rotate {
+    animation: rotation 1s infinite linear;
+}
+
+@keyframes rotation {
+    from {
+        transform: translate(-50%, -50%) rotate(0deg);
+    }
+    to {
+        transform: translate(-50%, -50%) rotate(359deg);
+    }
+}
+
+#insight-to-action-embed-area {
+    height: auto;
+    min-width: 850px;
+    width: 100%;
+}
+
+#dialog-mask {
+    background: rgba(17, 16, 15, .4);
+    bottom: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    height: max(calc(calc(9/16) * 100vw + 60px), 100%);
+    left: 0;
+    min-width: 850px;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+#report-container {
+    height: calc(calc(9/16) * 100vw + 10px);
+    width: 100%;
+}
+
+#report-container>iframe {
+    border: none;
+}
+
+.text-dialog-header {
+    font: 18px/24px "Segoe UI SemiBold", "segoe_ui_semibold", Tahoma, Arial, Helvetica;
+    height: 24px;
+    margin-left: 24px;
+    position: relative;
+}
+
+.dialog-body {
+    position: relative;
+}
+
+.dialog-header {
+    height: 40px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 18px;
+}
+
+.wrapper-close {
+    background: transparent;
+    border: 0;
+    height: 40px;
+    margin: -9px 10px 0 0;
+    padding: 0;
+    width: 40px;
+}
+
+.wrapper-close:focus-visible {
+    box-shadow: 0 0 0 2px rgba(0,123,255,.5);
+    outline: none;
+}
+
+.wrapper-close:focus:not(:focus-visible) {
+    box-shadow: none;
+    outline: none;
+}
+
+.btn-close-distribution-dialog {
+    cursor: pointer;
+    height: 16px;
+    margin: 10px;
+    position: relative;
+    width: 16px;
+}
+
+.dialog-insight-to-action-small {
+    background: #FFF;
+    border-radius: 2px;
+    box-shadow: 0 25.6px 57.6px rgba(0, 0, 0, .22), 0 4.8px 14.4px rgba(0, 0, 0, .18);
+    display: none;
+    height: 332px;
+    opacity: 1;
+    position: relative;
+    top: 25%;
+    width: 440px;
+}

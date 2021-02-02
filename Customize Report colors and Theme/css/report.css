@@ -1,0 +1,9 @@
+.report-container {
+    height: calc((9/16) * 85vw + 20px);
+    margin: 16px;
+    width: auto;
+}
+
+.report-container > iframe {
+    border: none;
+}

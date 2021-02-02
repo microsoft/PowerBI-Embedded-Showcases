@@ -1,0 +1,41 @@
+.rotate {
+    animation: rotation 1s infinite linear;
+}
+
+@keyframes rotation {
+    from {
+        transform: translate(-50%, -50%) rotate(0deg);
+    }
+    to {
+        transform: translate(-50%, -50%) rotate(359deg);
+    }
+}
+
+#overlay {
+    position: absolute;
+    width: inherit;
+    height: inherit;
+}
+
+#overlay #spinner {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+}
+
+#main-div {
+    background: #FFF;
+    color: #FFF8DC;
+    margin: 0 auto;
+    text-align: left;
+    visibility: hidden;
+    width: 100%;
+}
+
+.line {
+    border-top: 0.5px solid rgba(0, 0, 0, .2);
+    clear: both;
+    margin: 0 16px;
+    opacity: .7;
+    width: auto;
+}

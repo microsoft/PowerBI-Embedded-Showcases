@@ -1,0 +1,45 @@
+* {
+    user-select: none;
+}
+
+/* The custom loader animation to be displayed till the report is embedded */
+.rotate {
+    animation: rotation 1s infinite linear;
+}
+
+@keyframes rotation {
+    from {
+        transform: translate(-50%, -50%) rotate(0deg);
+    }
+    to {
+        transform: translate(-50%, -50%) rotate(359deg);
+    }
+}
+
+.container {
+    display: flex;
+    height: auto;
+    padding: 0;
+    width: 100%;
+}
+
+#overlay {
+    height: inherit;
+    position: fixed;
+    width: inherit;
+}
+
+#overlay #spinner {
+    left: 50%;
+    position: fixed;
+    top: 50%;
+}
+
+.content {
+    height: auto;
+    width: 100%;
+}
+
+.content > * {
+    display: none;
+}

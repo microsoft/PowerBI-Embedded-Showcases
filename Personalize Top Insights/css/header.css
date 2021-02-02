@@ -1,0 +1,44 @@
+body {
+    background: #F6F6FA;
+    height: 100%;
+    scrollbar-color: #A0AEB2 transparent;
+    scrollbar-width: thin;
+}
+
+/* Change custom scrollbar appearance */
+body::-webkit-scrollbar-track {
+    background-color: transparent;
+    border-radius: 10px;
+}
+
+body::-webkit-scrollbar {
+    background-color: transparent;
+    height: 10px;
+    width: 8px;
+}
+
+body::-webkit-scrollbar-thumb {
+    background-color: #A0AEB2;
+    border-radius: 10px;
+    height: 30px;
+}
+
+#wrapper {
+    margin: 0 auto;
+    width: 100%;
+}
+
+#contoso-header {
+    align-items: center;
+    background: #4946C6;
+    display: flex;
+    height: 44px;
+    margin: 0;
+}
+
+#contoso {
+    height: 41px;
+    margin-left: 24px;
+    padding: 5px 0;
+    width: 74px;
+}

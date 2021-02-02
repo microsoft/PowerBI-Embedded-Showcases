@@ -1,0 +1,203 @@
+html {
+    --table-header-padding: 0 8px 8px 30px;
+    --table-cell-padding: 6px 0 6px 30px;
+    --name-column: 170px;
+    --region-column: 140px;
+    --mail-column: 270px;
+    --phone-column: 208px;
+    --table-cell-font: 14px "Segoe UI Regular", "segoe_ui_regular", Tahoma, Arial, Helvetica;
+    --table-cell-color: #323130;
+}
+
+.dialog-insight-to-action {
+    background: #FFF;
+    border-radius: 2px;
+    box-shadow: 0 25.6px 57.6px rgba(0, 0, 0, .22), 0 4.8px 14.4px rgba(0, 0, 0, .18);
+    display: none;
+    position: relative;
+    height: 427px;
+    opacity: 1;
+    top: 25%;
+    width: 837px;
+}
+
+.btn-dialog-insight-to-action {
+    background: #FFF;
+    border: 1px solid #669B61;
+    border-radius: 4px;
+    color: #669B61;
+    cursor: pointer;
+    font: 14px/29px "Segoe UI SemiBold", "segoe_ui_semibold", Tahoma, Arial;
+    height: 32px;
+    line-height: 28px;
+    margin-right: 8px;
+    width: 116px;
+}
+
+.btn-dialog-insight-to-action:hover {
+    background: rgba(102, 155, 97, 0.15);
+}
+
+.btn-dialog-insight-to-action:focus-visible {
+    box-shadow: 0 0 0 2px rgba(0,123,255,.5);
+    outline: none;
+}
+
+.btn-dialog-insight-to-action:focus:not(:focus-visible) {
+    box-shadow: none;
+    outline: none;
+}
+
+.btn-dialog-insight-to-action:active {
+    background: #669B61;
+    color: #FFF;
+}
+
+#dialog-table {
+    color: #212121;
+    height: 288px;
+    overflow: hidden scroll;
+    scrollbar-color: #D2D0CE #FFF;
+    scrollbar-width: thin;
+    width: 837px;
+}
+
+#dialog-table::-webkit-scrollbar-track {
+    border-radius: 10px;
+    background-color: transparent;
+}
+
+#dialog-table::-webkit-scrollbar {
+    background-color: transparent;
+    height: 10px;
+    width: 8px;
+}
+
+#dialog-table::-webkit-scrollbar-thumb {
+    background-color: #D2D0CE;
+    border-radius: 10px;
+    height: 30px;
+}
+
+.table-row {
+    border-bottom: 1px solid #F3F2F1;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+}
+
+.table-headers {
+    color: #323130;
+    font: 14px "Segoe UI SemiBold", "segoe_ui_semibold", Tahoma, Arial, Helvetica;
+    text-align: left;
+}
+
+#name {
+    margin-left: 42px;
+    padding: 0 8px 8px 16px;
+    width: var(--name-column);
+}
+
+#region {
+    padding: var(--table-header-padding);
+    width: var(--region-column);
+}
+
+#mail {
+    padding: var(--table-header-padding);
+    width: var(--mail-column);
+}
+
+#phone {
+    padding: var(--table-header-padding);
+    width: var(--phone-column);
+}
+
+.table-values {
+    color: #323130;
+    font: 14px "Segoe UI Regular", "segoe_ui_regular", Tahoma, Arial, Helvetica;
+}
+
+.name-cell {
+    padding: 6px 0 6px 16px;
+    width: var(--name-column);
+}
+
+.region-cell {
+    padding: var(--table-cell-padding);
+    width: var(--region-column);
+}
+
+.mail-cell {
+    padding: var(--table-cell-padding);
+    width: var(--mail-column);
+}
+
+.phone-cell {
+    padding: 6px 30px;
+    width: var(--phone-column);
+}
+
+#distribution-dialog>.dialog-footer {
+    background: #FFF;
+    bottom: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    height: 70px;
+    padding: 19px 15px 16px;
+}
+
+.cell-checkbox {
+    width: fit-content;
+}
+
+.checkbox-element {
+    cursor: pointer;
+    opacity: 0;
+}
+
+.table-checkbox {
+    cursor: pointer;
+    display: inline-block;
+    height: 34px;
+    width: 42px;
+    margin: 0;
+    position: relative;
+}
+
+.checkbox-circle {
+    background: #FFF;
+    border: 1px solid #D2D0CE;
+    border-radius: 16px;
+    height: 18px;
+    left: 0;
+    margin-left: 24px;
+    position: absolute;
+    top: 8px;
+    width: 18px;
+}
+
+input[type="checkbox"]:focus-visible + .checkbox-circle {
+    box-shadow: 0 0 4px 1.33px rgba(0,123,255,1);
+}
+
+input[type="checkbox"]:focus:not(:focus-visible) + .checkbox-circle {
+    box-shadow: none;
+}
+
+.table-checkbox>input:checked~.checkbox-circle {
+    background: #669B61;
+    border: none;
+}
+
+.table-checkbox>input:checked~.checkbox-checkmark {
+    border: 0 solid #FFF;
+    border-width: 0 2.5px 2.5px 0;
+    height: 11px;
+    left: 30px;
+    position: absolute;
+    top: 10px;
+    transform: rotate(45deg);
+    width: 6px;
+}

@@ -1,0 +1,388 @@
+.interactive-buttons {
+    display: flex;
+}
+
+.btn-action {
+    align-items: flex-end;
+    background: transparent;
+    border: 1px solid #1461F8;
+    border-radius: 4px;
+    color: #1461F8;
+    font: 14px/20px "Segoe UI SemiBold", segoe_ui_semibold, Tahoma, Arial;
+    outline: none;
+    text-align: center;
+}
+
+.btn-action:hover {
+    background: rgba(20, 97, 248, 0.25);
+}
+
+/* For keyboard focus */
+.btn-action:focus-visible {
+    box-shadow: 0 0 2pt 1pt rgba(0,123,255,.5);
+}
+
+/* For mouse focus */
+.btn-action:focus:not(:focus-visible) {
+    box-shadow: none;
+}
+
+.btn[aria-expanded="true"] {
+    background: rgba(20, 97, 248, .15);
+    color: #1461F8;
+}
+
+.btn-img {
+    margin: -3.5px 8px 0 0;
+}
+
+#display-btn {
+    margin: 16px;
+}
+
+#capture-btn {
+    margin: 16px 16px 16px 0;
+}
+
+.showcase-checkbox-container {
+    cursor: pointer;
+    display: flex;
+    font-weight: normal;
+    height: auto;
+    margin: 0;
+    padding: 8px 0;
+    position: relative;
+}
+
+.close-dropdown {
+    cursor: default;
+    display: flex;
+    height: 28px;
+    margin: 0;
+}
+
+.showcase-checkbox-container input {
+    cursor: pointer;
+    opacity: 0;
+    position: absolute;
+}
+
+.showcase-checkmark {
+    visibility: hidden;
+}
+
+.showcase-checkbox-container input:checked~.showcase-checkmark {
+    border-color: #3E65FF;
+}
+
+.showcase-checkmark:after {
+    content: "";
+    display: none;
+    position: absolute;
+}
+
+.showcase-checkbox-container input:checked~.showcase-checkmark:after {
+    display: block;
+}
+
+.showcase-checkbox-container .showcase-checkmark:after {
+    background: #3E65FF;
+    border-radius: 50%;
+    height: 8px;
+    left: 3px;
+    top: 3px;
+    width: 8px;
+}
+
+.checkbox-title {
+    display: block;
+    margin: 0 24px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+#close-btn {
+    background: transparent;
+    border: 0;
+    margin-left: auto;
+    outline: none;
+    padding: 0;
+}
+
+#close-list-btn {
+    height: 24px;
+    padding: 6px;
+    width: 32px;
+}
+
+#bookmarks-list {
+    background: #FFF;
+    box-shadow: 0 1.2px 3.6px rgba(0, 0, 0, .108), 0 6.4px 14.4px rgba(90, 61, 61, .132);
+    height: 100%;
+    margin: 106px 0 0 -16px;
+    opacity: .98;
+    padding-top: 0;
+    position: absolute;
+    width: 228px;
+}
+
+.position {
+    transform: translate3d(16px, 5px, 0px);
+    top: 0;
+    left: 0;
+    will-change: transform;
+}
+
+.vertical-alignment-helper {
+    display: table;
+    height: 100%;
+    pointer-events: none;
+    width: 100%;
+}
+
+#tick-icon {
+    display: none;
+    margin-top: -4px;
+}
+
+.vertical-align-center {
+    display: table-cell;
+    pointer-events: none;
+    vertical-align: middle;
+}
+
+.modal-content {
+    box-shadow: 0 4.8px 14.4px rgba(0, 0, 0, 0.18), 0 25.6px 57.6px rgba(0, 0, 0, 0.22);
+    border-radius: 2px;
+    height: 303px;
+    margin: 0 auto;
+    max-width: inherit;
+    pointer-events: all;
+    width: inherit;
+}
+
+.modal-body {
+    display: flex;
+    padding: 0;
+    position: relative;
+}
+
+.btn-modal {
+    background: transparent;
+    border: none;
+    border-bottom: .5px solid rgba(0, 0, 0, .2);
+    color: #8A8886;
+    font: 400 14px "Segoe UI", segoe_ui_regular, Tahoma, Arial;
+    outline: none;
+    text-align: center;
+    width: 50%;
+}
+
+.btn.active.focus,
+.btn.active:focus,
+.btn.focus,
+.btn.focus:active,
+.btn:active:focus,
+.btn:hover {
+    box-shadow: none;
+    color: #1461F8;
+    outline: 0;
+    outline-offset: -2px;
+    text-decoration: none;
+}
+
+.btn-active {
+    border-bottom: 2px solid #1461F8;
+    color: #1A1A1A;
+    font-weight: 600;
+}
+
+.modal-title {
+    font: 16px "Segoe UI SemiBold", segoe_ui_semibold, Tahoma, Arial;
+}
+
+#close-modal-btn {
+    border: none;
+    height: 40px;
+    margin: 2px 2px 0 0;
+    opacity: 1;
+    outline: none;
+    width: 39px;
+}
+
+#btn-cross {
+    margin: 10px;
+}
+
+#capture-view-div {
+    display: none;
+}
+
+.btn-links {
+    padding: 0 0 8px 0;
+}
+
+.btn-links:focus-visible {
+    box-shadow: 0 0 0 0.15rem rgba(0,123,255,.5);
+    outline: none;
+}
+
+.btn-links:focus:not(:focus-visible) {
+    box-shadow: none;
+    outline: none;
+}
+
+#save-bookmark-btn:focus-visible {
+    box-shadow: 0 0 0 0.15rem rgba(0,123,255,.5);
+}
+
+#save-bookmark-btn:focus:not(:focus-visible) {
+    box-shadow: none;
+}
+
+.modal-btn:focus-visible {
+    box-shadow: 0 0 0 0.15rem rgba(0,123,255,.5);
+}
+
+.modal-btn:focus:not(:focus-visible) {
+    box-shadow: none;
+}
+
+.close:focus-visible {
+    box-shadow: 0 0 0 0.15rem rgba(0,123,255,.5);
+    outline: none;
+}
+
+.close:focus:not(:focus-visible) {
+    box-shadow: none;
+    outline: none;
+}
+
+#save-btn-div {
+    margin-top: 28px;
+    text-align: center;
+}
+
+.capture-btn-div {
+    text-align: center;
+}
+
+#save-bookmark-btn {
+    background: transparent;
+    border-radius: 4px;
+    border: 1px solid #1461F8;
+    color: #1461F8;
+    font-weight: 600;
+    margin: 5px 20px 0 5px;
+    outline: none;
+    padding: 6px 16px;
+}
+
+#save-bookmark-btn:hover {
+    background: #1461F8;
+    color: #FFF;
+}
+
+#copy-btn {
+    outline: none;
+    margin: 5px 20px 0 5px;
+}
+
+.modal-text {
+    background: transparent;
+    height: 32px;
+    margin-top: 15px;
+    outline: 0;
+    width: 95%;
+}
+
+.modal-text:focus-visible {
+    box-shadow: 0 0 0 0.15rem rgba(0,123,255,.5);
+}
+
+.modal-text:focus:not(:focus-visible) {
+    box-shadow: none;
+}
+
+#copy-link-text {
+    border: .5px solid rgba(0, 0, 0, .2);
+}
+
+#copy-link-success-msg {
+    color: #1461F8;
+    font: 12px "Segoe UI SemiBold", segoe_ui_semibold, Tahoma, Arial;
+    margin-top: 11px;
+}
+
+.view-label {
+    margin-bottom: 0;
+}
+
+#viewname {
+    border: 0;
+    border-bottom: .5px solid rgba(0, 0, 0, .2);
+    padding: 0;
+}
+
+#viewname::placeholder {
+    font: 400 14px/20px "Segoe UI", segoe_ui_regular, Tahoma, Arial;
+}
+
+.copy-bookmark {
+    background: transparent;
+    border-radius: 4px;
+    border: 1px solid #1461F8;
+    color: #1461F8;
+    font-weight: 600;
+    margin: 0 20px;
+    padding: 6px 16px;
+}
+
+.copy-bookmark:hover {
+    background: #1461F8;
+    color: #FFF;
+}
+
+.modal-header {
+    border: none;
+    font: 16px "Segoe UI SemiBold", segoe_ui_semibold, Tahoma, Arial;
+    margin: -15px 0 30px 25px;
+    padding: 0;
+    width: 80%;
+}
+
+.invalid-feedback{
+    margin-bottom: -21px;
+    margin-top: 5px;
+}
+
+.inactive-bookmark {
+    color: #323130;
+    font: 400 14px/20px "Segoe UI", segoe_ui_regular, Tahoma, Arial;
+}
+
+#content-div {
+    color: #201F1E;
+    font: 400 14px "Segoe UI", segoe_ui_regular, Tahoma, Arial;
+    margin: 30px 0 40px 24px;
+}
+
+.active-bookmark {
+    color: #1461F8;
+    font: 14px/20px "Segoe UI SemiBold", segoe_ui_semibold, Tahoma, Arial;
+}
+
+.selected-button {
+    background: rgba(20, 97, 248, .15);
+    border-radius: 4px;
+    border: 1px solid rgba(20, 96, 247, .5);
+    font-weight: 600;
+    margin: 0 20px;
+    outline: none;
+    padding: 6px 16px;
+}
+
+.focused {
+    box-shadow: 0 0 0 0.15rem rgba(0,123,255,.5);
+}

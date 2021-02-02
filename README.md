@@ -1,14 +1,13 @@
-# Project
+# Introduction
+Showcases for Power BI Embedded analytics playground
 
-> This repo has been populated by an initial template to help get you started. Please
-> make sure to update the content to build a great experience for community-building.
-
-As the maintainer of this project, please make a few updates:
-
-- Improving this README.MD file to provide a great experience
-- Updating SUPPORT.MD with content about this project's support experience
-- Understanding the security reporting process in SECURITY.MD
-- Remove this section from the README
+# Contents
+Playground Showcases available in this package currently:
+1.	Personalize top insights
+2.	Capture report views
+3.  Customize report colors and mode
+4.  Go from insights to quick action
+5.  Quickly create and personalize visuals
 
 ## Contributing
 
