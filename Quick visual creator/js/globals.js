@@ -97,6 +97,7 @@ const customTitleWrapper = $(".custom-title-wrapper");
 const alignmentBlocks = $(".alignment-block");
 const visualPropertiesCheckboxes = $(".property-checkbox");
 const toggleWrappers = $(".toggle-wrapper");
+const togglePropertiesSliders = $(".slider");
 
 // Cache showcasePropertiesLength
 const showcasePropertiesLength = showcaseProperties.length;
