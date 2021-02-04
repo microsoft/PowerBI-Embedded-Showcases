@@ -1505,13 +1505,16 @@ async function appendVisualToReport() {
             oldVisual.setProperty(propertyToSelector("legend"), { schema: schemas.property, value: false });
         }
 
-        // Remove the data-roles which are empty from the state
-        Object.keys(visualCreatorShowcaseState.dataRoles).forEach((key) => (visualCreatorShowcaseState.dataRoles[key] === null) && delete visualCreatorShowcaseState.dataRoles[key]);
+        // Get related datarole names with the current visual-type
+        const dataRoleNames = getVisualFromName(visualCreatorShowcaseState.visualType).dataRoleNames;
 
         // Add data-fields to the created visual
         Object.entries(visualCreatorShowcaseState.dataRoles).forEach(async function (dataField) {
             const [dataRole, field] = dataField;
-
+            if (dataRoleNames.indexOf(dataRole) < 0) {
+                return;
+            }
+            
             if (field) {
                 // Get data-fields from the data-role
                 const dataFieldProp = await oldVisual.getDataFields(dataRole);
