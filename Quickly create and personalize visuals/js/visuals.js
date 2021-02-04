@@ -9,10 +9,10 @@ const visualTypeToDataRoles = [
 
 // Define the available fields for each data role
 const dataRolesToFields = [
-    { dataRole: "Axis", Fields: ["Industry", "Opportunity Status", "Lead Rating"] },
-    { dataRole: "Values", Fields: ["Actual Revenue", "Estimated Revenue", "Number of Opportunities"] },
-    { dataRole: "Legend", Fields: ["Industry", "Lead Rating", "Opportunity Status"] },
-    { dataRole: "Tooltips", Fields: ["Actual Close Date", "Actual Revenue", "Estimated Revenue"] },
+    { dataRole: "Axis", Fields: ["Industry", "Opportunity Status", "Lead Rating", "Salesperson"] },
+    { dataRole: "Values", Fields: ["Actual Revenue", "Estimated Revenue", "Number of Opportunities", "Salesperson"] },
+    { dataRole: "Legend", Fields: ["Industry", "Lead Rating", "Opportunity Status", "Salesperson"] },
+    { dataRole: "Tooltips", Fields: ["Industry", "Actual Close Date", "Actual Revenue", "Estimated Revenue"] },
 ];
 
 // Define schemas for visuals API
@@ -32,6 +32,7 @@ const dataFieldsTargets = {
     OpportunityStatus: { column: "Opportunity Status", table: "QVC Report", schema: schemas.column },
     Industry: { column: "Industry", table: "QVC Report", schema: schemas.column },
     LeadRating: { column: "Lead Rating", table: "QVC Report", schema: schemas.column },
+    Salesperson: { column: "Salesperson", table: "QVC Report", schema: schemas.column },
     ActualCloseDate: { column: "Actual Close Date", table: "QVC Report", schema: schemas.column },
 };
 
@@ -43,11 +44,15 @@ const dataFieldsMappings = {
     OpportunityStatus: "Opportunity Status",
     Industry: "Industry",
     LeadRating: "Lead Rating",
+    Salesperson: "Salesperson",
     ActualCloseDate: "Actual Close Date"
 }
 
 // Define the available properties
 const showcaseProperties = ["legend", "xAxis", "yAxis"];
+
+// Define title related properties
+const titleProperties = ["title", "titleText", "titleAlign"];
 
 const visualTypeProperties = {
     columnChart: ["xAxis", "yAxis"],
