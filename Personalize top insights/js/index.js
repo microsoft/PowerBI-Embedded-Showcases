@@ -1,3 +1,8 @@
+// ----------------------------------------------------------------------------
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+// ----------------------------------------------------------------------------
+
 // To stop the page load on click event
 $(document).on("click", ".allow-focus", function (element) {
     element.stopPropagation();

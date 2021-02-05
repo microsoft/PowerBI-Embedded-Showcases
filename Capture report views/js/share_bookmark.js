@@ -1,3 +1,8 @@
+// ----------------------------------------------------------------------------
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+// ----------------------------------------------------------------------------
+
 // Set props for accessibility insights
 function setReportAccessibilityProps(report) {
     report.setComponentTitle("Playground showcase sample report");

@@ -1,3 +1,8 @@
+// ----------------------------------------------------------------------------
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+// ----------------------------------------------------------------------------
+
 const visualCreatorShowcaseState = {
     report: null,
     page: null, // The page from where the 3x3 visuals will be displayed

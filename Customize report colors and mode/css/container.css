@@ -1,3 +1,6 @@
+/* Copyright (c) Microsoft Corporation.
+Licensed under the MIT license. */
+
 /* The custom loader animation to be displayed till the report is embedded */
 .rotate {
     animation: rotation 1s infinite linear;

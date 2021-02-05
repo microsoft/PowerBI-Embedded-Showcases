@@ -1,3 +1,8 @@
+// ----------------------------------------------------------------------------
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+// ----------------------------------------------------------------------------
+
 // For report themes documentation please check https://docs.microsoft.com/en-us/power-bi/desktop-report-themes
 const jsonDataColors = [{
     "name": "Default",

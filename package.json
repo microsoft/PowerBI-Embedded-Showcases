@@ -1,6 +1,6 @@
 {
 	"name": "@powerbi/playground-showcases",
-	"version": "2.4.1",
+	"version": "2.4.2",
 	"description": "Showcases for the Power BI Embedded playground",
 	"repository": {
 		"type": "git",
@@ -8,10 +8,10 @@
 	},
 	"author": "Microsoft",
 	"files": [
-		"Personalize Top Insights",
-		"Capture Report Views",
-		"Customize Report colors and Theme",
-		"Insight to action",
-		"Quick visual creator"
+		"Personalize top insights",
+		"Capture report views",
+		"Customize report colors and mode",
+		"Go from insights to quick action",
+		"Quickly create and personalize visuals"
 	]
 }

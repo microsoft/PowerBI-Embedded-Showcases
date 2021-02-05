@@ -1,5 +1,7 @@
-/* TODO: Change font URL in the final environment */
+/* Copyright (c) Microsoft Corporation.
+Licensed under the MIT license. */
 
+/* TODO: Change font URL in the final environment */
 @font-face {
     font-family: "segoe_ui_regular";
     src: url("https://content.powerapps.com/resource/powerbiwfe/fonts/SegoeUI-Regular-final.8956d1f5b4190f537497.woff") format("woff");
