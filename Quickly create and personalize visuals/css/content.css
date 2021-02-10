@@ -40,6 +40,7 @@ Licensed under the MIT license. */
 
 .content {
     height: auto;
+    min-width: 850px;
     width: 100%;
 }
 

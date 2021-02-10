@@ -25,16 +25,14 @@ Licensed under the MIT license. -->
 
 <body>
     <div class="wrapper">
-        <h1 class="header">
-            <img src="img/contoso.svg" class="contoso" alt="Contoso" id="image-btn" aria-label="Contoso logo" />
+        <h1 class="header fixed-top">
+            <img src="img/contoso.svg" class="contoso" alt="Contoso" id="image-btn" aria-label="Contoso logo">
         </h1>
-        <main class="showcase-container">
-            <div id="overlay">
-                <img src="img/spinner.svg" class="rotate" id="spinner" alt="loader" aria-label="Loading report" />
-            </div>
-            <div class="content">
-                <div class="report-container"></div>
-            </div>
+        <div id="overlay">
+            <img src="img/spinner.svg" class="rotate" id="spinner" alt="loader" aria-label="Loading report">
+        </div>
+        <main class="content">
+            <div class="report-container"></div>
         </main>
     </div>
 
@@ -154,10 +152,10 @@ Licensed under the MIT license. -->
                                 <div class="custom-title-wrapper">
                                     <input type="text" id="visual-title" placeholder="Type your personalized title" oninput="updateTitleText();" disabled>
                                     <button class="eraser-button" id="erase-tool-disabled" aria-label="Clear the visual title" disabled>
-                                        <img role="presentation" src="img/disabled-images/eraser.svg" alt="disabled-eraser"/>
+                                        <img role="presentation" src="img/disabled-images/eraser.svg" alt="disabled-eraser">
                                     </button>
                                     <button class="eraser-button" id="erase-tool-enabled" aria-label="Clear the visual title" onclick="onEraseToolClicked();">
-                                        <img class="d-flex" role="presentation" src="img/enabled-images/eraser.svg" alt="enabled-eraser"/>
+                                        <img class="d-flex" role="presentation" src="img/enabled-images/eraser.svg" alt="enabled-eraser">
                                     </button>
                                 </div>
 
@@ -166,25 +164,25 @@ Licensed under the MIT license. -->
                                     <div id="alignment-blocks-wrapper">
                                         <div id="aligns-disabled">
                                             <button class="alignment-block" aria-label="left align visual title" disabled>
-                                                <img role="presentation" src="img/disabled-images/left-align.svg" alt="left-align"/>
+                                                <img role="presentation" src="img/disabled-images/left-align.svg" alt="left-align">
                                             </button>
                                             <button class="alignment-block" aria-label="center align visual title" disabled>
-                                                <img role="presentation" src="img/disabled-images/center-align.svg" alt="center-align"/>
+                                                <img role="presentation" src="img/disabled-images/center-align.svg" alt="center-align">
                                             </button>
                                             <button class="alignment-block" aria-label="right align visual title" disabled>
-                                                <img role="presentation" src="img/disabled-images/right-align.svg" alt="right-align"/>
+                                                <img role="presentation" src="img/disabled-images/right-align.svg" alt="right-align">
                                             </button>
                                         </div>
 
                                         <div id="aligns-enabled">
                                             <button id="align-left" class="alignment-block cursor selected" onclick="onAlignClicked('left');" aria-label="left align visual title">
-                                                <img role="presentation" class="aligned-enabled-images" src="img/enabled-images/left-align.svg" alt="left-align"/>
+                                                <img role="presentation" class="aligned-enabled-images" src="img/enabled-images/left-align.svg" alt="left-align">
                                             </button>
                                             <button id="align-center" class="alignment-block cursor" onclick="onAlignClicked('center');" aria-label="center align visual title">
-                                                <img role="presentation" class="aligned-enabled-images" src="img/enabled-images/center-align.svg" alt="center-align"/>
+                                                <img role="presentation" class="aligned-enabled-images" src="img/enabled-images/center-align.svg" alt="center-align">
                                             </button>
                                             <button id="align-right" class="alignment-block cursor" onclick="onAlignClicked('right');" aria-label="right align visual title">
-                                                <img role="presentation" class="aligned-enabled-images" src="img/enabled-images/right-align.svg" alt="right-align"/>
+                                                <img role="presentation" class="aligned-enabled-images" src="img/enabled-images/right-align.svg" alt="right-align">
                                             </button>
                                         </div>
                                     </div>
@@ -196,7 +194,7 @@ Licensed under the MIT license. -->
                     <div id="visual-preview">
                         <div class="authoring-area" id="visual-authoring-container"></div>
                         <div class="authoring-area" id="edit-area" aria-label="Visual authoring area">
-                            <img role="presentation" src="img/pencil.svg" id="edit-image" class="img-edit" alt="edit-visual" />
+                            <img role="presentation" src="img/pencil.svg" id="edit-image" class="img-edit" alt="edit-visual">
                         </div>
                     </div>
                 </div>
@@ -215,10 +213,10 @@ Licensed under the MIT license. -->
     <script src="https://cdn.jsdelivr.net/npm/powerbi-report-authoring@1.1.0/dist/powerbi-report-authoring.min.js"></script>
 
     <script src="js/visuals.js?v=02022021"></script>
-    <script src="js/globals.js?v=29012021"></script>
+    <script src="js/globals.js?v=08022021"></script>
     <script src="js/session_utils.js?v=25012021"></script>    
     <script src="js/themes.js?v=20112020"></script>
-    <script src="js/index.js?v=04022021"></script>
+    <script src="js/index.js?v=09022021"></script>
 </body>
 
 </html>

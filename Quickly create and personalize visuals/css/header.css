@@ -4,6 +4,8 @@ Licensed under the MIT license. */
 body {
     background: #F7F8F6;
     height: 100%;
+    min-width: 850px;
+    overflow-x: auto !important;
     scrollbar-color: #A0AEB2 transparent;
     scrollbar-width: thin;
 }
