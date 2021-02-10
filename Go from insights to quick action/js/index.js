@@ -63,18 +63,22 @@ $(document).ready(function () {
 });
 
 function handleKeyEvents(event, elements) {
-    if (event.keyCode === KEYCODE_ESCAPE || event.key === "Escape") {
+    if (event.keyCode === KEYCODE_ESCAPE || event.key === Keys.ESCAPE) {
         onCloseClicked();
         return;
     }
-    if (event.key === "Tab" || event.keyCode === KEYCODE_TAB) {
-        if (event.shiftKey) /* shift + tab */ {
+    if (event.key === Keys.TAB || event.keyCode === KEYCODE_TAB) {
+
+        // Shift + Tab
+        if (event.shiftKey) {
             // Compare the activeElement using id
             if ($(document.activeElement)[0].id === elements.firstElement[0].id) {
                 elements.lastElement.focus();
                 event.preventDefault();
             }
-        } else /* tab */ {
+        } 
+        // Tab
+        else {
             if ($(document.activeElement)[0].id === elements.lastElement[0].id) {
                 elements.firstElement.focus();
                 event.preventDefault();
@@ -144,7 +148,7 @@ async function embedReport() {
                         icon: base64Icon,
                         selector: {
                             $schema: "http://powerbi.com/product/schema#visualSelector",
-                            visualName: tableVisualGuid
+                            visualName: TABLE_VISUAL_GUID
                         },
                         extend: {
                             visualOptionsMenu: {
@@ -169,7 +173,7 @@ async function embedReport() {
 
         const pages = await reportShowcaseState.report.getPages();
 
-        // Retrieve active page.
+        // Retrieve active page
         const activePage = pages.filter(function (page) {
             return page.isActive
         })[0];
@@ -179,7 +183,7 @@ async function embedReport() {
 
         // Retrieve the desired visual
         tableVisual = visuals.filter(function (visual) {
-            return visual.name === tableVisualGuid;
+            return visual.name === TABLE_VISUAL_GUID;
         })[0];
 
         // Exports visual data

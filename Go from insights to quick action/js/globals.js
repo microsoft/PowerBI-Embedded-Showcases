@@ -33,14 +33,23 @@ const sendMessageBtn = $("#send-message");
 const successCross = $("#success-cross");
 
 // Check if dialog box is closed
-let isDialogClosed = true;
+let isDialogClosed  = true;
 
 // Key codes
 const KEYCODE_TAB = 9;
 const KEYCODE_ESCAPE = 27;
 
+// Enum for keys
+const Keys = {
+    TAB : "Tab",
+    ESCAPE: "Escape"
+}
+
+// Freezing the contents of enum object
+Object.freeze(Keys);
+
 // Table visual GUID
-const tableVisualGuid = "1149606f2a101953b4ba";
+const TABLE_VISUAL_GUID = "1149606f2a101953b4ba";
 let tableVisual;
 
 // Icon for the custom extension

@@ -3,7 +3,7 @@ Licensed under the MIT license. */
 
 body {
     height: 100%;
-    overflow-y: auto;
+    overflow: auto hidden;
     scrollbar-color: #A0AEB2 #FFF;
     scrollbar-width: thin;
 }
@@ -39,6 +39,14 @@ body::-webkit-scrollbar-thumb {
     height: 44px;
     margin: 0;
     min-width: 850px;
+}
+
+.fixed-top {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 1030;
 }
 
 #contoso {

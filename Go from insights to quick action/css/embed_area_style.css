@@ -13,8 +13,10 @@ Licensed under the MIT license. */
 }
 
 #main-div {
-    border: none;
     display: none;
+    height: auto;
+    min-width: 850px;
+    width: 100%;
 }
 
 #overlay {
@@ -41,12 +43,6 @@ Licensed under the MIT license. */
     }
 }
 
-#insight-to-action-embed-area {
-    height: auto;
-    min-width: 850px;
-    width: 100%;
-}
-
 #dialog-mask {
     background: rgba(17, 16, 15, .4);
     bottom: 0;
@@ -62,7 +58,8 @@ Licensed under the MIT license. */
 }
 
 #report-container {
-    height: calc(calc(9/16) * 100vw + 10px);
+    height: calc(calc(9/16) * 99vw);
+    margin-top: 44px;
     width: 100%;
 }
 
