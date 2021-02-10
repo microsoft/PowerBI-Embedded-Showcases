@@ -4,23 +4,29 @@
 // ----------------------------------------------------------------------------
 
 // For the decision of the layout
-const ColumnsNumber = {
-    One: 1,
-    Two: 2,
-    Three: 3
+const COLUMNS = {
+    ONE: 1,
+    TWO: 2,
+    THREE: 3
 };
+
+// Freezing the contents of COLUMNS object
+Object.freeze(COLUMNS);
 
 // For the decision of two custom layout with spanning
-const SpanType = {
-    None: 0,
-    RowSpan: 1,
-    ColSpan: 2
+const SPAN_TYPE = {
+    NONE: 0,
+    ROWSPAN: 1,
+    COLSPAN: 2
 };
 
+// Freezing the contents of SPAN_TYPE object
+Object.freeze(SPAN_TYPE);
+
 // To give consistent margin to each visual in the custom showcase
-const LayoutShowcaseConsts = {
-    margin: 16,
-    visualAspectRatio: 9 / 16,
+const LAYOUT_SHOWCASE = {
+    MARGIN: 16,
+    VISUAL_ASPECT_RATIO: 9 / 16,
 };
 
 // Constants used for report configurations as key-value pair
@@ -32,12 +38,15 @@ let reportConfig = {
 
 // Maintain the state for the showcase
 let layoutShowcaseState = {
-    columns: ColumnsNumber.Two,
-    span: SpanType.None,
+    columns: COLUMNS.TWO,
+    span: SPAN_TYPE.NONE,
     layoutVisuals: null,
     layoutReport: null,
     layoutPageName: null
 };
+
+// Get models. models contain enums that can be used
+const models = window["powerbi-client"].models;
 
 // Cache DOM elements
 const visualsDropdown = $("#visuals-list");
@@ -45,11 +54,18 @@ const visualsDiv = $(".dropdown");
 const layoutsDiv = $(".layouts");
 const layoutsDropdown = $("#layouts-list");
 const layoutButtons = $(".btn-util");
-const chooseVisualsBtn = $("#visuals-click-btn");
-const chooseLayoutBtn = $("#visuals-layout-btn");
+const chooseVisualsBtn = $("#choose-visuals-btn");
+const chooseLayoutBtn = $("#choose-layouts-btn");
 
 // Store keycode for TAB key
 const KEYCODE_TAB = 9;
+
+const Keys = {
+    TAB : "Tab"
+}
+
+// Freezing the contents of enum object
+Object.freeze(Keys);
 
 // Store id for the first visual
 let firstVisualId;

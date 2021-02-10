@@ -12,6 +12,11 @@ Licensed under the MIT license. */
     src: url("https://content.powerapps.com/resource/powerbiwfe/fonts/SegoeUI-SemiBold-final.83b7261d0e6f3994ed6d.woff") format("woff");
 }
 
+#action-bar {
+    margin-top: 44px;
+    background: #F6F6FA;
+}
+
 .dropdown {
     float: left;
 }
@@ -36,7 +41,7 @@ Licensed under the MIT license. */
 
 /* For key-board focus */
 .btn-action:focus-visible {
-    box-shadow: 0 0 0 0.1rem #4946C6;
+    box-shadow: 0 0 0 1.5px #4946C6;
 }
 
 /* Remove focus for the mouse navigation */
@@ -59,7 +64,7 @@ Licensed under the MIT license. */
     text-decoration: none;
 }
 
-#visuals-layout-btn {
+#choose-layouts-btn {
     margin-left: 0
 }
 
@@ -78,7 +83,7 @@ Licensed under the MIT license. */
 
 /* Display the focus on the checkbox on keyboard navigation for the visual selection */
 input[type="checkbox"]:focus-visible + .checkbox-checkmark {
-    box-shadow: 0 0 0 0.15rem #4946C6;
+    box-shadow: 0 0 0 2.5px #4946C6;
 }
 
 /* Remove focus for the mouse navigation */
@@ -136,8 +141,6 @@ input[type="checkbox"]:focus:not(:focus-visible) + .checkbox-checkmark {
     display: block;
     font: 400 14px "Segoe UI", segoe_ui_regular, Tahoma, Arial;
     margin-top: -1px;
-    overflow: hidden;
-    text-overflow: ellipsis;
 }
 
 .checkbox-container .checkbox-checkmark:after {

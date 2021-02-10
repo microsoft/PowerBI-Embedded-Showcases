@@ -25,56 +25,56 @@ Licensed under the MIT license. -->
 
 <body>
     <div id="wrapper">
-        <h1 id="contoso-header">
-            <img src="img/contoso.svg" id="contoso" alt="contoso" aria-label="Contoso logo" />
+        <h1 class="fixed-top" id="contoso-header">
+            <img src="img/contoso.svg" id="contoso" alt="contoso" aria-label="Contoso logo">
         </h1>
-        <main id="container">
-            <div id="overlay">
-                <img src="img/spinner.svg" id="spinner" class="rotate" alt="loader" aria-label="Loading report" />
-            </div>
-            <div id="main-div">
+        <div id="overlay">
+            <img src="img/spinner.svg" id="spinner" class="rotate" alt="loader" aria-label="Loading report">
+        </div>
+        <main id="main-div">
+            <div class="fixed-top" id="action-bar">
                 <div class="dropdown">
-                    <button class="btn btn-action" type="button" id="visuals-click-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <button class="btn btn-action" type="button" id="choose-visuals-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Choose visuals
-                        <img role="presentation" src="img/caret.svg" alt="dropdown" id="caret-img"/>
+                        <img role="presentation" src="img/caret.svg" alt="dropdown" id="caret-img">
                     </button>
-                    <ul role="menu" class="dropdown-menu checkbox-menu allow-focus" id="visuals-list" aria-labelledby="visuals-click-btn"></ul>
+                    <ul role="menu" class="dropdown-menu checkbox-menu allow-focus" id="visuals-list" aria-labelledby="choose-visuals-btn"></ul>
                 </div>
                 <div class="layouts">
-                    <button class="btn btn-action" type="button" id="visuals-layout-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <button class="btn btn-action" type="button" id="choose-layouts-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Choose Layout
                     </button>
-                    <ul role="menu" class="dropdown-menu checkbox-menu" id="layouts-list" aria-labelledby="visuals-layout-btn">
+                    <ul role="menu" class="dropdown-menu checkbox-menu" id="layouts-list" aria-labelledby="choose-layouts-btn">
                         <li>
                             <button role="menuitemradio" class="btn-util btn-layout" id="btn-one-col" aria-label="One visual per column" aria-checked="false">
-                                <img role="presentation" class="svg layout-img" src="img/column1.svg" alt="1 Column" />
+                                <img role="presentation" class="svg layout-img" src="img/column1.svg" alt="1 Column">
                             </button>
                         </li>
                         <li>
                             <button role="menuitemradio" class="btn-util btn-layout" id="btn-two-col-colspan" aria-label="One visual in first and two visuals in second column" aria-checked="false">
-                                <img role="presentation" class="svg layout-img" src="img/rowspan.svg" alt="Rowspan" />
+                                <img role="presentation" class="svg layout-img" src="img/rowspan.svg" alt="Rowspan">
                             </button>
                         </li>
                         <li>
                             <button role="menuitemradio" class="btn-util btn-layout" id="btn-two-col-rowspan" aria-label="Two visuals in first and one visual in second row" aria-checked="false">
-                                <img role="presentation" class="svg layout-img" src="img/colspan.svg" alt="Colspan" />
+                                <img role="presentation" class="svg layout-img" src="img/colspan.svg" alt="Colspan">
                             </button>
                         </li>
                         <li>
                             <button role="menuitemradio" class="btn-util active-columns-btn" id="btn-two-cols" aria-label="Two visual per column" aria-checked="true">
-                                <img role="presentation" class="svg layout-img" src="img/column2.svg" alt="2 Column" />
+                                <img role="presentation" class="svg layout-img" src="img/column2.svg" alt="2 Column">
                             </button>
                         </li>
                         <li>
                             <button role="menuitemradio" class="btn-util btn-layout" id="btn-three-cols" aria-label="Three visual per column" aria-checked="false">
-                                <img role="presentation" class="svg layout-img" src="img/column3.svg" alt="3 Column" />
+                                <img role="presentation" class="svg layout-img" src="img/column3.svg" alt="3 Column">
                             </button>
                         </li>
                     </ul>
                 </div>
-                <div role="separator" class="line"></div>
-                <div id="report-container"></div>
             </div>
+            <div role="separator" class="line fixed-top"></div>
+            <div id="report-container"></div>
         </main>
     </div>
 
@@ -83,9 +83,9 @@ Licensed under the MIT license. -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/powerbi-client@2.15.1/dist/powerbi.min.js"></script>
 
-    <script src="js/globals.js?v=22012021"></script>
+    <script src="js/globals.js?v=05022021"></script>
     <script src="js/session_utils.js?v=31122020"></script>
-    <script src="js/index.js?v=22012021"></script>
+    <script src="js/index.js?v=10022021"></script>
 </body>
 
 </html>
