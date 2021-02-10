@@ -35,12 +35,14 @@ $(document).ready(function () {
     });
 
     // Get all the UI elements to toggle the dark theme
-    allUIElements = [bodyElement, contentElement, themeContainer, themeSwitchLabel, horizontalSeparator, horizontalRule, sliderCheckbox, themeButton, themeBucket, dataColorNameElements];
+    allUIElements = [bodyElement, contentElement, dropdownDiv, themeContainer, themeSwitchLabel, horizontalSeparator, horizontalRule, sliderCheckbox, themeButton, themeBucket, dataColorNameElements];
 });
 
 // Close the dropdown when focus moves to Choose theme button from Toggle slider
-$(document).on("keydown", "#theme-slider", function(e) {
-    if (e.shiftKey && (e.key === "Tab" || e.keyCode === KEYCODE_TAB)) {
+$(document).on("keydown", "#theme-slider", function (e) {
+
+    // Shift + Tab
+    if (e.shiftKey && (e.key === Keys.TAB || e.keyCode === KEYCODE_TAB)) {
         dropdownDiv.removeClass("show");
         themesList.removeClass("show");
         $(".btn-theme")[0].setAttribute("aria-expanded", false);
@@ -79,6 +81,12 @@ async function embedThemesReport() {
     // Use View permissions
     const permissions = models.Permissions.View;
 
+    // Create new theme object
+    let newTheme = {};
+
+    // Append the data-colors and the theme
+    $.extend(newTheme, jsonDataColors[0], themes[0]);
+
     // Embed configuration used to describe the what and how to embed
     // This object is used when calling powerbi.embed
     // This also includes settings and options such as filters
@@ -107,7 +115,7 @@ async function embedThemesReport() {
             background: models.BackgroundType.Transparent
         },
         // Adding theme attribute to the config, will apply the light theme and default data-colors on load
-        theme: { themeJson: jsonDataColors[0] },
+        theme: { themeJson: newTheme },
     };
 
     // Embed the report and display it within the div container

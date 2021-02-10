@@ -12,8 +12,30 @@ Licensed under the MIT license. */
     src: url("https://content.powerapps.com/resource/powerbiwfe/fonts/SegoeUI-SemiBold-final.83b7261d0e6f3994ed6d.woff") format("woff");
 }
 
-.theme-report-container {
-    display: flex;
+.dropdown {
+    background: #FAF9F8;
+    margin-top: 44px;
+}
+
+.dropdown.dark {
+    background: #3B3A39;
+}
+
+/* Set the background 40% black when dropdown opens */
+.dropdown.show:after {
+    opacity: 1; 
+	position: fixed;
+	visibility: visible;
+}
+
+.dropdown:after {
+    background: rgba(0, 0, 0, .4);
+    bottom: 0;
+    content: ''; 
+    left: 0;
+    right: 0;
+    top: 0;
+    transition: opacity .15s ease-in-out;
 }
 
 .btn-theme {
@@ -44,7 +66,7 @@ Licensed under the MIT license. */
 
 /* For Keyboard focus */
 .btn-theme.dark:focus-visible {
-    box-shadow: 0 0 3pt 1pt #D9E6EA;
+    box-shadow: 0 0 4px 1.5px #D9E6EA;
 }
 
 /* Remove focus when mouse navigation is used */
@@ -53,7 +75,7 @@ Licensed under the MIT license. */
 }
 
 .btn-theme:focus-visible {
-    box-shadow: 0 0 3pt 1pt rgba(0,123,255,.5);
+    box-shadow: 0 0 4px 1.5px rgba(0,123,255,.5);
 }
 
 .btn-theme:focus:not(:focus-visible) {
@@ -80,7 +102,7 @@ Licensed under the MIT license. */
 }
 
 input[type="checkbox"]:focus-visible + span.slider.round {
-    box-shadow: 0 0 3pt 2pt rgba(0,123,255,.5);
+    box-shadow: 0 0 4px 2.5px rgba(0,123,255,.5);
     outline: none;
 }
 
@@ -90,7 +112,7 @@ input[type="checkbox"]:focus:not(:focus-visible) + span.slider.round {
 }
 
 input[type="checkbox"]:focus-visible + span.slider.round.dark {
-    box-shadow: 0 0 3pt 1pt #D9E6EA;
+    box-shadow: 0 0 4px 1.5px #D9E6EA;
     outline: none;
 }
 

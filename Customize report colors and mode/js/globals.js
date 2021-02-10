@@ -38,3 +38,11 @@ const embedContainer = $(".report-container").get(0);
 
 // Store keycode for TAB key
 const KEYCODE_TAB = 9;
+
+// Enum for Keys
+const Keys = {
+    TAB: "Tab"
+}
+
+// Freezing the contents of enum object
+Object.freeze(Keys);

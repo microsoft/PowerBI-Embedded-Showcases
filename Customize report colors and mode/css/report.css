@@ -2,8 +2,8 @@
 Licensed under the MIT license. */
 
 .report-container {
-    height: calc((9/16) * 85vw + 20px);
-    margin: 16px;
+    height: calc((9/16) * 85vw + 10px);
+    margin: 125px 16px 16px 16px;
     width: auto;
 }
 
