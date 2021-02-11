@@ -78,6 +78,7 @@ body::-webkit-scrollbar-thumb {
 
 #bookmark-container {
     height: 100%;
+    margin-top: 44px;
     width: 100%;
 }
 

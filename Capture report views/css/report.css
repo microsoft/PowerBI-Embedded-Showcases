@@ -2,7 +2,7 @@
 Licensed under the MIT license. */
 
 #report-container {
-    margin: 16px;
+    margin: 125px 16px 16px 16px;
     width: auto;
     height: calc((9/16) * 99vw);
 }

@@ -13,23 +13,21 @@ Licensed under the MIT license. -->
 
 <body>
     <div id="wrapper">
-        <h1 id="contoso-header">
+        <h1 class="fixed-top" id="contoso-header">
             <img src="img/contoso.svg" id="contoso" alt="contoso" aria-label="Contoso logo" />
         </h1>
-        <main id="container">
-            <div id="overlay">
-                <img src="img/spinner.svg" class="rotate" id="spinner" aria-label="Loading report">
-            </div>
-            <div id="share-bookmark">
-                <div id="bookmark-container" class="iframeContainer active"></div>
-            </div>
-        </main>
+        <div id="overlay">
+            <img src="img/spinner.svg" class="rotate" id="spinner" aria-label="Loading report">
+        </div>
+        <div id="share-bookmark">
+            <div id="bookmark-container" class="iframeContainer active"></div>
+        </div>
     </div>
 
     <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/powerbi-client@2.15.1/dist/powerbi.min.js"></script>
     
-    <script src="js/globals.js?v=27012021"></script>
+    <script src="js/globals.js?v=05022021"></script>
     <script src="js/session_utils.js?v=25012021"></script>
     <script src="js/share_bookmark.js?v=27012021"></script>
 </body>

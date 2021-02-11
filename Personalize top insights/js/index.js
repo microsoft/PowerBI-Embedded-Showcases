@@ -92,6 +92,15 @@ $(document).on("keydown", "input:checkbox", function (e) {
     }
 });
 
+// Show tooltip only when ellipsis is active
+$(document).on("mouseenter", ".text-truncate", function () {
+    const element = $(this);
+
+    if (this.offsetWidth < this.scrollWidth && !element.prop("title")) {
+        element.prop("title", element.text());
+    }
+});
+
 // Embed the report and retrieve all report visuals
 async function embedCustomLayoutReport() {
 
