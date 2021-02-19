@@ -41,6 +41,9 @@ const VISUAL_CREATOR_SHOWCASE = {
     VISUAL_ASPECT_RATIO: 9 / 16
 }
 
+// Distance between the action button and the image visual inside the custom visual
+const DISTANCE = 18;
+
 // Constants used for report configurations as key-value pair
 const reportConfig = {
     accessToken: null,
@@ -66,12 +69,7 @@ const imageVisual = {
 const actionButtonVisual = {
     name: "946862f32d49b6573406",
     height: 32,
-    ratio: {
-        widthRatioWithMainVisual: 151 / 426,
-        heightRatioWithMainVisual: 32 / 252,
-        xPositionRatioWithMainVisual: 135 / 426,
-        yPositionRatioWithMainVisual: 144 / 252
-    }
+    width: 151,
 }
 
 // Cache DOM Elements

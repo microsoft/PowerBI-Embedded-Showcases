@@ -19,6 +19,7 @@ const reportShowcaseState = {
 }
 
 // Initialize and cache global DOM objects
+const body = $("#insight-to-action");
 const embedContainer = $("#report-container").get(0);
 const overlay = $("#overlay");
 const distributionDialog = $("#distribution-dialog");
@@ -31,6 +32,9 @@ const sendCouponBtn = $("#send-coupon");
 const sendDiscountBtn = $("#send-discount");
 const sendMessageBtn = $("#send-message");
 const successCross = $("#success-cross");
+
+// Cache CSS Class
+const HIDE_OVERFLOW = "overflow-hidden";
 
 // Check if dialog box is closed
 let isDialogClosed  = true;

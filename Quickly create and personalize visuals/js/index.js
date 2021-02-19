@@ -494,11 +494,13 @@ async function rearrangeInCustomLayout() {
         // If the visual to be placed is the action button, which is to be overlapped in the main visual, position it accordingly
         else if (visual.name === actionButtonVisual.name && mainVisualState.x) {
             visualsLayout[actionButtonVisual.name] = {
-                x: mainVisualState.x + mainVisualState.width * actionButtonVisual.ratio.xPositionRatioWithMainVisual,
-                y: imageVisual.height + imageVisual.yPos + 18,
-                width: mainVisualState.width * actionButtonVisual.ratio.widthRatioWithMainVisual - 4.5,
-                // Set minimum height for action button visual in smaller screens
-                height: Math.max(mainVisualState.height * actionButtonVisual.ratio.heightRatioWithMainVisual - 4.5, actionButtonVisual.height),
+                // To center align the action-button
+                x: mainVisualState.x + (mainVisualState.width - actionButtonVisual.width) / 2,
+                y: imageVisual.height + imageVisual.yPos + DISTANCE,
+                // Set the width constant for the button because of non-scalable button value
+                width: actionButtonVisual.width,
+                // Set the height constant for the button because of non-scalable button value
+                height: actionButtonVisual.height,
                 displayState: {
 
                     // Change the selected visuals display mode to visible
@@ -1520,7 +1522,7 @@ async function appendVisualToReport() {
             if (dataRoleNames.indexOf(dataRole) < 0) {
                 return;
             }
-            
+
             if (field) {
                 // Get data-fields from the data-role
                 const dataFieldProp = await oldVisual.getDataFields(dataRole);

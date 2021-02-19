@@ -3,7 +3,6 @@ Licensed under the MIT license. */
 
 body {
     height: 100%;
-    overflow: auto hidden;
     scrollbar-color: #A0AEB2 #FFF;
     scrollbar-width: thin;
 }

@@ -257,6 +257,7 @@ function handleExportData(result) {
 // Open Campaign list dialog
 function onStartCampaignClicked() {
     $(".checkbox-element").prop("checked", true);
+    body.addClass(HIDE_OVERFLOW);
     successDialog.hide();
     sendDialog.hide();
     dialogMask.show();
@@ -276,6 +277,7 @@ function onSendDialogSendClicked() {
 
 // Closes the dialogs
 function onCloseClicked() {
+    body.removeClass(HIDE_OVERFLOW);
     dialogMask.hide();
     successDialog.hide();
     sendDialog.hide();

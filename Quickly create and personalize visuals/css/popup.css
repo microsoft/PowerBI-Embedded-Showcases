@@ -16,6 +16,10 @@ Licensed under the MIT license. */
     outline: none;
 }
 
+body.modal-open {
+    padding-right: 0 !important;
+}
+
 .fade {
     transition: opacity .25s linear;
 }
@@ -26,7 +30,35 @@ Licensed under the MIT license. */
         position: absolute;
         width: 850px;
     }
-} 
+}
+
+.modal {
+    scrollbar-color: #A0AEB2 transparent;
+    scrollbar-width: thin;
+}
+
+/* Change custom scrollbar appearance */
+.modal::-webkit-scrollbar-track {
+    background-color: transparent;
+    border-radius: 10px;
+}
+
+.modal::-webkit-scrollbar {
+    background-color: transparent;
+    height: 10px;
+    width: 8px;
+}
+
+.modal::-webkit-scrollbar-thumb {
+    background-color: #A0AEB2;
+    border-radius: 10px;
+    height: 30px;
+}
+
+.modal-backdrop.show {
+    height: 100%;
+    width: 100%;
+}
 
 .modal.show {
     display: flex !important;
@@ -157,8 +189,12 @@ Licensed under the MIT license. */
     padding: 20px;
 }
 
-#close-modal:focus {
+#close-modal:focus-visible {
     box-shadow: 0 0 0 2.5px rgba(0,123,255,.5);
+}
+
+#close-modal:focus:not(:focus-visible) {
+    box-shadow: none;
 }
 
 .modal-footer {
