@@ -1,6 +1,6 @@
 {
 	"name": "@powerbi/playground-showcases",
-	"version": "2.5.0",
+	"version": "2.5.1",
 	"description": "Showcases for the Power BI Embedded playground",
 	"repository": {
 		"type": "git",
