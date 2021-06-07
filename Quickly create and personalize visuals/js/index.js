@@ -316,7 +316,7 @@ async function embedBaseReport() {
         generatorType.removeClass(DISABLED);
         generatorType.removeClass(TYPES_DISABLED);
 
-        console.log("Report render successful");
+        console.log("Report render successfully");
     });
 
     // Listen the commandTriggered event
@@ -392,7 +392,15 @@ async function embedVisualAuthoringReport() {
 
     // Triggers when a report is successfully embedded in UI
     visualCreatorShowcaseState.report.on("rendered", function () {
-        console.log("Visual authoring report render successful");
+        visualCreatorShowcaseState.report.off("rendered");
+        console.log("Visual authoring report render successfully");
+
+        // Protection against cross-origin failure
+        try {
+            if (window.parent.playground && window.parent.playground.logShowcaseDoneRendering) {
+                window.parent.playground.logShowcaseDoneRendering('QuickCreate');
+            }
+        } catch { }
     });
 
     // Clear any other error handler events

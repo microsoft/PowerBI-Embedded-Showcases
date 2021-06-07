@@ -231,6 +231,9 @@ async function embedBookmarksReport() {
     // For accessibility insights
     setReportAccessibilityProps(bookmarkShowcaseState.report);
 
+    // Clear any other loaded handler events
+    bookmarkShowcaseState.report.off("loaded");
+
     // Report.on will add an event handler for report loaded event.
     bookmarkShowcaseState.report.on("loaded", async function () {
 
@@ -245,6 +248,22 @@ async function embedBookmarksReport() {
 
         // Show the container
         $("#main-div").addClass(VISIBLE);
+    });
+
+    // Clear any other loaded handler events
+    bookmarkShowcaseState.report.off("rendered");
+
+    // Triggers when a report is successfully embedded in UI
+    bookmarkShowcaseState.report.on("rendered", function () {
+        bookmarkShowcaseState.report.off("rendered");
+        console.log("The captured views report rendered successfully");
+
+        // Protection against cross-origin failure
+        try {
+            if (window.parent.playground && window.parent.playground.logShowcaseDoneRendering) {
+                window.parent.playground.logShowcaseDoneRendering("CaptureReportViews");
+            }
+        } catch { }
     });
 }
 

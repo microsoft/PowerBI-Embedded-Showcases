@@ -168,6 +168,9 @@ async function embedReport() {
     // For accessibility insights
     setReportAccessibilityProps(reportShowcaseState.report);
 
+    // Clear any other loaded handler events
+    reportShowcaseState.report.off("loaded");
+
     // Report.on will add an event handler for report loaded event.
     reportShowcaseState.report.on("loaded", async function () {
 
@@ -194,6 +197,22 @@ async function embedReport() {
 
         // Show the container
         $("#main-div").show();
+    });
+
+    // Clear any other loaded handler events
+    reportShowcaseState.report.off("rendered");
+
+    // Triggers when a report is successfully embedded in UI
+    reportShowcaseState.report.on("rendered", function () {
+        reportShowcaseState.report.off("rendered");
+        console.log("The go from insights to action report rendered successfully");
+
+        // Protection against cross-origin failure
+        try {
+            if (window.parent.playground && window.parent.playground.logShowcaseDoneRendering) {
+                window.parent.playground.logShowcaseDoneRendering("InsightToAction");
+            }
+        } catch { }
     });
 
     // Adding onClick listener for the button in the report

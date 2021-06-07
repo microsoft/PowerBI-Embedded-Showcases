@@ -124,6 +124,9 @@ async function embedThemesReport() {
     // For accessibility insights
     setReportAccessibilityProps(themesShowcaseState.themesReport);
 
+    // Clear any other loaded handler events
+    themesShowcaseState.themesReport.off("loaded");
+
     // Report.on will add an event handler for report loaded event.
     themesShowcaseState.themesReport.on("loaded", function () {
 
@@ -135,6 +138,22 @@ async function embedThemesReport() {
 
         // Set the first data-color on the list as active
         themesList.find("#datacolor0").prop("checked", true);
+    });
+
+    // Clear any other loaded handler events
+    themesShowcaseState.themesReport.off("rendered");
+
+    // Triggers when a report is successfully embedded in UI
+    themesShowcaseState.themesReport.on("rendered", function () {
+        themesShowcaseState.themesReport.off("rendered");
+        console.log("The customize colors and mode report rendered successfully");
+
+        // Protection against cross-origin failure
+        try {
+            if (window.parent.playground && window.parent.playground.logShowcaseDoneRendering) {
+                window.parent.playground.logShowcaseDoneRendering("CustomizeColors");
+            }
+        } catch { }
     });
 }
 

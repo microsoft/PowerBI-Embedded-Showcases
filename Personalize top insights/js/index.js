@@ -186,7 +186,23 @@ async function embedCustomLayoutReport() {
         // Hide the loader
         $("#overlay").hide();
         $("#main-div").children().show();
-        console.log("Report render successful");
+        console.log("Report render successfully");
+    });
+
+    // Clear any other loaded handler events
+    layoutShowcaseState.layoutReport.off("rendered");
+
+    // Triggers when a report is successfully embedded in UI
+    layoutShowcaseState.layoutReport.on("rendered", function () {
+        layoutShowcaseState.layoutReport.off("rendered");
+        console.log("The personalize top insights report rendered successfully");
+
+        // Protection against cross-origin failure
+        try {
+            if (window.parent.playground && window.parent.playground.logShowcaseDoneRendering) {
+                window.parent.playground.logShowcaseDoneRendering("PersonalizeTopInsights");
+            }
+        } catch { }
     });
 
     // Clear any other error handler events
