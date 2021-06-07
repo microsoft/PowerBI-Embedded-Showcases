@@ -1,3 +1,6 @@
+/* Copyright (c) Microsoft Corporation.
+Licensed under the MIT license. */
+
 .rotate {
     animation: rotation 1s infinite linear;
 }
@@ -25,10 +28,6 @@
 
 #main-div {
     background: #F6F6FA;
-    color: #FFF8DC;
-    margin: 0 auto;
-    text-align: left;
-    width: 100%;
 }
 
 #main-div>* {
@@ -38,8 +37,8 @@
 .line {
     border-top: 0.5px solid rgba(0, 0, 0, 0.2);
     clear: both;
-    margin: 0 16px 0 16px;
+    margin: 109px 16px 0 16px;
     opacity: 0.7;
-    position: relative;
-    width: 98%;
+    width: auto;
+    z-index: 0;
 }

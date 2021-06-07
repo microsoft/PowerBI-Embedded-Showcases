@@ -1,3 +1,8 @@
+// ----------------------------------------------------------------------------
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+// ----------------------------------------------------------------------------
+
 // Constants used for report configurations as key-value pair
 const reportConfig = {
     accessToken: null,
@@ -14,6 +19,7 @@ const reportShowcaseState = {
 }
 
 // Initialize and cache global DOM objects
+const body = $("#insight-to-action");
 const embedContainer = $("#report-container").get(0);
 const overlay = $("#overlay");
 const distributionDialog = $("#distribution-dialog");
@@ -27,15 +33,27 @@ const sendDiscountBtn = $("#send-discount");
 const sendMessageBtn = $("#send-message");
 const successCross = $("#success-cross");
 
+// Cache CSS Class
+const HIDE_OVERFLOW = "overflow-hidden";
+
 // Check if dialog box is closed
-let isDialogClosed = true;
+let isDialogClosed  = true;
 
 // Key codes
 const KEYCODE_TAB = 9;
 const KEYCODE_ESCAPE = 27;
 
+// Enum for keys
+const Keys = {
+    TAB : "Tab",
+    ESCAPE: "Escape"
+}
+
+// Freezing the contents of enum object
+Object.freeze(Keys);
+
 // Table visual GUID
-const tableVisualGuid = "1149606f2a101953b4ba";
+const TABLE_VISUAL_GUID = "1149606f2a101953b4ba";
 let tableVisual;
 
 // Icon for the custom extension

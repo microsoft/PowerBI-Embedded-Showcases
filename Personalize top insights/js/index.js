@@ -1,3 +1,8 @@
+// ----------------------------------------------------------------------------
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+// ----------------------------------------------------------------------------
+
 // To stop the page load on click event
 $(document).on("click", ".allow-focus", function (element) {
     element.stopPropagation();
@@ -42,9 +47,6 @@ $(document).ready(function () {
         // Focus on the current selected layout
         const activeLayout = $(".active-columns-btn");
         activeLayout.focus();
-
-        // Scroll the page to the top
-        document.body.scrollTop = document.documentElement.scrollTop = 0;
     });
 
     // Move the focus back to the button which triggered the dropdown
@@ -59,13 +61,15 @@ $(document).ready(function () {
 
     // Close the layouts dropdown when focus moves from first layout-option to button
     layoutButtons.on("keydown", function (e) {
-        if (e.shiftKey && (e.key === "Tab" || e.keyCode === KEYCODE_TAB)) /* shift + tab */ {
+
+        // Shift + Tab
+        if (e.shiftKey && (e.key === Keys.TAB || e.keyCode === KEYCODE_TAB)) {
             if (document.activeElement.id === firstButtonId) {
 
                 // Close the layouts dropdown
                 layoutsDropdown.removeClass("show");
                 layoutsDiv.removeClass("show");
-                document.getElementById("visuals-layout-btn").setAttribute("aria-expanded", false);
+                document.getElementById("choose-layouts-btn").setAttribute("aria-expanded", false);
             }
         }
     });
@@ -75,14 +79,25 @@ $(document).ready(function () {
 
 // Close the visuals dropdown when focus moves from first checkbox to button
 $(document).on("keydown", "input:checkbox", function (e) {
-    if (e.shiftKey && (e.key === "Tab" || e.keyCode === KEYCODE_TAB)) /* shift + tab */ {
+
+    // Shift + Tab
+    if (e.shiftKey && (e.key === Keys.TAB || e.keyCode === KEYCODE_TAB)) {
         if (this.id === firstVisualId) {
 
             // Close the visuals dropdown
             visualsDropdown.removeClass("show");
             visualsDiv.removeClass("show");
-            document.getElementById("visuals-click-btn").setAttribute("aria-expanded", false);
+            document.getElementById("choose-visuals-btn").setAttribute("aria-expanded", false);
         }
+    }
+});
+
+// Show tooltip only when ellipsis is active
+$(document).on("mouseenter", ".text-truncate", function () {
+    const element = $(this);
+
+    if (this.offsetWidth < this.scrollWidth && !element.prop("title")) {
+        element.prop("title", element.text());
     }
 });
 
@@ -90,14 +105,11 @@ $(document).on("keydown", "input:checkbox", function (e) {
 async function embedCustomLayoutReport() {
 
     // Default columns value is two columns
-    layoutShowcaseState.columns = ColumnsNumber.Two;
-    LayoutShowcaseConsts.span = SpanType.None;
+    layoutShowcaseState.columns = COLUMNS.TWO;
+    layoutShowcaseState.span = SPAN_TYPE.NONE;
 
     // Load custom layout report properties into session
     await loadLayoutShowcaseReportIntoSession();
-
-    // Get models. models contains enums that can be used
-    const models = window["powerbi-client"].models;
 
     // Get embed application token from globals
     let accessToken = reportConfig.accessToken;
@@ -174,7 +186,23 @@ async function embedCustomLayoutReport() {
         // Hide the loader
         $("#overlay").hide();
         $("#main-div").children().show();
-        console.log("Report render successful");
+        console.log("Report render successfully");
+    });
+
+    // Clear any other loaded handler events
+    layoutShowcaseState.layoutReport.off("rendered");
+
+    // Triggers when a report is successfully embedded in UI
+    layoutShowcaseState.layoutReport.on("rendered", function () {
+        layoutShowcaseState.layoutReport.off("rendered");
+        console.log("The personalize top insights report rendered successfully");
+
+        // Protection against cross-origin failure
+        try {
+            if (window.parent.playground && window.parent.playground.logShowcaseDoneRendering) {
+                window.parent.playground.logShowcaseDoneRendering("PersonalizeTopInsights");
+            }
+        } catch { }
     });
 
     // Clear any other error handler events
@@ -230,7 +258,7 @@ function buildVisualElement(visual) {
     labelElement.append(spanElement);
 
     let secondSpanElement = document.createElement("span");
-    secondSpanElement.setAttribute("class", "checkbox-title");
+    secondSpanElement.setAttribute("class", "checkbox-title text-truncate");
     let checkboxTitleElement = document.createTextNode(visual.title);
     secondSpanElement.append(checkboxTitleElement);
     labelElement.append(secondSpanElement);
@@ -252,9 +280,6 @@ async function renderVisuals() {
         return;
     }
 
-    // Get models. models contains enums that can be used
-    const models = window["powerbi-client"].models;
-
     // Get report-container width and height
     let reportContainer = $("#report-container");
 
@@ -271,7 +296,10 @@ async function renderVisuals() {
     let checkedVisuals = layoutShowcaseState.layoutVisuals.filter(function (visual) { return visual.checked; });
 
     // Calculating the combined width of the all visuals in a row
-    let visualsTotalWidth = reportWidth - (LayoutShowcaseConsts.margin * (layoutShowcaseState.columns + 1));
+    let visualsTotalWidth = reportWidth - (LAYOUT_SHOWCASE.MARGIN * (layoutShowcaseState.columns + 1));
+
+    // Get all the available width for visuals total width, get the space from right margin of the report
+    visualsTotalWidth += LAYOUT_SHOWCASE.MARGIN / 2;
 
     // Calculate the width of a single visual, according to the number of columns
     // For one and three columns visuals width will be a third of visuals total width
@@ -282,11 +310,11 @@ async function renderVisuals() {
     let visualsLayout = {};
 
     // Visuals starting point
-    let x = LayoutShowcaseConsts.margin;
-    let y = LayoutShowcaseConsts.margin;
+    let x = LAYOUT_SHOWCASE.MARGIN;
+    let y = LAYOUT_SHOWCASE.MARGIN;
 
     // Calculate visualHeight with margins
-    let visualHeight = visualWidth * LayoutShowcaseConsts.visualAspectRatio;
+    let visualHeight = visualWidth * LAYOUT_SHOWCASE.VISUAL_ASPECT_RATIO;
 
     // Section means a single unit that will be repeating as pattern to form the layout
     // These 2 variables are used for the 2 custom layouts with spanning
@@ -296,18 +324,18 @@ async function renderVisuals() {
     // Calculate the number of rows
     let rows = 0;
 
-    if (layoutShowcaseState.span === SpanType.ColSpan) {
+    if (layoutShowcaseState.span === SPAN_TYPE.COLSPAN) {
         rows = rowsPerSection * Math.floor(checkedVisuals.length / visualsPerSection);
         if (checkedVisuals.length % visualsPerSection) {
             rows += 1;
         }
-        reportHeight = Math.max(reportHeight, (rows * visualHeight) + (rows + 1) * LayoutShowcaseConsts.margin);
+        reportHeight = Math.max(reportHeight, (rows * visualHeight) + (rows + 1) * LAYOUT_SHOWCASE.MARGIN);
 
         checkedVisuals.forEach(function (element, idx) {
             visualsLayout[element.name] = {
                 x: x,
                 y: y,
-                width: (idx % visualsPerSection === visualsPerSection - 1) ? visualWidth * 2 + LayoutShowcaseConsts.margin : visualWidth,
+                width: (idx % visualsPerSection === visualsPerSection - 1) ? visualWidth * 2 + LAYOUT_SHOWCASE.MARGIN : visualWidth,
                 height: visualHeight,
                 displayState: {
 
@@ -317,28 +345,28 @@ async function renderVisuals() {
             };
 
             // Calculating (x,y) position for the next visual
-            x += LayoutShowcaseConsts.margin + ((idx % visualsPerSection === visualsPerSection - 1) ? visualWidth * 2 : visualWidth);
+            x += LAYOUT_SHOWCASE.MARGIN + ((idx % visualsPerSection === visualsPerSection - 1) ? visualWidth * 2 : visualWidth);
 
             // Reset x
             if (x + visualWidth > reportWidth) {
-                x = LayoutShowcaseConsts.margin;
-                y += visualHeight + LayoutShowcaseConsts.margin;
+                x = LAYOUT_SHOWCASE.MARGIN;
+                y += visualHeight + LAYOUT_SHOWCASE.MARGIN;
             }
         });
 
-    } else if (layoutShowcaseState.span === SpanType.RowSpan) {
+    } else if (layoutShowcaseState.span === SPAN_TYPE.ROWSPAN) {
         rows = rowsPerSection * Math.floor(checkedVisuals.length / visualsPerSection);
         if (checkedVisuals.length % visualsPerSection) {
             rows += 2;
         }
-        reportHeight = Math.max(reportHeight, (rows * visualHeight) + (rows + 1) * LayoutShowcaseConsts.margin);
+        reportHeight = Math.max(reportHeight, (rows * visualHeight) + (rows + 1) * LAYOUT_SHOWCASE.MARGIN);
 
         checkedVisuals.forEach(function (element, idx) {
             visualsLayout[element.name] = {
                 x: x,
                 y: y,
                 width: visualWidth,
-                height: !(idx % visualsPerSection) ? visualHeight * 2 + LayoutShowcaseConsts.margin : visualHeight,
+                height: !(idx % visualsPerSection) ? visualHeight * 2 + LAYOUT_SHOWCASE.MARGIN : visualHeight,
                 displayState: {
 
                     // Change the selected visuals display mode to visible
@@ -347,22 +375,22 @@ async function renderVisuals() {
             };
 
             // Calculating (x,y) position for the next visual
-            x += visualWidth + LayoutShowcaseConsts.margin;
+            x += visualWidth + LAYOUT_SHOWCASE.MARGIN;
 
             // Reset x
             if (x + visualWidth > reportWidth) {
-                x = ((idx + 1) % visualsPerSection === 0) ? LayoutShowcaseConsts.margin : (2 * LayoutShowcaseConsts.margin) + visualWidth;
-                y += (idx % visualsPerSection === 0) ? visualHeight * 2 : visualHeight + LayoutShowcaseConsts.margin;
+                x = ((idx + 1) % visualsPerSection === 0) ? LAYOUT_SHOWCASE.MARGIN : (2 * LAYOUT_SHOWCASE.MARGIN) + visualWidth;
+                y += (idx % visualsPerSection === 0) ? visualHeight * 2 : visualHeight + LAYOUT_SHOWCASE.MARGIN;
             }
         });
 
-    } else if (layoutShowcaseState.span === SpanType.None) {
-        if (layoutShowcaseState.columns === ColumnsNumber.One) {
+    } else if (layoutShowcaseState.span === SPAN_TYPE.NONE) {
+        if (layoutShowcaseState.columns === COLUMNS.One) {
             visualHeight /= 2;
         }
 
         rows = Math.ceil(checkedVisuals.length / layoutShowcaseState.columns);
-        reportHeight = Math.max(reportHeight, (rows * visualHeight) + (rows + 1) * LayoutShowcaseConsts.margin);
+        reportHeight = Math.max(reportHeight, (rows * visualHeight) + (rows + 1) * LAYOUT_SHOWCASE.MARGIN);
 
         checkedVisuals.forEach(function (element) {
             visualsLayout[element.name] = {
@@ -378,12 +406,12 @@ async function renderVisuals() {
             };
 
             // Calculating (x,y) position for the next visual
-            x += visualWidth + LayoutShowcaseConsts.margin;
+            x += visualWidth + LAYOUT_SHOWCASE.MARGIN;
 
             // Reset x
             if (x + visualWidth > reportWidth) {
-                x = LayoutShowcaseConsts.margin;
-                y += visualHeight + LayoutShowcaseConsts.margin;
+                x = LAYOUT_SHOWCASE.MARGIN;
+                y += visualHeight + LAYOUT_SHOWCASE.MARGIN;
             }
         });
     }
@@ -412,8 +440,8 @@ async function renderVisuals() {
         customLayout: {
             pageSize: {
                 type: models.PageSizeType.Custom,
-                width: reportWidth - 10,
-                height: reportHeight - 20
+                width: reportWidth,
+                height: reportHeight
             },
             displayOption: models.DisplayOption.FitToPage,
             pagesLayout: pagesLayout
@@ -450,15 +478,15 @@ function onCheckboxClicked(checkbox) {
 function onModifyLayoutClicked(spanType, column, clickedElement) {
 
     // Selecting the layout option as per the selection
-    if (spanType === SpanType.RowSpan) {
+    if (spanType === SPAN_TYPE.ROWSPAN) {
         layoutShowcaseState.columns = column;
-        layoutShowcaseState.span = SpanType.RowSpan;
-    } else if (spanType === SpanType.ColSpan) {
+        layoutShowcaseState.span = SPAN_TYPE.ROWSPAN;
+    } else if (spanType === SPAN_TYPE.COLSPAN) {
         layoutShowcaseState.columns = column;
-        layoutShowcaseState.span = SpanType.ColSpan;
+        layoutShowcaseState.span = SPAN_TYPE.COLSPAN;
     } else {
         layoutShowcaseState.columns = column;
-        layoutShowcaseState.span = SpanType.None;
+        layoutShowcaseState.span = SPAN_TYPE.NONE;
     }
     setLayoutButtonActive(clickedElement);
     renderVisuals();

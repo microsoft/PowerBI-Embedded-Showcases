@@ -1,3 +1,8 @@
+// ----------------------------------------------------------------------------
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+// ----------------------------------------------------------------------------
+
 // For report themes documentation please check https://docs.microsoft.com/en-us/power-bi/desktop-report-themes
 const jsonDataColors = [{
     "name": "Default",
@@ -48,17 +53,45 @@ const jsonDataColors = [{
 
 const themes = [{
     "background": "#FFFFFF",
+    "visualStyles": {
+        "*": {
+            "*": {
+                "border": [{
+                    "show": true,
+                    "color": { "solid": { "color": "#FFFFFF" } },
+                    "radius": 2
+                }],
+                "dropShadow": [
+                    {
+                        "color": {
+                            "solid": {
+                                "color": "#FFFFFF"
+                            }
+                        },
+                        "show": true,
+                        "position": "Outer",
+                        "preset": "Custom",
+                        "shadowSpread": 1,
+                        "shadowBlur": 1,
+                        "angle": 45,
+                        "shadowDistance": 1,
+                        "transparency": 95
+                    }
+                ]
+            }
+        }
+    },
 },
 {
     "background": "#252423",
     "foreground": "#FFFFFF",
     "tableAccent": "#FFFFFF",
     "textClasses": {
-		"title": {
-			"color": "#FFF",
-			"fontFace": "Segoe UI Bold"
+        "title": {
+            "color": "#FFF",
+            "fontFace": "Segoe UI Bold"
         },
-	},
+    },
     "visualStyles": {
         "*": {
             "*": {
@@ -77,8 +110,26 @@ const themes = [{
                 }],
                 "border": [{
                     "show": true,
-                    "color": { "solid": { "color": "#484644" } }
-                }]
+                    "color": { "solid": { "color": "#484644" } },
+                    "radius": 2
+                }],
+                "dropShadow": [
+                    {
+                        "color": {
+                            "solid": {
+                                "color": "#FFFFFF"
+                            }
+                        },
+                        "show": true,
+                        "position": "Outer",
+                        "preset": "Custom",
+                        "shadowSpread": 1,
+                        "shadowBlur": 1,
+                        "angle": 45,
+                        "shadowDistance": 1,
+                        "transparency": 95
+                    }
+                ]
             }
         }
     }
