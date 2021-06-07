@@ -1,3 +1,6 @@
+/* Copyright (c) Microsoft Corporation.
+Licensed under the MIT license. */
+
 /* The custom loader animation to be displayed till the report is embedded */
 .rotate {
     animation: rotation 1s infinite linear;
@@ -46,9 +49,10 @@
 .horizontal-rule {
     border-top: .5px solid rgba(0, 0, 0, .2);
     clear: both;
-    margin: 0 16px;
+    margin: 109px 16px 0 16px;
     opacity: .7;
-    width: 98%;
+    width: auto;
+    z-index: 0;
 }
 
 .horizontal-rule.dark {

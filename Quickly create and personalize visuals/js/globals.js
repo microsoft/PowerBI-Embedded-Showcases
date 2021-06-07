@@ -1,3 +1,8 @@
+// ----------------------------------------------------------------------------
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+// ----------------------------------------------------------------------------
+
 const visualCreatorShowcaseState = {
     report: null,
     page: null, // The page from where the 3x3 visuals will be displayed
@@ -30,11 +35,14 @@ const baseReportState = {
     page: null
 }
 
-const visualCreatorShowcaseConstants = {
-    columns: 3,
-    margin: 16,
-    visualAspectRatio: 9 / 16
+const VISUAL_CREATOR_SHOWCASE = {
+    COLUMNS: 3,
+    MARGIN: 16,
+    VISUAL_ASPECT_RATIO: 9 / 16
 }
+
+// Distance between the action button and the image visual inside the custom visual
+const DISTANCE = 18;
 
 // Constants used for report configurations as key-value pair
 const reportConfig = {
@@ -44,7 +52,7 @@ const reportConfig = {
 }
 
 // Visual overlapping
-const mainVisualGuid = "a6d74a71de4135e00a59";
+const MAIN_VISUAL_GUID = "a6d74a71de4135e00a59";
 
 const imageVisual = {
     name: "2270e4eea9242400a0cd",
@@ -61,12 +69,7 @@ const imageVisual = {
 const actionButtonVisual = {
     name: "946862f32d49b6573406",
     height: 32,
-    ratio: {
-        widthRatioWithMainVisual: 151 / 426,
-        heightRatioWithMainVisual: 32 / 252,
-        xPositionRatioWithMainVisual: 135 / 426,
-        yPositionRatioWithMainVisual: 144 / 252
-    }
+    width: 151,
 }
 
 // Cache DOM Elements
@@ -106,22 +109,33 @@ const showcasePropertiesLength = showcaseProperties.length;
 const models = window["powerbi-client"].models;
 
 // CSS Classes
-const disabledClass = "generator-disabled";
-const selectHideClass = "select-hide";
-const generatorTypeDisabledClass = "generator-type-disabled";
-const generatorFieldsDisabledClass = "generator-fields-disabled";
-const generatorPropertiesDisabledClass = "generator-properties-disabled";
-const selectedClass = "selected";
-const sameAsSelectedClass = "same-as-selected";
-const toggleWrappersDisabledClass = "disabled";
-const disabledSliders = "disabled-sliders";
-const visualTypeId = "selected-value-0";
+const DISABLED = "generator-disabled";
+const HIDE = "select-hide";
+const TYPES_DISABLED = "generator-type-disabled";
+const FIELDS_DISABLED = "generator-fields-disabled";
+const PROPERTIES_DISABLED = "generator-properties-disabled";
+const SELECTED = "selected";
+const SAME_AS_SELECTED = "same-as-selected";
+const TOGGLE_WRAPPERS_DISABLED = "disabled";
+const DISABLED_SLIDERS = "disabled-sliders";
+const TYPE_DROPDOWN_ID = "selected-value-0";
 
 // Key codes
 const KEYCODE_TAB = 9;
 const KEYCODE_ENTER = 13;
 const KEYCODE_ESCAPE = 27;
 const KEYCODE_SPACE = 32;
+
+// enum for keys
+const Keys = {
+    TAB: "Tab",
+    SPACE: "Space",
+    ENTER: "Enter",
+    ESCAPE: "Escape"
+}
+
+// Freezing the contents for enum object
+Object.freeze(Keys);
 
 // Store the position of the main visual [basicShape]
 let mainVisualState;
@@ -149,4 +163,4 @@ const visualHeaderReportSetting = {
 }
 
 // Headers
-const selectVisualTypeHeader = "Select visual type";
+const VISUAL_TYPE_HEADER = "Select visual type";

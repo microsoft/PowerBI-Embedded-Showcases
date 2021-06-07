@@ -1,10 +1,13 @@
+/* Copyright (c) Microsoft Corporation.
+Licensed under the MIT license. */
+
 #report-container {
     display: none;
     height: calc((9/16) * 98vw + 20px);
+    margin-top: 109px;
     width: 100%;
 }
 
 #report-container>iframe {
     border: none;
-    margin-top: -10px; /* To remove the space after the report-container */
 }

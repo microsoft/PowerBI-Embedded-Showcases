@@ -1,5 +1,10 @@
+/* Copyright (c) Microsoft Corporation.
+Licensed under the MIT license. */
+
 .interactive-buttons {
+    background: #FFF;
     display: flex;
+    margin-top: 44px;
 }
 
 .btn-action {
@@ -19,7 +24,7 @@
 
 /* For keyboard focus */
 .btn-action:focus-visible {
-    box-shadow: 0 0 2pt 1pt rgba(0,123,255,.5);
+    box-shadow: 0 0 0 1.5px rgba(0,123,255,.5);
 }
 
 /* For mouse focus */
@@ -58,7 +63,7 @@
     cursor: default;
     display: flex;
     height: 28px;
-    margin: 0;
+    margin: 1.5px 1.5px 0 0;
 }
 
 .showcase-checkbox-container input {
@@ -97,9 +102,6 @@
 .checkbox-title {
     display: block;
     margin: 0 24px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
 }
 
 #close-btn {
@@ -119,19 +121,37 @@
 #bookmarks-list {
     background: #FFF;
     box-shadow: 0 1.2px 3.6px rgba(0, 0, 0, .108), 0 6.4px 14.4px rgba(90, 61, 61, .132);
-    height: 100%;
-    margin: 106px 0 0 -16px;
+    height: calc(100vh - 110px);
+    margin: 16px 0 0 -16px;
     opacity: .98;
+    /* Show scroll for small screen */
+    overflow-y: auto;
     padding-top: 0;
     position: absolute;
+    top: 0;
+    transform: translate3d(16px, 50px, 0) !important;
     width: 228px;
 }
 
-.position {
-    transform: translate3d(16px, 5px, 0px);
-    top: 0;
-    left: 0;
-    will-change: transform;
+#bookmarks-list::-webkit-scrollbar-track {
+    border-radius: 10px;
+    background-color: transparent;
+}
+
+#bookmarks-list::-webkit-scrollbar {
+    background-color: transparent;
+    height: 10px;
+    width: 5px;
+}
+
+#bookmarks-list::-webkit-scrollbar-thumb {
+    background-color: #A0AEB2;
+    border-radius: 10px;
+    height: 30px;
+}
+
+.capture-link-note {
+    margin-bottom: 0;
 }
 
 .vertical-alignment-helper {
@@ -224,7 +244,7 @@
 }
 
 .btn-links:focus-visible {
-    box-shadow: 0 0 0 0.15rem rgba(0,123,255,.5);
+    box-shadow: 0 0 0 2.5px rgba(0,123,255,.5);
     outline: none;
 }
 
@@ -234,7 +254,7 @@
 }
 
 #save-bookmark-btn:focus-visible {
-    box-shadow: 0 0 0 0.15rem rgba(0,123,255,.5);
+    box-shadow: 0 0 0 2.5px rgba(0,123,255,.5);
 }
 
 #save-bookmark-btn:focus:not(:focus-visible) {
@@ -242,7 +262,7 @@
 }
 
 .modal-btn:focus-visible {
-    box-shadow: 0 0 0 0.15rem rgba(0,123,255,.5);
+    box-shadow: 0 0 0 2.5px rgba(0,123,255,.5);
 }
 
 .modal-btn:focus:not(:focus-visible) {
@@ -250,7 +270,7 @@
 }
 
 .close:focus-visible {
-    box-shadow: 0 0 0 0.15rem rgba(0,123,255,.5);
+    box-shadow: 0 0 0 2.5px rgba(0,123,255,.5);
     outline: none;
 }
 
@@ -284,9 +304,19 @@
     color: #FFF;
 }
 
+#save-bookmark-btn:active {
+    background: rgba(20, 97, 248, 0.15);;
+    color: #1461F8;
+}
+
 #copy-btn {
     outline: none;
-    margin: 5px 20px 0 5px;
+    margin: 6px 20px 0 5px;
+}
+
+#copy-btn:active {
+    background: rgba(20, 97, 248, 0.15);;
+    color: #1461F8;
 }
 
 .modal-text {
@@ -298,7 +328,7 @@
 }
 
 .modal-text:focus-visible {
-    box-shadow: 0 0 0 0.15rem rgba(0,123,255,.5);
+    box-shadow: 0 0 0 2.5px rgba(0,123,255,.5);
 }
 
 .modal-text:focus:not(:focus-visible) {
@@ -384,5 +414,5 @@
 }
 
 .focused {
-    box-shadow: 0 0 0 0.15rem rgba(0,123,255,.5);
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, .5);
 }

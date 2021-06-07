@@ -1,3 +1,8 @@
+// ----------------------------------------------------------------------------
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+// ----------------------------------------------------------------------------
+
 // On ready event, bootstrap the embed containers and embed the report
 $(document).ready(async function () {
 
@@ -38,7 +43,7 @@ $(document).ready(async function () {
     createVisualButton.on("keydown", function (event) {
 
         // Tab
-        if (!event.shiftKey && (event.keyCode === KEYCODE_TAB || event.key === "Tab")) {
+        if (!event.shiftKey && (event.keyCode === KEYCODE_TAB || event.key === Keys.TAB)) {
             closeModalButton.focus();
             event.preventDefault();
         }
@@ -48,7 +53,7 @@ $(document).ready(async function () {
     closeModalButton.on("keydown", function (event) {
 
         // Shift + Tab
-        if (event.shiftKey && (event.keyCode === KEYCODE_TAB || event.key === "Tab")) {
+        if (event.shiftKey && (event.keyCode === KEYCODE_TAB || event.key === Keys.TAB)) {
             if (!createVisualButton.is(":disabled")) {
                 createVisualButton.focus();
                 event.preventDefault();
@@ -102,12 +107,12 @@ $(document).ready(async function () {
             if (!customVisualTitle) {
                 visualCreatorShowcaseState.newVisual.resetProperty(propertyToSelector("titleText"));
             }
-            customTitleWrapper.removeClass(toggleWrappersDisabledClass);
+            customTitleWrapper.removeClass(TOGGLE_WRAPPERS_DISABLED);
             visualTitleText.prop("disabled", false);
             hideDisabledEraserAndAligns();
         }
         else {
-            customTitleWrapper.addClass(toggleWrappersDisabledClass);
+            customTitleWrapper.addClass(TOGGLE_WRAPPERS_DISABLED);
             visualTitleText.prop("disabled", true);
             showDisabledEraserAndAligns();
         }
@@ -117,13 +122,13 @@ $(document).ready(async function () {
     visualCreatorModal.click(function () {
         const selectItems = $(".select-items");
         selectItems.each(function () {
-            $(this).addClass(selectHideClass);
+            $(this).addClass(HIDE);
         })
     });
 
     // Focus on the alignment blocks using keyboard
     alignmentBlocks.on("keydown", function (event) {
-        if ((event.keyCode === KEYCODE_ENTER || event.key === "Enter" || event.keyCode === KEYCODE_SPACE || event.key === "Space")) {
+        if ((event.keyCode === KEYCODE_ENTER || event.key === Keys.ENTER || event.keyCode === KEYCODE_SPACE || event.key === Keys.SPACE)) {
 
             // Split the alignment from the id and call the function
             const alignmentId = this.id.split("-")[1];
@@ -133,7 +138,7 @@ $(document).ready(async function () {
 
     // Focus on the eraser tool blocks using keyboard
     enabledEraseTool.on("keydown", function (event) {
-        if ((event.keyCode === KEYCODE_ENTER || event.key === "Enter" || event.keyCode === KEYCODE_SPACE || event.key === "Space")) {
+        if ((event.keyCode === KEYCODE_ENTER || event.key === Keys.ENTER || event.keyCode === KEYCODE_SPACE || event.key === Keys.SPACE)) {
             onEraseToolClicked();
         }
     });
@@ -146,7 +151,7 @@ $(document).ready(async function () {
 $(document).keydown(function (event) {
 
     // Close the modal on Escape key
-    if (event.keyCode === KEYCODE_ESCAPE || event.key === "Escape") {
+    if (event.keyCode === KEYCODE_ESCAPE || event.key === Keys.ESCAPE) {
 
         // Hide the modal
         visualCreatorModal.modal("hide");
@@ -182,7 +187,7 @@ function showDisabledEraserAndAligns() {
 function resetModal() {
 
     // Hide all the select-box when the modal is closed
-    $(".select-items").addClass(selectHideClass);
+    $(".select-items").addClass(HIDE);
 
     // Show the Edit icon container and hide the authoring container
     editArea.show();
@@ -206,12 +211,12 @@ function resetVisualCreatorOptions() {
     visualTitleText.prop("disabled", true);
 
     // Enable all the toggle wrappers
-    toggleWrappers.removeClass(toggleWrappersDisabledClass);
+    toggleWrappers.removeClass(TOGGLE_WRAPPERS_DISABLED);
 
-    togglePropertiesSliders.addClass(disabledSliders);
+    togglePropertiesSliders.addClass(DISABLED_SLIDERS);
 
     // Remove disabled class from custom title wrapper
-    customTitleWrapper.removeClass(toggleWrappersDisabledClass);
+    customTitleWrapper.removeClass(TOGGLE_WRAPPERS_DISABLED);
 }
 
 // Set accessibility insights for the report
@@ -308,10 +313,10 @@ async function embedBaseReport() {
         updateAvailableVisualTypes();
 
         // Enable choosing visual type
-        generatorType.removeClass(disabledClass);
-        generatorType.removeClass(generatorTypeDisabledClass);
+        generatorType.removeClass(DISABLED);
+        generatorType.removeClass(TYPES_DISABLED);
 
-        console.log("Report render successful");
+        console.log("Report render successfully");
     });
 
     // Listen the commandTriggered event
@@ -387,7 +392,15 @@ async function embedVisualAuthoringReport() {
 
     // Triggers when a report is successfully embedded in UI
     visualCreatorShowcaseState.report.on("rendered", function () {
-        console.log("Visual authoring report render successful");
+        visualCreatorShowcaseState.report.off("rendered");
+        console.log("Visual authoring report render successfully");
+
+        // Protection against cross-origin failure
+        try {
+            if (window.parent.playground && window.parent.playground.logShowcaseDoneRendering) {
+                window.parent.playground.logShowcaseDoneRendering('QuickCreate');
+            }
+        } catch { }
     });
 
     // Clear any other error handler events
@@ -416,35 +429,35 @@ async function rearrangeInCustomLayout() {
     let visuals = baseReportState.visuals;
 
     // Calculating the combined width of the all visuals in a row
-    let visualsTotalWidth = reportWidth - (visualCreatorShowcaseConstants.margin * (visualCreatorShowcaseConstants.columns + 1));
+    let visualsTotalWidth = reportWidth - (VISUAL_CREATOR_SHOWCASE.MARGIN * (VISUAL_CREATOR_SHOWCASE.COLUMNS + 1));
 
     // Calculate the width of a single visual, according to the number of columns
     // For one and three columns visuals width will be a third of visuals total width
-    let visualWidth = visualsTotalWidth / visualCreatorShowcaseConstants.columns;
+    let visualWidth = visualsTotalWidth / VISUAL_CREATOR_SHOWCASE.COLUMNS;
 
     // Building visualsLayout object
     // You can find more information at https://github.com/Microsoft/PowerBI-JavaScript/wiki/Custom-Layout
     let visualsLayout = {};
 
     // Visuals starting point
-    let x = visualCreatorShowcaseConstants.margin;
-    let y = visualCreatorShowcaseConstants.margin;
+    let x = VISUAL_CREATOR_SHOWCASE.MARGIN;
+    let y = VISUAL_CREATOR_SHOWCASE.MARGIN;
 
     // Calculate visualHeight with margins
-    let visualHeight = visualWidth * visualCreatorShowcaseConstants.visualAspectRatio;
+    let visualHeight = visualWidth * VISUAL_CREATOR_SHOWCASE.VISUAL_ASPECT_RATIO;
 
     // Calculate the number of rows
     let rows = 0;
 
     // Do not count the overlapping visuals in generating the rows and final report height
-    rows = Math.ceil((visuals.length - 2) / visualCreatorShowcaseConstants.columns);
-    reportHeight = Math.max(reportHeight, (rows * visualHeight) + (rows + 1) * visualCreatorShowcaseConstants.margin);
+    rows = Math.ceil((visuals.length - 2) / VISUAL_CREATOR_SHOWCASE.COLUMNS);
+    reportHeight = Math.max(reportHeight, (rows * visualHeight) + (rows + 1) * VISUAL_CREATOR_SHOWCASE.MARGIN);
 
     visuals.forEach((visual) => {
         // Hide the main and overlapping visuals, if new visual is being created
         if (visualCreationInProgress) {
             // Hide the visual
-            if (visual.name === mainVisualGuid || visual.name === imageVisual.name || visual.name === actionButtonVisual.name) {
+            if (visual.name === MAIN_VISUAL_GUID || visual.name === imageVisual.name || visual.name === actionButtonVisual.name) {
                 visualsLayout[visual.name] = {
                     displayState: {
                         mode: models.VisualContainerDisplayMode.Hidden
@@ -453,7 +466,7 @@ async function rearrangeInCustomLayout() {
                 return;
             }
         }
-        if (visual.name === mainVisualGuid) {
+        if (visual.name === MAIN_VISUAL_GUID) {
             // Store the position of the mainVisual
             mainVisualState = {
                 x: x,
@@ -489,11 +502,13 @@ async function rearrangeInCustomLayout() {
         // If the visual to be placed is the action button, which is to be overlapped in the main visual, position it accordingly
         else if (visual.name === actionButtonVisual.name && mainVisualState.x) {
             visualsLayout[actionButtonVisual.name] = {
-                x: mainVisualState.x + mainVisualState.width * actionButtonVisual.ratio.xPositionRatioWithMainVisual,
-                y: imageVisual.height + imageVisual.yPos + 18,
-                width: mainVisualState.width * actionButtonVisual.ratio.widthRatioWithMainVisual - 4.5,
-                // Set minimum height for action button visual in smaller screens
-                height: Math.max(mainVisualState.height * actionButtonVisual.ratio.heightRatioWithMainVisual - 4.5, actionButtonVisual.height),
+                // To center align the action-button
+                x: mainVisualState.x + (mainVisualState.width - actionButtonVisual.width) / 2,
+                y: imageVisual.height + imageVisual.yPos + DISTANCE,
+                // Set the width constant for the button because of non-scalable button value
+                width: actionButtonVisual.width,
+                // Set the height constant for the button because of non-scalable button value
+                height: actionButtonVisual.height,
                 displayState: {
 
                     // Change the selected visuals display mode to visible
@@ -504,7 +519,7 @@ async function rearrangeInCustomLayout() {
 
         // For remaining visuals, position them and update the x and y coordinates
         else {
-            if (visual.name === mainVisualGuid) {
+            if (visual.name === MAIN_VISUAL_GUID) {
                 visualWidth += 4.5;
                 visualHeight += 4.5;
             }
@@ -520,12 +535,12 @@ async function rearrangeInCustomLayout() {
                 }
             };
             // Calculating (x,y) position for the next visual
-            x += visualWidth + visualCreatorShowcaseConstants.margin;
+            x += visualWidth + VISUAL_CREATOR_SHOWCASE.MARGIN;
 
             // Reset x
             if (x + visualWidth > reportWidth) {
-                x = visualCreatorShowcaseConstants.margin;
-                y += visualHeight + visualCreatorShowcaseConstants.margin;
+                x = VISUAL_CREATOR_SHOWCASE.MARGIN;
+                y += visualHeight + VISUAL_CREATOR_SHOWCASE.MARGIN;
             }
         }
     });
@@ -586,7 +601,7 @@ async function rearrangeInCustomLayout() {
     if (reportWidth !== reportContainer.width() || reportHeight !== reportContainer.height()) {
 
         // Reset the height of the report-container to avoid the scroll-bar
-        resetContainerHeight(reportHeight + visualCreatorShowcaseConstants.margin);
+        resetContainerHeight(reportHeight + VISUAL_CREATOR_SHOWCASE.MARGIN);
 
         settings.customLayout.displayOption = models.DisplayOption.FitToWidth;
     }
@@ -635,7 +650,7 @@ function initializeDropdowns() {
 
             // Create first default option for visual selection dropdown
             if (i === 0 && j === 0) {
-                optionItem.innerHTML = selectVisualTypeHeader;
+                optionItem.innerHTML = VISUAL_TYPE_HEADER;
             }
             else {
                 optionItem.innerHTML = selectedElement.options[j].innerHTML;
@@ -666,7 +681,7 @@ function initializeDropdowns() {
             // and open/close the current select box
             event.stopPropagation();
             closeAllSelect(this);
-            this.nextSibling.classList.toggle(selectHideClass);
+            this.nextSibling.classList.toggle(HIDE);
         });
 
         // Open the dropdowns using Enter OR Space press
@@ -680,31 +695,31 @@ function initializeDropdowns() {
 
 // Handle key events for dropdown elements
 function handleKeyEventsForDropdowns(event, dropdownElement) {
-    if (event.keyCode === KEYCODE_ENTER || event.key === "Enter" || event.keyCode === KEYCODE_SPACE || event.key === "Space") {
-        if (dropdownElement.id === visualTypeId || !generatorFields.hasClass(generatorFieldsDisabledClass)) {
+    if (event.keyCode === KEYCODE_ENTER || event.key === Keys.ENTER || event.keyCode === KEYCODE_SPACE || event.key === Keys.SPACE) {
+        if (dropdownElement.id === TYPE_DROPDOWN_ID || !generatorFields.hasClass(FIELDS_DISABLED)) {
             event.stopPropagation();
             closeAllSelect(dropdownElement);
-            dropdownElement.nextSibling.classList.toggle(selectHideClass);
+            dropdownElement.nextSibling.classList.toggle(HIDE);
 
             // Focus on the first option when dropdown opens
-            if (!dropdownElement.nextSibling.classList.contains(selectHideClass)) {
+            if (!dropdownElement.nextSibling.classList.contains(HIDE)) {
                 dropdownElement.nextSibling.firstChild.focus();
             }
         }
     }
 
     // If dropdown is open, the focus should not move using Keyboard to other dropdowns
-    if ((event.keyCode === KEYCODE_TAB || event.key === "Tab")) {
+    if ((event.keyCode === KEYCODE_TAB || event.key === Keys.TAB)) {
 
         // If data-fields dropdowns is disabled, then move the focus to Close button
-        if (dropdownElement.id === visualTypeId && generatorFields.hasClass(generatorFieldsDisabledClass)) {
+        if (dropdownElement.id === TYPE_DROPDOWN_ID && dropdownElement.nextElementSibling.classList.contains(HIDE) && generatorFields.hasClass(FIELDS_DISABLED)) {
             closeModalButton.focus();
             event.preventDefault();
         }
 
         // Shift + Tab
         if (event.shiftKey) {
-            if (!dropdownElement.nextSibling.classList.contains(selectHideClass)) {
+            if (!dropdownElement.nextSibling.classList.contains(HIDE)) {
                 dropdownElement.focus();
                 event.preventDefault();
             }
@@ -723,7 +738,7 @@ function handleKeyEventsForDropdowns(event, dropdownElement) {
 function handleKeyEventsForDropdownItems(event, optionItem) {
 
     // Focus trap for the dropdowns
-    if (event.keyCode === KEYCODE_TAB || event.key === "Tab") {
+    if (event.keyCode === KEYCODE_TAB || event.key === Keys.TAB) {
 
         // Shift + Tab
         if (event.shiftKey) {
@@ -732,6 +747,7 @@ function handleKeyEventsForDropdownItems(event, optionItem) {
                 event.preventDefault();
             }
         }
+        // Tab
         else {
             // To handle the case of hidden dropdown items
             // If the focus is on the second last item of the dropdown with the last item as hidden and Tab is pressed, Move focus to the top
@@ -767,7 +783,7 @@ function handleKeyEventsForDropdownItems(event, optionItem) {
     }
 
     // Using the keyboard, update the original select box, and the selected item by pressing Space OR Enter
-    if ((event.keyCode === KEYCODE_ENTER || event.key === "Enter" || event.keyCode === KEYCODE_SPACE || event.key === "Space")) {
+    if ((event.keyCode === KEYCODE_ENTER || event.key === Keys.ENTER || event.keyCode === KEYCODE_SPACE || event.key === Keys.SPACE)) {
         updateAuthoringVisual(optionItem);
     }
 }
@@ -782,7 +798,7 @@ async function updateAuthoringVisual(element) {
         if (selects.options[i].innerHTML === element.innerHTML) {
             selects.selectedIndex = i;
             previousSibling.innerHTML = element.innerHTML;
-            let childElements = element.parentNode.getElementsByClassName(sameAsSelectedClass);
+            let childElements = element.parentNode.getElementsByClassName(SAME_AS_SELECTED);
             let childElementsLength = childElements.length;
             for (let k = 0; k < childElementsLength; k++) {
                 childElements[k].removeAttribute("class");
@@ -790,7 +806,7 @@ async function updateAuthoringVisual(element) {
 
             // Do not add the class if default option is selected for the data-fields
             if (getFirstWord(element.innerHTML) !== "select") {
-                element.setAttribute("class", sameAsSelectedClass);
+                element.setAttribute("class", SAME_AS_SELECTED);
             }
 
             break;
@@ -807,7 +823,7 @@ async function updateAuthoringVisual(element) {
         await changeVisualType(previousSibling.innerHTML);
 
         // If default option is selected, show the edit area and hide the authoring container
-        if (previousSibling.innerHTML === selectVisualTypeHeader) {
+        if (previousSibling.innerHTML === VISUAL_TYPE_HEADER) {
             editArea.show();
             visualAuthoringArea.hide();
         }
@@ -834,7 +850,7 @@ function closeAllSelect(element) {
 
     for (let i = 0; i < selectItems.length; i++) {
         if (arrNo.indexOf(i)) {
-            selectItems[i].classList.add(selectHideClass);
+            selectItems[i].classList.add(HIDE);
         }
     }
 }
@@ -853,7 +869,7 @@ function getVisualFromName(name) {
 async function changeVisualType(visualTypeDisplayName) {
 
     // If default option is selected, delete the already created visual and reset the showcase state and modal options
-    if (visualTypeDisplayName === selectVisualTypeHeader) {
+    if (visualTypeDisplayName === VISUAL_TYPE_HEADER) {
         resetVisualGenerator();
         visualCreatorShowcaseState.newVisual = null;
         resetModal();
@@ -886,14 +902,14 @@ async function changeVisualType(visualTypeDisplayName) {
     }
 
     // Enable the data fields section
-    generatorFields.removeClass(disabledClass);
-    generatorFields.removeClass(generatorFieldsDisabledClass);
+    generatorFields.removeClass(DISABLED);
+    generatorFields.removeClass(FIELDS_DISABLED);
 
     // Disable the properties section
-    generatorProperties.addClass(disabledClass);
+    generatorProperties.addClass(DISABLED);
 
     // Disable the toggle sliders
-    togglePropertiesSliders.addClass(disabledSliders);
+    togglePropertiesSliders.addClass(DISABLED_SLIDERS);
 
     // Reset all the properties
     resetGeneratorProperties();
@@ -938,7 +954,7 @@ function updateVisualType(visualTypeName, dataRoles) {
     visualTitleText.prop("disabled", true);
 
     // Disable the properties div
-    generatorProperties.addClass(generatorPropertiesDisabledClass);
+    generatorProperties.addClass(PROPERTIES_DISABLED);
 
     // Show the disabled items on visual type is changed
     showDisabledEraserAndAligns();
@@ -966,7 +982,7 @@ async function updateCurrentVisualState(visualTypeName) {
     visualCreatorShowcaseState.newVisual.setProperty(propertyToSelector("titleColor"), { schema: schemas.property, value: "#000" });
 
     // Disable unavailable properties for specific visual types
-    toggleWrappers.removeClass(toggleWrappersDisabledClass);
+    toggleWrappers.removeClass(TOGGLE_WRAPPERS_DISABLED);
 
     for (let i = 0; i < showcasePropertiesLength; i++) {
         if (visualTypeProperties[visualTypeName].indexOf(showcaseProperties[i]) < 0) {
@@ -975,7 +991,7 @@ async function updateCurrentVisualState(visualTypeName) {
             $("#" + showcaseProperties[i] + "-toggle").prop("checked", false);
 
             // Disable the pointer events for the properties
-            $("#" + showcaseProperties[i] + ".toggle-wrapper").addClass(toggleWrappersDisabledClass);
+            $("#" + showcaseProperties[i] + ".toggle-wrapper").addClass(TOGGLE_WRAPPERS_DISABLED);
         }
     }
 }
@@ -1052,8 +1068,8 @@ async function checkForResetDataRole(dataRole, field) {
 
             // If dataroles count becomes one, then disable the UI
             if (visualCreatorShowcaseState.dataFieldsCount === 1) {
-                generatorProperties.addClass(disabledClass);
-                generatorProperties.addClass(generatorPropertiesDisabledClass);
+                generatorProperties.addClass(DISABLED);
+                generatorProperties.addClass(PROPERTIES_DISABLED);
                 resetVisualCreatorOptions();
                 showDisabledEraserAndAligns();
             }
@@ -1120,15 +1136,15 @@ async function updateDataRoleField(dataRole, field) {
 
             // Show the visual if there are 2 or more data fields
             if (visualCreatorShowcaseState.dataFieldsCount > 1) {
-                generatorProperties.removeClass(disabledClass);
-                generatorProperties.removeClass(generatorPropertiesDisabledClass);
+                generatorProperties.removeClass(DISABLED);
+                generatorProperties.removeClass(PROPERTIES_DISABLED);
                 createVisualButton.prop("disabled", false);
 
                 // If data-roles are three, do not repeat
                 if (visualCreatorShowcaseState.dataFieldsCount !== 3) {
                     visualPropertiesCheckboxes.prop("checked", true);
                     visualPropertiesCheckboxes.prop("disabled", false);
-                    customTitleWrapper.removeClass(toggleWrappersDisabledClass);
+                    customTitleWrapper.removeClass(TOGGLE_WRAPPERS_DISABLED);
                     updateAvailableProperties(visualCreatorShowcaseState.visualType);
                     visualTitleText.prop("disabled", false);
 
@@ -1146,17 +1162,17 @@ async function updateDataRoleField(dataRole, field) {
 function setTitlePropActive() {
     const titleProp = $("#" + "title" + "-toggle");
     const relatedToggle = titleProp.next();
-    relatedToggle.removeClass(disabledSliders);
+    relatedToggle.removeClass(DISABLED_SLIDERS);
 }
 
 function toggleSliders(element, action) {
     const property = $("#" + element + "-toggle");
     const relatedToggle = property.next();
     if (action === "disable") {
-        relatedToggle.addClass(disabledSliders);
+        relatedToggle.addClass(DISABLED_SLIDERS);
     }
     else {
-        relatedToggle.removeClass(disabledSliders);
+        relatedToggle.removeClass(DISABLED_SLIDERS);
     }
 }
 
@@ -1230,8 +1246,8 @@ function onAlignClicked(direction) {
         return;
     }
 
-    alignmentBlocks.removeClass(selectedClass);
-    $("#align-" + direction).addClass(selectedClass);
+    alignmentBlocks.removeClass(SELECTED);
+    $("#align-" + direction).addClass(SELECTED);
     visualCreatorShowcaseState.properties["titleAlign"] = direction;
 
     // Set the property on the visual
@@ -1322,7 +1338,7 @@ function resetGeneratorVisual() {
     visualCreatorShowcaseState.page.deleteVisual(visualCreatorShowcaseState.newVisual.name);
     visualCreatorShowcaseState.newVisual = null;
     visualCreatorShowcaseState.visualType = null;
-    $(".select-selected")[0].innerHTML = selectVisualTypeHeader;
+    $(".select-selected")[0].innerHTML = VISUAL_TYPE_HEADER;
 
     // Remove sameAsSelected class
     const visualTypeOption = $("#visual-type ~ .select-items > .same-as-selected")[0];
@@ -1345,8 +1361,8 @@ function resetGeneratorProperties() {
         titleAlign: null
     };
 
-    alignmentBlocks.removeClass(selectedClass);
-    alignLeft.addClass(selectedClass);
+    alignmentBlocks.removeClass(SELECTED);
+    alignLeft.addClass(SELECTED);
     visualTitleText.val("");
 }
 
@@ -1356,10 +1372,10 @@ function resetVisualGenerator() {
     if (!visualCreatorShowcaseState.newVisual)
         return;
 
-    generatorFields.addClass(disabledClass);
-    generatorProperties.addClass(disabledClass);
-    generatorFields.addClass(generatorFieldsDisabledClass);
-    generatorProperties.addClass(generatorPropertiesDisabledClass);
+    generatorFields.addClass(DISABLED);
+    generatorProperties.addClass(DISABLED);
+    generatorFields.addClass(FIELDS_DISABLED);
+    generatorProperties.addClass(PROPERTIES_DISABLED);
 
     // Reset data-roles, properties, modal
     resetGeneratorDataRoles();
@@ -1438,7 +1454,7 @@ async function appendVisualToReport() {
         }
 
         // Remove the data-roles which are null
-        Object.keys(visualCreatorShowcaseState.dataRoles).forEach((key) => (visualCreatorShowcaseState.dataRoles[key] === null) && delete visualCreatorShowcaseState.dataRoles[key]);
+        Object.keys(visualCreatorShowcaseState.dataRoles).forEach(key => (!visualCreatorShowcaseState.dataRoles[key]) && delete visualCreatorShowcaseState.dataRoles[key]);
 
         // Add data-fields to the created visual
         Object.entries(visualCreatorShowcaseState.dataRoles).forEach(dataField => {
@@ -1505,12 +1521,15 @@ async function appendVisualToReport() {
             oldVisual.setProperty(propertyToSelector("legend"), { schema: schemas.property, value: false });
         }
 
-        // Remove the data-roles which are empty from the state
-        Object.keys(visualCreatorShowcaseState.dataRoles).forEach((key) => (visualCreatorShowcaseState.dataRoles[key] === null) && delete visualCreatorShowcaseState.dataRoles[key]);
+        // Get related datarole names with the current visual-type
+        const dataRoleNames = getVisualFromName(visualCreatorShowcaseState.visualType).dataRoleNames;
 
         // Add data-fields to the created visual
         Object.entries(visualCreatorShowcaseState.dataRoles).forEach(async function (dataField) {
             const [dataRole, field] = dataField;
+            if (dataRoleNames.indexOf(dataRole) < 0) {
+                return;
+            }
 
             if (field) {
                 // Get data-fields from the data-role
@@ -1722,7 +1741,7 @@ async function createVisualInsideTheModalInEditMode(visualType, dataRoles) {
     }
 
     // Remove the data-roles which are empty from the state
-    Object.keys(visualCreatorShowcaseState.dataRoles).forEach((key) => (visualCreatorShowcaseState.dataRoles[key] === null) && delete visualCreatorShowcaseState.dataRoles[key]);
+    Object.keys(visualCreatorShowcaseState.dataRoles).forEach(key => (!visualCreatorShowcaseState.dataRoles[key]) && delete visualCreatorShowcaseState.dataRoles[key]);
 
     // Add data-fields to the created visual
     Object.entries(visualCreatorShowcaseState.dataRoles).forEach(dataField => {
@@ -1743,18 +1762,18 @@ async function createVisualInsideTheModalInEditMode(visualType, dataRoles) {
 
     if (titleToggle.is(":checked")) {
         visualTitleText.prop("disabled", false);
-        customTitleWrapper.removeClass(toggleWrappersDisabledClass);
+        customTitleWrapper.removeClass(TOGGLE_WRAPPERS_DISABLED);
     }
     else {
         visualTitleText.prop("disabled", true);
-        customTitleWrapper.addClass(toggleWrappersDisabledClass);
+        customTitleWrapper.addClass(TOGGLE_WRAPPERS_DISABLED);
     }
 
     // Remove disabled class from data-roles and properties
-    generatorFields.removeClass(generatorFieldsDisabledClass);
-    generatorFields.removeClass(disabledClass);
-    generatorProperties.removeClass(generatorPropertiesDisabledClass);
-    generatorProperties.removeClass(disabledClass);
+    generatorFields.removeClass(FIELDS_DISABLED);
+    generatorFields.removeClass(DISABLED);
+    generatorProperties.removeClass(PROPERTIES_DISABLED);
+    generatorProperties.removeClass(DISABLED);
 
     // Enable Create visual button
     createVisualButton.prop("disabled", false);
@@ -1781,7 +1800,7 @@ function populateProperties(visualCreatorShowcaseState) {
     const visualSelectItems = $(".select-items").get(0).children;
     Array.from(visualSelectItems).forEach(visualSelectItem => {
         if (visualSelectItem.innerHTML === visualDisplayName) {
-            visualSelectItem.classList.add(sameAsSelectedClass);
+            visualSelectItem.classList.add(SAME_AS_SELECTED);
         }
     });
 
@@ -1813,7 +1832,7 @@ function setVisualProperties() {
             $("#" + showcaseProperties[i] + "-toggle").prop("disabled", true);
 
             // Disable the pointer events for the properties
-            $("#" + showcaseProperties[i] + ".toggle-wrapper").addClass(toggleWrappersDisabledClass);
+            $("#" + showcaseProperties[i] + ".toggle-wrapper").addClass(TOGGLE_WRAPPERS_DISABLED);
             toggleSliders(showcaseProperties[i], "disable");
         }
         else {
@@ -1827,13 +1846,13 @@ function setVisualProperties() {
 
         if (propertyName === "titleAlign") {
             if (propertyValue === "center" || propertyValue === "right") {
-                alignmentBlocks.removeClass(selectedClass);
-                $("#align-" + propertyValue).addClass(selectedClass);
+                alignmentBlocks.removeClass(SELECTED);
+                $("#align-" + propertyValue).addClass(SELECTED);
             }
         }
 
         if (propertyName === "titleText") {
-            if (typeof propertyValue !== "object" && propertyValue !== null) {
+            if (typeof propertyValue !== "object" && propertyValue) {
                 visualTitleText.val(propertyValue);
             }
         }
@@ -1877,7 +1896,7 @@ function selectDataRoles(dataRoleName, dataRoleValue) {
             const visualSelectItems = $(".select-items").get(i + 1).children;
             Array.from(visualSelectItems).forEach(visualSelectItem => {
                 if (visualSelectItem.innerHTML === dataRoleValue) {
-                    visualSelectItem.classList.add(sameAsSelectedClass);
+                    visualSelectItem.classList.add(SAME_AS_SELECTED);
                 }
             });
         }

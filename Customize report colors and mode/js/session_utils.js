@@ -1,3 +1,8 @@
+// ----------------------------------------------------------------------------
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+// ----------------------------------------------------------------------------
+
 // API Endpoint to get the JSON response of Embed URL, Embed Token and reportId
 const reportEndpoint = "https://aka.ms/ThemeReportEmbedConfig";
 
