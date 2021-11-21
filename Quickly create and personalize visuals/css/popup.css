@@ -1,3 +1,6 @@
+/* Copyright (c) Microsoft Corporation.
+Licensed under the MIT license. */
+
 /* TODO: Change font URL in the final environment */
 @font-face {
     font-family: "segoe_ui_regular";
@@ -13,20 +16,55 @@
     outline: none;
 }
 
+body.modal-open {
+    padding-right: 0 !important;
+}
+
 .fade {
     transition: opacity .25s linear;
 }
 
-/* Override Bootstrap modal's padding-right property which is applied, when the modal is opened */
-body.modal-open {
-    padding-right: 0 !important;
+@media screen and (max-width: 850px) {
+    .modal {
+        padding: 0 !important;
+        position: absolute;
+        width: 850px;
+    }
+}
+
+.modal {
+    scrollbar-color: #A0AEB2 transparent;
+    scrollbar-width: thin;
+}
+
+/* Change custom scrollbar appearance */
+.modal::-webkit-scrollbar-track {
+    background-color: transparent;
+    border-radius: 10px;
+}
+
+.modal::-webkit-scrollbar {
+    background-color: transparent;
+    height: 10px;
+    width: 8px;
+}
+
+.modal::-webkit-scrollbar-thumb {
+    background-color: #A0AEB2;
+    border-radius: 10px;
+    height: 30px;
+}
+
+.modal-backdrop.show {
+    height: 100%;
+    width: 100%;
 }
 
 .modal.show {
     display: flex !important;
 }
 
-.modal-container{
+.modal-container {
     align-items: center;
     border-radius: 2px 2px 0 0;
     display: flex;
@@ -35,7 +73,7 @@ body.modal-open {
     width: 784px;
 }
 
-.modal.modal-static .modal-dialog{
+.modal.modal-static .modal-dialog {
     transform: none;
 }
 
@@ -121,7 +159,7 @@ body.modal-open {
 }
 
 .btn-create:focus-visible {
-    box-shadow: 0 0 3pt 1pt rgba(0,123,255,0.5);
+    box-shadow: 0 0 4px 1.5px rgba(0,123,255,0.5);
 }
 
 .btn-create:focus:not(:focus-visible) {
@@ -151,8 +189,12 @@ body.modal-open {
     padding: 20px;
 }
 
-#close-modal:focus {
-    box-shadow: 0 0 0 0.15rem rgba(0,123,255,.5);
+#close-modal:focus-visible {
+    box-shadow: 0 0 0 2.5px rgba(0,123,255,.5);
+}
+
+#close-modal:focus:not(:focus-visible) {
+    box-shadow: none;
 }
 
 .modal-footer {
@@ -282,7 +324,7 @@ body.modal-open {
 }
 
 input[type="checkbox"]:focus-visible + .slider.round {
-    box-shadow: 0 0 3pt 2pt rgba(0,123,255,0.5);
+    box-shadow: 0 0 4px 2.5px rgba(0,123,255,0.5);
 }
 
 input[type="checkbox"]:focus:not(:focus-visible) + .slider.round {
@@ -290,7 +332,7 @@ input[type="checkbox"]:focus:not(:focus-visible) + .slider.round {
 }
 
 .alignment-block:focus-visible {
-    box-shadow: 0 0 0 0.15rem #118DFF;
+    box-shadow: 0 0 0 2.5px #118DFF;
     outline: none;
 }
 
@@ -382,7 +424,7 @@ input:checked + .slider:before {
 }
 
 #visual-title:focus {
-    box-shadow: 0 0 0 0.15rem rgba(0,123,255,.5);
+    box-shadow: 0 0 0 2.5px rgba(0,123,255,.5);
     outline: none;
 }
 
@@ -419,7 +461,7 @@ input:checked + .slider:before {
 }
 
 #erase-tool-enabled:focus-visible {
-    box-shadow: 0 0 0 0.15rem #118DFF;
+    box-shadow: 0 0 0 2.5px #118DFF;
     outline: none;
 }
 
@@ -444,7 +486,7 @@ input:checked + .slider:before {
 }
 
 .select-selected:focus-visible{
-    box-shadow: 0 0 0 0.15rem rgba(0,123,255,.5);
+    box-shadow: 0 0 0 2.5px rgba(0,123,255,.5);
 }
 
 .select-selected:focus:not(:focus-visible){

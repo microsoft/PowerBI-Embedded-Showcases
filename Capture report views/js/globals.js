@@ -1,3 +1,8 @@
+// ----------------------------------------------------------------------------
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+// ----------------------------------------------------------------------------
+
 // To cache report config
 let reportConfig = {
     accessToken: undefined,
@@ -39,18 +44,30 @@ const closeBtn = $("#close-btn");
 // Store keycode for TAB key
 const KEYCODE_TAB = 9;
 
+// Enum for Keys
+const Keys = {
+    TAB : "Tab"
+}
+
+// Freezing the contents of enum object
+Object.freeze(Keys);
+
 // Cache CSS classes
-const selectedButtonClass = "selected-button";
-const copyBookmarkClass = "copy-bookmark";
-const activeButtonClass = "btn-active";
-const visible = "visible";
-const invisible = "invisible";
-const inactiveBookmark = "inactive-bookmark";
-const activeBookmark = "active-bookmark";
-const invalidField = "is-invalid";
-const focused = "focused";
-const displayClass = "show";
-const checkbox = "input[type=checkbox]";
+const SELECTED_BUTTON = "selected-button";
+const COPY_BOOKMARK = "copy-bookmark";
+const ACTIVE_BUTTON = "btn-active";
+const VISIBLE = "visible";
+const INVISIBLE = "invisible";
+const INACTIVE_BOOKMARK = "inactive-bookmark";
+const ACTIVE_BOOKMARK = "active-bookmark";
+const INVALID_FIELD = "is-invalid";
+const FOCUSED = "focused";
+const DISPLAY = "show";
+const CHECKBOX = "input[type=checkbox]";
+
+// Store IDs of the elements
+const SAVE_VIEW_BUTTON_ID = "save-view-btn";
+const COPY_LINK_BUTTON_ID =  "copy-link-btn";
 
 // Cache the report containers
 const bookmarkContainer = $("#bookmark-container").get(0);
@@ -69,7 +86,7 @@ const captureModalElements = {
 }
 
 // Store the last active element 
-let lastActiveElement = undefined;
+let lastActiveElement;
 
 // Using Regex to get the id parameter from the URL
 const regex = new RegExp("[?&]id(=([^&#]*)|&|#|$)");

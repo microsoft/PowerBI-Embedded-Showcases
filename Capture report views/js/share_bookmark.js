@@ -1,3 +1,8 @@
+// ----------------------------------------------------------------------------
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+// ----------------------------------------------------------------------------
+
 // Set props for accessibility insights
 function setReportAccessibilityProps(report) {
     report.setComponentTitle("Playground showcase sample report");
@@ -71,8 +76,8 @@ async function embedSharedBookmarkReport() {
     bookmarkShowcaseState.report.on("loaded", function () {
 
         // Hide the loader and display the report
-        overlay.addClass(invisible);
-        $("#share-bookmark").addClass(visible);
+        overlay.addClass(INVISIBLE);
+        $("#share-bookmark").addClass(VISIBLE);
         bookmarkShowcaseState.report.off("loaded");
     });
 }

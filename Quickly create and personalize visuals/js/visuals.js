@@ -1,3 +1,8 @@
+// ----------------------------------------------------------------------------
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+// ----------------------------------------------------------------------------
+
 // Define the available data roles for the visual types
 const visualTypeToDataRoles = [
     { name: "columnChart", displayName: "Column chart", dataRoles: ["Axis", "Values", "Tooltips"], dataRoleNames: ["Category", "Y", "Tooltips"] },

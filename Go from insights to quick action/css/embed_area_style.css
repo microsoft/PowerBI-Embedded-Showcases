@@ -1,5 +1,7 @@
-/* TODO: Change font URL in the final environment */
+/* Copyright (c) Microsoft Corporation.
+Licensed under the MIT license. */
 
+/* TODO: Change font URL in the final environment */
 @font-face {
     font-family: "segoe_ui_regular";
     src: url("https://content.powerapps.com/resource/powerbiwfe/fonts/SegoeUI-Regular-final.8956d1f5b4190f537497.woff") format("woff");
@@ -11,8 +13,10 @@
 }
 
 #main-div {
-    border: none;
     display: none;
+    height: auto;
+    min-width: 850px;
+    width: 100%;
 }
 
 #overlay {
@@ -39,12 +43,6 @@
     }
 }
 
-#insight-to-action-embed-area {
-    height: auto;
-    min-width: 850px;
-    width: 100%;
-}
-
 #dialog-mask {
     background: rgba(17, 16, 15, .4);
     bottom: 0;
@@ -60,7 +58,8 @@
 }
 
 #report-container {
-    height: calc(calc(9/16) * 100vw + 10px);
+    height: calc(calc(9/16) * 99vw);
+    margin-top: 44px;
     width: 100%;
 }
 

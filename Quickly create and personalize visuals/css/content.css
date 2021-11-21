@@ -1,3 +1,6 @@
+/* Copyright (c) Microsoft Corporation.
+Licensed under the MIT license. */
+
 * {
     user-select: none;
 }
@@ -37,6 +40,7 @@
 
 .content {
     height: auto;
+    min-width: 850px;
     width: 100%;
 }
 
