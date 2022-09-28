@@ -833,6 +833,7 @@ async function updateAuthoringVisual(element) {
         }
     }
     else {
+        console.log("What is passed," ,selects.parentNode.parentNode.children[0].id, previousSibling.innerHTML )
         await updateDataRoleField(selects.parentNode.parentNode.children[0].id, previousSibling.innerHTML);
     }
 }
@@ -865,6 +866,10 @@ function getVisualFromName(name) {
     return visualTypeToDataRoles.filter((function (e) { return e.name === name }))[0];
 }
 
+function getDataRoleFromDataRoleName(dataRoleName){
+    return dataRolesToFields.filter(function (e) { return e.dataRoleName === dataRoleName })[0].dataRole
+}
+
 // Change the visual type
 async function changeVisualType(visualTypeDisplayName) {
 
@@ -880,6 +885,7 @@ async function changeVisualType(visualTypeDisplayName) {
     const visual = getVisualFromDisplayName(visualTypeDisplayName);
     const visualType = visual.name;
     const dataRoles = visual.dataRoles;
+    const dataRoleNames = visual.dataRoleNames;
 
     // Do not change OR reset the modal when the same option is selected while changing the visual
     if (visualCreatorShowcaseState.visualType === visualType) {
@@ -893,9 +899,8 @@ async function changeVisualType(visualTypeDisplayName) {
 
     // Retrieve the visual's capabilities
     const capabilities = await baseReportState.report.getVisualCapabilities(visualType);
-
     // Validate data roles existence on the given visual type
-    if (!validateDataRoles(capabilities, dataRoles)) {
+    if (!validateDataRoles(capabilities, dataRoleNames)) {
         resetVisualGenerator();
         handleInvalidDataRoles();
         return;
@@ -923,23 +928,23 @@ async function changeVisualType(visualTypeDisplayName) {
     // If the visual doesn't exist, create new visual, otherwise, delete the old visual and create new visual
     if (!visualCreatorShowcaseState.newVisual) {
         await visualCreatorShowcaseState.page.createVisual(visualType, getVisualLayout());
-        updateVisualType(visualType, dataRoles);
+        updateVisualType(visualType, dataRoleNames);
     }
     else if (visualType !== visualCreatorShowcaseState.visualType) {
         await visualCreatorShowcaseState.page.deleteVisual(visualCreatorShowcaseState.newVisual.name);
         await visualCreatorShowcaseState.page.createVisual(visualType, getVisualLayout());
-        updateVisualType(visualType, dataRoles);
+        updateVisualType(visualType, dataRoleNames);
     }
 }
 
 // Update showcase after visual type change
-function updateVisualType(visualTypeName, dataRoles) {
+function updateVisualType(visualTypeName, dataRoleNames) {
 
     // Hide the visual headers for the visual inside the modal
     visualCreatorShowcaseState.report.updateSettings(visualHeaderReportSetting);
     updateCurrentVisualState(visualTypeName);
     resetGeneratorDataRoles();
-    updateAvailableDataRoles(dataRoles);
+    updateAvailableDataRoles(dataRoleNames);
 
     // Update the dropdown options to hide the selected items
     updateDropdownOptions();
@@ -996,20 +1001,23 @@ async function updateCurrentVisualState(visualTypeName) {
     }
 }
 
+
+
 // Update the labels for the dropdowns
-function updateAvailableDataRoles(dataRoles) {
+function updateAvailableDataRoles(dataRoleNames) {
     const dataRolesNamesElements = document.querySelectorAll(".inline-select-text");
 
     // Get the select wrappers to change the title to the data-roles
     const selectWrappers = $(".select-selected").slice(1);
-    const length = dataRoles.length;
+    const length = dataRoleNames.length;
     for (let i = 0; i < length; i++) {
-        dataRolesNamesElements[i].innerHTML = dataRoles[i];
-        dataRolesNamesElements[i].id = dataRoles[i];
+        let dataFields = dataRolesToFields.filter(function (e) { return e.dataRoleName === dataRoleNames[i] })[0]
 
-        selectWrappers[i].innerHTML = "Select " + dataRoles[i];
-        let dataFields = dataRolesToFields.filter(function (e) { return e.dataRole === dataRoles[i] })[0].Fields;
-        updateAvailableDataFields(dataRolesNamesElements[i].parentElement, dataFields);
+        dataRolesNamesElements[i].innerHTML = dataFields.dataRole;
+        dataRolesNamesElements[i].id = dataRoleNames[i];
+
+        selectWrappers[i].innerHTML = "Select " + dataFields.dataRole;
+        updateAvailableDataFields(dataRolesNamesElements[i].parentElement, dataFields.Fields);
     }
 }
 
@@ -1052,18 +1060,12 @@ async function checkForResetDataRole(dataRole, field) {
     // If option with "select" word is selected, remove the data-role from visual and return
     if (getFirstWord(field) === "select") {
 
-        // Get the visual capabilities
-        const capabilities = await visualCreatorShowcaseState.newVisual.getCapabilities();
-
-        // Get the data role name
-        const dataRoleName = capabilities.dataRoles.filter(function (dr) { return dr.displayName === dataRole })[0].name;
-
         // Check if the data role already has a field
-        if (visualCreatorShowcaseState.dataRoles[dataRoleName]) {
+        if (visualCreatorShowcaseState.dataRoleNames[dataRoleName]) {
 
             // Remove the existing data-field from the visual
             await visualCreatorShowcaseState.newVisual.removeDataField(dataRoleName, 0);
-            visualCreatorShowcaseState.dataRoles[dataRoleName] = null;
+            visualCreatorShowcaseState.dataRoleNames[dataRoleName] = null;
             visualCreatorShowcaseState.dataFieldsCount--;
 
             // If dataroles count becomes one, then disable the UI
@@ -1080,28 +1082,21 @@ async function checkForResetDataRole(dataRole, field) {
 }
 
 // Update data roles field on the visual
-async function updateDataRoleField(dataRole, field) {
-
+async function updateDataRoleField(dataRoleName, field) {
     // Check if data-role is getting reset for the visual
-    const isResetDataRole = await checkForResetDataRole(dataRole, field);
+    const isResetDataRole = await checkForResetDataRole(dataRoleName, field);
     if (isResetDataRole) {
         return;
     }
 
     // Check if the requested field is not the same as the selected field
-    if (field !== visualCreatorShowcaseState.dataRoles[dataRole]) {
-
-        // Get the visual capabilities
-        const capabilities = await visualCreatorShowcaseState.newVisual.getCapabilities();
-
-        // Get the data role name
-        const dataRoleName = capabilities.dataRoles.filter(function (dr) { return dr.displayName === dataRole })[0].name;
+    if (field !== visualCreatorShowcaseState.dataRoleNames[dataRoleName]) {
 
         // Remove whitespace from field
         const dataFieldKey = field.replace(/\s+/g, "");
 
         // Check if the data role already has a field
-        if (visualCreatorShowcaseState.dataRoles[dataRoleName]) {
+        if (visualCreatorShowcaseState.dataRoleNames[dataRoleName]) {
 
             // If the data role has a field, remove it
             await visualCreatorShowcaseState.newVisual.removeDataField(dataRoleName, 0);
@@ -1110,14 +1105,14 @@ async function updateDataRoleField(dataRole, field) {
             // If there are no more data fields, recreate the visual before adding the data field
             if (visualCreatorShowcaseState.dataFieldsCount === 0) {
                 await visualCreatorShowcaseState.newVisual.addDataField(dataRoleName, dataFieldsTargets[dataFieldKey]);
-                visualCreatorShowcaseState.dataRoles[dataRoleName] = dataFieldKey;
+                visualCreatorShowcaseState.dataRoleNames[dataRoleName] = dataFieldKey;
                 visualCreatorShowcaseState.dataFieldsCount++;
 
                 // Update the dropdown options to hide the selected items
                 updateDropdownOptions();
             } else {
                 visualCreatorShowcaseState.dataFieldsCount++;
-                visualCreatorShowcaseState.dataRoles[dataRoleName] = dataFieldKey;
+                visualCreatorShowcaseState.dataRoleNames[dataRoleName] = dataFieldKey;
                 visualCreatorShowcaseState.newVisual.addDataField(dataRoleName, dataFieldsTargets[dataFieldKey]);
 
                 // Update the dropdown options to hide the selected items
@@ -1127,7 +1122,7 @@ async function updateDataRoleField(dataRole, field) {
         } else {
 
             // Add a new field
-            visualCreatorShowcaseState.dataRoles[dataRoleName] = dataFieldKey;
+            visualCreatorShowcaseState.dataRoleNames[dataRoleName] = dataFieldKey;
             await visualCreatorShowcaseState.newVisual.addDataField(dataRoleName, dataFieldsTargets[dataFieldKey]);
 
             // Update the dropdown options to hide the selected items
@@ -1311,10 +1306,10 @@ function resetGeneratorDataRoles() {
     if (!visualCreatorShowcaseState.newVisual)
         return;
 
-    visualCreatorShowcaseState.dataRoles = {
-        Legend: null,
-        Values: null,
-        Axis: null,
+    visualCreatorShowcaseState.dataRoleNames = {
+        Series: null,
+        Category: null,
+        Y: null,
         Tooltips: null,
     };
 
@@ -1385,12 +1380,12 @@ function resetVisualGenerator() {
 }
 
 // Validate the existence of each dataRole on the visual's capabilities
-function validateDataRoles(capabilities, dataRolesDisplayNames) {
-    const length = dataRolesDisplayNames.length;
+function validateDataRoles(capabilities, dataRoleNames) {
+    const length = dataRoleNames.length;
     for (let i = 0; i < length; i++) {
 
         // Filter the corrsponding dataRole in the visual's capabilities dataRoles
-        if (capabilities.dataRoles.filter(function (dr) { return dr.displayName === dataRolesDisplayNames[i] }).length === 0) {
+        if (capabilities.dataRoles.filter(function (dr) {return dr.name === dataRoleNames[i] }).length === 0) {
             return false;
         }
     }
@@ -1454,12 +1449,12 @@ async function appendVisualToReport() {
         }
 
         // Remove the data-roles which are null
-        Object.keys(visualCreatorShowcaseState.dataRoles).forEach(key => (!visualCreatorShowcaseState.dataRoles[key]) && delete visualCreatorShowcaseState.dataRoles[key]);
+        Object.keys(visualCreatorShowcaseState.dataRoleNames).forEach(key => (!visualCreatorShowcaseState.dataRoleNames[key]) && delete visualCreatorShowcaseState.dataRoleNames[key]);
 
         // Add data-fields to the created visual
-        Object.entries(visualCreatorShowcaseState.dataRoles).forEach(dataField => {
-            const [dataRole, field] = dataField;
-            visual.addDataField(dataRole, dataFieldsTargets[field]);
+        Object.entries(visualCreatorShowcaseState.dataRoleNames).forEach(dataField => {
+            const [dataRoleName, field] = dataField;
+            visual.addDataField(dataRoleName, dataFieldsTargets[field]);
         });
 
         customVisualTitle = "";
@@ -1525,8 +1520,9 @@ async function appendVisualToReport() {
         const dataRoleNames = getVisualFromName(visualCreatorShowcaseState.visualType).dataRoleNames;
 
         // Add data-fields to the created visual
-        Object.entries(visualCreatorShowcaseState.dataRoles).forEach(async function (dataField) {
-            const [dataRole, field] = dataField;
+        Object.entries(visualCreatorShowcaseState.dataRoleNames).forEach(async function (dataField) {
+            const [dataRoleName, field] = dataField;
+            const dataRole = getDataRoleFromDataRoleName(dataRoleName)
             if (dataRoleNames.indexOf(dataRole) < 0) {
                 return;
             }
@@ -1537,15 +1533,15 @@ async function appendVisualToReport() {
 
                 // Check if any data-role is associated with the data-field, If yes then first remove then add new one
                 if (dataFieldProp.length === 0) {
-                    oldVisual.addDataField(dataRole, dataFieldsTargets[field]);
+                    oldVisual.addDataField(dataRoleName, dataFieldsTargets[field]);
                 }
                 else {
                     await oldVisual.removeDataField(dataRole, 0);
-                    oldVisual.addDataField(dataRole, dataFieldsTargets[field]);
+                    oldVisual.addDataField(dataRoleName, dataFieldsTargets[field]);
                 }
             }
             else /* If field is null then remove the datarole */ {
-                await oldVisual.removeDataField(dataRole, 0);
+                await oldVisual.removeDataField(dataRoleName, 0);
             }
         });
 
@@ -1628,13 +1624,12 @@ async function fillStateFromTheVisualData(visualData) {
 
     // Get the visual data-roles and data-role names from it's name
     const visualResult = getVisualFromName(visualType);
-    const dataRoles = visualResult.dataRoles;
     const dataRoleNames = visualResult.dataRoleNames;
 
-    dataRoleNames.forEach(async function (dataRole) {
+    dataRoleNames.forEach(async function (dataRoleName) {
 
         // Get data-roles from the visual
-        const dataField = await visualResponse.getDataFields(dataRole);
+        const dataField = await visualResponse.getDataFields(dataRoleName);
 
         if (dataField[0] !== undefined) {
             let columnValue = "";
@@ -1653,7 +1648,7 @@ async function fillStateFromTheVisualData(visualData) {
             });
 
             // Set the data-roles in the state
-            visualCreatorShowcaseState.dataRoles[dataRole] = dataFieldKey;
+            visualCreatorShowcaseState.dataRoleNames[dataRoleName] = dataFieldKey;
             visualCreatorShowcaseState.dataFieldsCount++;
         }
     });
@@ -1681,7 +1676,7 @@ async function fillStateFromTheVisualData(visualData) {
     });
 
     // Based on the state object, create a visual inside the modal
-    await createVisualInsideTheModalInEditMode(visualType, dataRoles);
+    await createVisualInsideTheModalInEditMode(visualType, dataRoleNames);
 }
 
 // Check the validity of the given property and apply it to the visual
@@ -1700,7 +1695,7 @@ function applyValidPropertiesToTheVisual(visual, newVisualType, propertyName, pr
 }
 
 // Based on the state object, create a visual inside the modal
-async function createVisualInsideTheModalInEditMode(visualType, dataRoles) {
+async function createVisualInsideTheModalInEditMode(visualType, dataRoleNames) {
 
     // Create visual inside the modal
     const newVisual = await visualCreatorShowcaseState.page.createVisual(visualType, getVisualLayout());
@@ -1741,16 +1736,16 @@ async function createVisualInsideTheModalInEditMode(visualType, dataRoles) {
     }
 
     // Remove the data-roles which are empty from the state
-    Object.keys(visualCreatorShowcaseState.dataRoles).forEach(key => (!visualCreatorShowcaseState.dataRoles[key]) && delete visualCreatorShowcaseState.dataRoles[key]);
+    Object.keys(visualCreatorShowcaseState.dataRoleNames).forEach(key => (!visualCreatorShowcaseState.dataRoleNames[key]) && delete visualCreatorShowcaseState.dataRoleNames[key]);
 
     // Add data-fields to the created visual
-    Object.entries(visualCreatorShowcaseState.dataRoles).forEach(dataField => {
-        const [dataRole, field] = dataField;
-        visual.addDataField(dataRole, dataFieldsTargets[field]);
+    Object.entries(visualCreatorShowcaseState.dataRoleNames).forEach(dataField => {
+        const [dataRoleName, field] = dataField;
+        visual.addDataField(dataRoleName, dataFieldsTargets[field]);
     });
 
     // Update data-roles for the given visual type in the UI
-    updateAvailableDataRoles(dataRoles);
+    updateAvailableDataRoles(dataRoleNames);
 
     // Set the title property active
     setTitlePropActive();
@@ -1792,7 +1787,6 @@ function populateProperties(visualCreatorShowcaseState) {
     // Get the visual-type, data-roles and data-role names from it's name
     const visual = getVisualFromName(visualCreatorShowcaseState.visualType);
     const visualDisplayName = visual.displayName;
-    const dataRoles = visual.dataRoles;
     const dataRoleNames = visual.dataRoleNames;
 
     // Set the type of the visual in visual-type dropdown
@@ -1805,12 +1799,12 @@ function populateProperties(visualCreatorShowcaseState) {
     });
 
     // Set the data-roles for the visual
-    Object.entries(visualCreatorShowcaseState.dataRoles).forEach(dataField => {
-        const [dataRole, field] = dataField;
-        const index = dataRoleNames.indexOf(dataRole);
+    Object.entries(visualCreatorShowcaseState.dataRoleNames).forEach(dataField => {
+        const [dataRoleName, field] = dataField;
+        const index = dataRoleNames.indexOf(dataRoleName);
         const dataRoleField = dataFieldsMappings[field];
         if (index !== -1) {
-            const value = dataRoles[index];
+            const value = dataRoleNames[index];
             selectDataRoles(value, dataRoleField);
         }
     });
