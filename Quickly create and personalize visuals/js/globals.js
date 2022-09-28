@@ -8,10 +8,16 @@ const visualCreatorShowcaseState = {
     page: null, // The page from where the 3x3 visuals will be displayed
     newVisual: null, // New visual to be created on the page for the base-report
     visualType: null,
-    dataRoles: {
-        Legend: null,
-        Values: null,
-        Axis: null,
+    // dataRoles: {
+    //     Legend: null,
+    //     Values: null,
+    //     Axis: null,
+    //     Tooltips: null,
+    // },
+    dataRoleNames: {
+        Series: null,
+        Category: null,
+        Y: null,
         Tooltips: null,
     },
     dataFieldsCount: 0,
