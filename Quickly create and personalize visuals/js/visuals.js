@@ -5,19 +5,19 @@
 
 // Define the available data roles for the visual types
 const visualTypeToDataRoles = [
-    { name: "columnChart", displayName: "Column chart", dataRoles: ["Axis", "Values", "Tooltips"], dataRoleNames: ["Category", "Y", "Tooltips"] },
-    { name: "areaChart", displayName: "Area chart", dataRoles: ["Axis", "Legend", "Values"], dataRoleNames: ["Category", "Series", "Y"] },
-    { name: "barChart", displayName: "Bar chart", dataRoles: ["Axis", "Values", "Tooltips"], dataRoleNames: ["Category", "Y", "Tooltips"] },
-    { name: "pieChart", displayName: "Pie chart", dataRoles: ["Legend", "Values", "Tooltips"], dataRoleNames: ["Category", "Y", "Tooltips"] },
-    { name: "lineChart", displayName: "Line chart", dataRoles: ["Axis", "Legend", "Values"], dataRoleNames: ["Category", "Series", "Y"] },
+    { name: "columnChart", displayName: "Column chart", dataRoleNames: ["Category", "Y", "Tooltips"] },
+    { name: "areaChart", displayName: "Area chart", dataRoleNames: ["Category", "Series", "Y"] },
+    { name: "barChart", displayName: "Bar chart", dataRoleNames: ["Category", "Y", "Tooltips"] },
+    { name: "pieChart", displayName: "Pie chart", dataRoleNames: ["Category", "Y", "Tooltips"] },
+    { name: "lineChart", displayName: "Line chart", dataRoleNames: ["Category", "Series", "Y"] },
 ];
 
 // Define the available fields for each data role
 const dataRolesToFields = [
-    { dataRole: "Axis", Fields: ["Industry", "Opportunity Status", "Lead Rating", "Salesperson"] },
-    { dataRole: "Values", Fields: ["Actual Revenue", "Estimated Revenue", "Number of Opportunities", "Salesperson"] },
-    { dataRole: "Legend", Fields: ["Industry", "Lead Rating", "Opportunity Status", "Salesperson"] },
-    { dataRole: "Tooltips", Fields: ["Industry", "Actual Close Date", "Actual Revenue", "Estimated Revenue"] },
+   { dataRole: "Axis", dataRoleName:"Category", Fields: ["Industry", "Opportunity Status", "Lead Rating", "Salesperson"] },
+    { dataRole: "Values",dataRoleName:"Y", Fields: ["Actual Revenue", "Estimated Revenue", "Number of Opportunities", "Salesperson"] },
+    { dataRole: "Legend",dataRoleName:"Series", Fields: ["Industry", "Lead Rating", "Opportunity Status", "Salesperson"] },
+    { dataRole: "Tooltips",dataRoleName:"Tooltips", Fields: ["Industry", "Actual Close Date", "Actual Revenue", "Estimated Revenue"] },
 ];
 
 // Define schemas for visuals API
